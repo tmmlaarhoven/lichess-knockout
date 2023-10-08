@@ -5,8 +5,8 @@ This repository provides a tool to automatically run (single-elimination) knock-
 Below are some examples of tournaments which were run with this tool, and the associated brackets.
 
 #### 1. Example tournament (8 players, 2 games per round)
-[Tournament URL](https://lichess.org/swiss/exMmShZ3) 
-![Example bracket](png/exMmShZ3.png)
+[Tournament URL](https://lichess.org/swiss/dO511j56) 
+![Example bracket](png/dO511j56.png)
 
 #### 2. Example bracket (256 players, 4 games per round)
 (Simulated data)
