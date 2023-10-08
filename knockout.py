@@ -534,14 +534,14 @@ class KnockOut:
         git_file = f"png/{self._SwissId}.png"
         if New:
             self._GitHubRepo.create_file(git_file,
-                                         "committing files",
+                                         f"Creating new bracket {self._SwissId}.png",
                                          image_bytes,
                                          branch="main")
             self.tprint("Uploaded new bracket!")
         else:
             contents = self._GitHubRepo.get_contents(git_file)
             self._GitHubRepo.update_file(contents.path,
-                                         "committing files",
+                                         f"Updating bracket {self._SwissId}.png",
                                          image_bytes,
                                          contents.sha,
                                          branch="main")
