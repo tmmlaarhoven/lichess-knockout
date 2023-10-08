@@ -37,14 +37,15 @@ For users to join, they need to be a member of the same team in which these tour
 2. Create a GitHub token [here](https://github.com/settings/tokens?type=beta).
    - Choose any token name.
    - For expiration, select a year from now for a long-lasting token.
-   - Under repository access, select "Only select repositories" and select the repository you just created.
+   - Under `Repository access`, select `Only select repositories` and select the repository you just created.
+   - Under `Permissions` and `Repository permissions`, find the header `Contents` and set it to `Read and write`.
    - Leave the other default options and click "Generate token".
-   - You will see the token in the form of one long string starting `github_...`. **Save this string**, you will need it later.
+   - You will see the token in the form of one long string starting `github_...`. **Save this string**, you will need it later. At the same time, do not share this string with anyone, as it would allow others (limited) access to your GitHub repository.
 3. Create a Lichess token [here](https://lichess.org/account/oauth/token/create?scopes[]=tournament:write&description=Knockout%20Tournament%20Token).
    - Choose any token name.
    - The only required permission is `tournament:write` and this should automatically be selected when clicking this link.
    - Leave the other boxes unchecked and click "Create token".
-   - You will see the token in the form of one long string starting `lip_...`. **Save this string**, you will need it later.
+   - You will see the token in the form of one long string starting `lip_...`. **Save this string**, you will need it later. At the same time, do not share this string with anyone, as it would allow others (limited) access to your Lichess account.
 4. Store these tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
    - One way to go there is to navigate directly to `https://github.com/{yourgithubname}/{yourclonedreponame}/settings/secrets/actions`.
    - Alternatively, navigate to your newly cloned repository on GitHub, choose "Settings" in the top menu, and choose "Secrets and variables" - "Actions" in the left menu.
@@ -80,15 +81,18 @@ To change how often the script runs (and creates a tournament, waits for the sta
 - `0 */4 * * *`: Every 4 hours.
 - `0 8,18,22 * * *`: Every day at 08:00, 18:00, and 22:00.
 - `30 20 * * 6`: At 20:30 on every Saturday.
+All the times and dates above are UTC times/dates, so please take this into account when planning a schedule to suit your needs.
 
-**Note**: These times are when the script starts running; **not** when the event starts. If you want to run knock-out events every evening at 20:00 with a 2-hour registration period, you would set `MinutesToStart: 120` in `config.ini`, and schedule the script to start running two hours before the start of the event, e.g., using `0 18 * * *`.
+**Note 1**: These times are when the script starts running; **not** when the event starts. If you want to run knock-out events every evening at 20:00 with a 2-hour registration period, you would set `MinutesToStart: 120` in `config.ini`, and schedule the script to start running two hours before the start of the event, e.g., using `0 18 * * *`.
 
-**Additional note**: The Lichess API and GitHub Actions have rate limits on how often you can query the API, how often you can run these schedules, and how many tournaments can be created. Setting the schedule to create a knock-out tournament every 5 minutes will likely result in Lichess rate-limiting your access to the API, and in extreme cases blocking your ability to create tournaments altogether.
-  
+**Note 2**: The Lichess API and GitHub Actions have rate limits on how often you can query the API, how often you can run these schedules, and how many tournaments can be created. Setting the schedule to create a knock-out tournament every 5 minutes will likely result in Lichess rate-limiting your account's access to the API, and in extreme cases blocking your ability to create tournaments altogether.
+
+**Note 3**: As with other things on GitHub, there can be delays both in uploaded files (such as the tournament bracket) being visible online, but also in the script being started; if the schedule is set to run at 12:00, the GitHub Action may only trigger around 12:05. This is neither intended nor a bug in the script; it seems to be an unfortunate but inevitable side effect of using GitHub Actions to automate these procedures in the cloud.
+
 ## Multiple time schedules
-In some cases, a single schedule may not be sufficient. For instance, if you want to run a daily blitz event at 18:00 and a daily bullet event at 22:00, you need two different configurations. Since the GitHub Actions script calls the main python script and passes on the name of the configuration file as one of the arguments, one can create several independent schedules by:
+In some cases, a single schedule may not be sufficient. For instance, if you want to run a daily blitz event at 18:00 and a daily bullet event at 22:00, you need two different configurations. Since the GitHub Actions script calls the main python script and passes on the name of the configuration file as one of the arguments, one can create several independent schedules:
 1. Copying `config.ini` to `config-2.ini` and editing this configuration file, with different tournament settings;
-2. Copying `.github/workflows/runner.yml` to `.github/workflows/runner-2.yml`, updating the Cron schedule for this series of tournaments, and replacing `config.ini` in this script with `config-2.ini`.
+2. Copying `.github/workflows/runner.yml` to `.github/workflows/runner-2.yml`, updating the Cron schedule for this series of tournaments, and replacing `config.ini` in this script with `config-2.ini` to use the other configuration.
 
 GitHub Actions will automatically pick up on the new `.yml` file if it is placed inside this directory, and will automatically run these scripts at the scheduled times.
 
