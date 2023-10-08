@@ -1,0 +1,24 @@
+name: Hourly HyperBullet Runner
+on:
+  schedule:
+    # Below is the schedule, in cron format
+    - cron:  '30 * * * *'
+permissions:
+  contents: write
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout latest version
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+            python -m pip install --upgrade pip
+            pip install matplotlib requests configparser pygithub
+      - name: Run tournament runner until completion
+        # Below is the way the script is called, with the given configuration file
+        run: python main.py config-hyperbullet.ini ${{ secrets.LICHESSTOKEN }} ${{ secrets.GITHUBTOKEN }}
