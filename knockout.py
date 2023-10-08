@@ -979,6 +979,7 @@ class KnockOut:
 
             if (JResponse.get("status", "None") == "finished"):
                 self.tprint("Tournament already finished early!")
+                sys.exit()
 
             self.tprint("Sleeping (5), waiting for round to finish...")
             time.sleep(5)
