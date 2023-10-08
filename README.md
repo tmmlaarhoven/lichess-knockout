@@ -4,13 +4,13 @@ This repository provides a tool to automatically run (single-elimination) knock-
 ## Demos
 Below are some examples of tournaments which were run with this tool, and the associated brackets.
 
-#### 1. Example tournament (8 players, 2 games per round)
+#### 1. Example bracket (8 players, 5 games per round)
+[Tournament URL](https://lichess.org/swiss/dO511j56) 
+![Example bracket](png/Rw4cMTyU.png)
+
+#### 2. Example tournament (16 players, 1 game per round)
 [Tournament URL](https://lichess.org/swiss/dO511j56) 
 ![Example bracket](png/dO511j56.png)
-
-#### 2. Example bracket (256 players, 4 games per round)
-(Simulated data)
-![Example bracket](png/jl6jCXmg.png)
 
 ## Requirements
 To use this, you need to have a Lichess account, and you need to be the team leader of a Lichess team. To run the script in the cloud, you further need a GitHub account. The below description is for the cloud instantiation, as it provides the full functionality of automated visual knock-out bracket generation (similar to e.g. [Challonge](https://challonge.com)) which gets hosted on GitHub and linked in the tournament description, for players to track the progress of the tournament.
