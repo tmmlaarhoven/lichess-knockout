@@ -136,3 +136,30 @@ On the positive side, this solution means that users can easily find and join th
 On the negative side, this (unofficial) solution via Swiss events means that Lichess will think it is hosting a Swiss event, rather than a knock-out event. Therefore, on the tournament page, Lichess will rank players based on their total points, which may not reflect the players' standings in the knock-out bracket - someone winning their first match 2-0 and losing 1-1 on tiebreaks in the second match has more points than someone winning 1.5-0.5 and winning 1-1 on tiebreaks.
 
 The latter drawback of inconsistent rankings can potentially be overcome if Lichess allows Swiss tournament organizers to overrule the standard scoring of events. Allowing scoring to be altered would potentially open up the Swiss system to abuse of tournament organizers who manipulate the scoring system to make certain players win/lose, but it would also allow knock-out events to be scored properly.
+
+## TODO-list
+
+Below a short list of things that would be nice to add in the future.
+- Functionality
+  - [x] Make a tool to run knock-out events on Lichess via manual pairings.
+  - [x] Automate all aspects of the tournament organization.
+  - [ ] Make starting the tournament early (when `MaxParticipants` is reached) optional, rather than mandatory.
+  - [ ] Allow the organizer to specify their own chosen player seeding in the input.
+  - [ ] Allow the organizer to specify which users are allowed to join from the start.
+  - [ ] Implement different tiebreak options that people may want to use.
+  - [ ] Terminate matches early if the winner is already decided (for >=2 games per match) and update the bracket accordingly.
+  - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify to the next round, and it stops after 8 players are left (and 8 players are winners).
+    - This can technically already be achieved by hosting 8 separate tournaments.
+  - [ ] Make double-elimination brackets an option(?).
+- Bracket visualization
+  - [x] Automatically generate visual brackets, upload them to GitHub, and link them in the tournament description.
+  - [ ] Find a better hosting service than GitHub for uploading brackets(?) as GitHub file refresh rates are very poor.   
+  - [ ] Visualize BYEs in a cleaner way.
+  - [ ] Make shorter URLs for the brackets, via e.g. https://bracket.thijs.com/qWeRtY12.png.
+    - That would only work for myself, as the forwarding depends on where the file is being hosted, or it would require an additional API for my domain.
+- Cloud hosting
+  - [x] Integrate the functionality with GitHub Actions.
+  - [x] Make it possible for others to clone the repository and host their own scheduled events.
+- Documentation and usability
+  - [x] Write a README with an extensive manual how to use this script.
+  - [ ] Turn this into a package on [pypi.org](https://pypi.org) for each use.
