@@ -44,9 +44,9 @@ Below are installation instructions which apply both for running the script loca
 5. Configure the GitHub and Lichess settings in `config.ini`.
 6. *(optional)* Configure the other settings in `config.ini` as desired.
 7. Depending on whether you want to create a single tournament locally, or create a schedule of tournaments in the cloud, follow one of these steps:
-  a. Creating a single tournament locally:
+  - Creating a single tournament locally:
     - Download your copy of the repository, run `python main.py config.ini <LICHESSTOKEN> <GITHUBTOKEN>`, and keep the script running until the event is over.
-  b. Creating a schedule of tournaments in the cloud: 
+  - Creating a schedule of tournaments in the cloud: 
     - Modify the file `.github/workflows/runner.yml` to adjust the time schedule accordingly (see more details below).
     - Simply wait until GitHub Actions starts running and starts creating/hosting events.
 
