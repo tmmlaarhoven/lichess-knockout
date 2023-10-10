@@ -1,4 +1,4 @@
-name: Hourly Bullet Runner
+name: Hourly Bullet
 on:
   schedule:
     # Below is the schedule, in cron format
