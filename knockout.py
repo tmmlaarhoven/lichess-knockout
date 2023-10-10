@@ -443,7 +443,7 @@ class KnockOut:
         assert (self._Loser is not None), "No loser yet."
 
         # Show winner with trophy
-        im = f"lichess-massive.png"
+        im = f"trophies/lichess-gold.png"
         img = plt.imread(im)
         imgar = 1.0
         Xmin = (self._Xn + self._GamesPerMatch * self._Xg)/2 + (self._MatchRounds - 1) * self._Xw
@@ -462,7 +462,7 @@ class KnockOut:
                     color = (255/255, 203/255, 55/255))
 
         # Show finals loser with trophy
-        im2 = f"lichess-silver-1.png"
+        im2 = f"trophies/lichess-silver.png"
         img2 = plt.imread(im2)
         imgar2 = 1.0
         Xmin = (self._Xn + self._GamesPerMatch * self._Xg)/2 + (self._MatchRounds - 1) * self._Xw
