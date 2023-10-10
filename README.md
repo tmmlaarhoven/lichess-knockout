@@ -1,5 +1,8 @@
 # Lichess Knock-Out Tournament Tool
 
+[![Hourly Bullet Runner](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-bullet.yml/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-bullet.yml)
+[![Hourly HyperBullet Runner](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-hyperbullet.yml/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-hyperbullet.yml)
+
 This repository provides a tool to automatically run (single-elimination) knock-out tournaments on Lichess, making use of Lichess Swiss tournaments with manually-provided pairings. Visualizations of the knock-out brackets are automatically visualized and kept up-to-date, and hosted on GitHub, with a direct link in the tournament description.
 
 ## Demos
@@ -7,15 +10,15 @@ This repository provides a tool to automatically run (single-elimination) knock-
 Below are some examples of tournaments which were run with this tool, and the associated brackets.
 
 #### 1. Example tournament (8 players, 1 game per round, 1+0)
-[Tournament URL](https://lichess.org/swiss/AmSDlttV) 
+[Tournament URL](https://lichess.org/swiss/AmSDlttV)
 ![Example bracket](png/AmSDlttV.png)
 
 #### 2. Example tournament (8 players, 5 games per round, 1/2+0)
-[Tournament URL](https://lichess.org/swiss/dO511j56) 
+[Tournament URL](https://lichess.org/swiss/dO511j56)
 ![Example bracket](png/Rw4cMTyU.png)
 
 #### 3. Example tournament (16 players, 1 game per round, 1/2+0)
-[Tournament URL](https://lichess.org/swiss/dO511j56) 
+[Tournament URL](https://lichess.org/swiss/dO511j56)
 ![Example bracket](png/dO511j56.png)
 
 ## Requirements
@@ -46,7 +49,7 @@ Below are installation instructions which apply both for running the script loca
 7. Depending on whether you want to create a single tournament locally, or create a schedule of tournaments in the cloud, follow one of these steps:
   - Creating a single tournament locally:
     - Download your copy of the repository, run `python main.py config.ini <LICHESSTOKEN> <GITHUBTOKEN>`, and keep the script running until the event is over.
-  - Creating a schedule of tournaments in the cloud: 
+  - Creating a schedule of tournaments in the cloud:
     - Modify the file `.github/workflows/runner.yml` to adjust the time schedule accordingly (see more details below).
     - Simply wait until GitHub Actions starts running and starts creating/hosting events.
 
@@ -87,7 +90,7 @@ Below are installation instructions which apply both for running the script loca
      - Run the command `python main.py config.ini <LICHESSTOKEN> <GITHUBTOKEN>` where you replace `<LICHESSTOKEN>` and `<GITHUBTOKEN>` with your tokens `lip_...` and `github_...`.
      - The output in the command line should guide you through what it is doing, and should soon show that it has successfully created the event.
      - Keep the script running in the background until the tournament is over.
-   - Creating a schedule of tournaments in the cloud: 
+   - Creating a schedule of tournaments in the cloud:
      - Modify the file `.github/workflows/runner.yml` to adjust the time schedule accordingly (see more details below).
      - Simply wait until GitHub Actions starts running and starts creating/hosting events.
 
@@ -96,7 +99,7 @@ Below are installation instructions which apply both for running the script loca
 The file `config.ini` can be modified to change the parameters of the tournament. For most of these parameters, the same restrictions apply as on the corresponding [Lichess API endpoint](https://lichess.org/api#tag/Swiss-tournaments/operation/apiSwissNew). Some additional details on (the requirements on) these parameters are given below.
 - The field `EventName` describes the name for the tournament on Lichess, and is bound by the same constraints as specified in the Lichess API. In particular, special characters (including e.g. exclamation marks) should be avoided, and the maximum length of the tournament name is 30 characters.
 - The field `TieBreak` can be set to decide who wins in case a match ends in a tie: the player with the lowest rating (`rating`), or the player with fewer white games (`color`, but only in combination with an odd `GamesPerMatch`).
-- The field `MinutesToStart` specifies how soon the event starts after this script starts running. Concretely, this therefore specifies how long the tournament is open for registration on Lichess. To schedule 
+- The field `MinutesToStart` specifies how soon the event starts after this script starts running. Concretely, this therefore specifies how long the tournament is open for registration on Lichess. To schedule
 - The time control `ClockInit` and `ClockInc` must satisfy constraints specified by the Lichess API.
 - The minimum number of participants is 4; a tournament with fewer players will be automatically cancelled.
 - The maximum supported number of participants is currently 2048, but anything above 16 is currently not 100% tested and may potentially break.
@@ -153,7 +156,7 @@ Below a short list of things that would be nice to add in the future.
   - [ ] Make double-elimination brackets an option(?).
 - Bracket visualization
   - [x] Automatically generate visual brackets, upload them to GitHub, and link them in the tournament description.
-  - [ ] Find a better hosting service than GitHub for uploading brackets(?) as GitHub file refresh rates are very poor.   
+  - [ ] Find a better hosting service than GitHub for uploading brackets(?) as GitHub file refresh rates are very poor.
   - [ ] Visualize BYEs in a cleaner way.
   - [ ] Make shorter URLs for the brackets, via e.g. https://bracket.thijs.com/qWeRtY12.png.
     - That would only work for myself, as the forwarding depends on where the file is being hosted, or it would require an additional API for my domain.
