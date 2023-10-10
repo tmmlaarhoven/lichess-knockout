@@ -1,4 +1,4 @@
-name: Hourly HyperBullet Runner
+name: Hourly HyperBullet
 on:
   schedule:
     # Below is the schedule, in cron format
