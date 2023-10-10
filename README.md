@@ -1,7 +1,7 @@
 # Lichess Knock-Out Tournament Tool
 
-[![Hourly Bullet Runner](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-bullet.yml/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-bullet.yml)
-[![Hourly HyperBullet Runner](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-hyperbullet.yml/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-hyperbullet.yml)
+[![Hourly Bullet](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-bullet.yml/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-bullet.yml)
+[![Hourly HyperBullet](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-hyperbullet.yml/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-hyperbullet.yml)
 
 This repository provides a tool to automatically run (single-elimination) knock-out tournaments on Lichess, making use of Lichess Swiss tournaments with manually-provided pairings. Visualizations of the knock-out brackets are automatically visualized and kept up-to-date, and hosted on GitHub, with a direct link in the tournament description.
 
