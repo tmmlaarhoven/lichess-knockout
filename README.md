@@ -163,3 +163,6 @@ Below a short list of things that would be nice to add in the future.
 - Documentation and usability
   - [x] Write a README with an extensive manual how to use this script.
   - [ ] Turn this into a package on [pypi.org](https://pypi.org) for each use.
+- Code cleanup
+  - [ ] Clean up parts of the code with more logical function names.
+  - [ ] Remove old code that is no longer relevant.
