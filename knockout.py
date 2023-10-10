@@ -17,7 +17,7 @@ automatically host tournaments at given intervals,
 and so that the tournament bracket can automatically
 be generated and stored in a GitHub repository.
 
-This script makes use of:
+Among others, this script makes use of:
 - The Lichess API
     - https://lichess.org/api
 - GitHub Actions
