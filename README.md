@@ -43,7 +43,7 @@ Below are installation instructions which apply both for running the script loca
 1. Clone this GitHub repository, say to `yourname/lichess-knockout`.
 2. Create a GitHub token [here](https://github.com/settings/tokens?type=beta).
 3. Create a Lichess token [here](https://lichess.org/account/oauth/token/create?scopes[]=tournament:write&description=Knockout%20Tournament%20Token).
-4. Store these tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
+4. *(cloud only)* Store these tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
 5. Configure the GitHub and Lichess settings in `config.ini`.
 6. *(optional)* Configure the other settings in `config.ini` as desired.
 7. Depending on whether you want to create a single tournament locally, or create a schedule of tournaments in the cloud, follow one of these steps:
@@ -68,7 +68,8 @@ Below are installation instructions which apply both for running the script loca
    - The only required permission is `tournament:write` and this should automatically be selected when clicking this link.
    - Leave the other boxes unchecked and click "Create token".
    - You will see the token in the form of one long string starting `lip_...`. **Save this string**, you will need it later. At the same time, do not share this string with anyone, as it would allow others (limited) access to your Lichess account.
-4. Store these tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
+4. *(cloud only)* Store these tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
+   - NOTE: These secrets are only used for running the cloud scheduler; when running the script locally, this step can be skipped.
    - One way to go there is to navigate directly to `https://github.com/{yourgithubname}/{yourclonedreponame}/settings/secrets/actions`.
    - Alternatively, navigate to your newly cloned repository on GitHub, choose "Settings" in the top menu, and choose "Secrets and variables" - "Actions" in the left menu.
    - When you reach the right page, make two secrets for the Lichess and GitHub tokens.
@@ -152,6 +153,7 @@ Below a short list of things that would be nice to add in the future.
   - [ ] Implement different tiebreak options that people may want to use.
   - [ ] Terminate matches early if the winner is already decided (for >=2 games per match) and update the bracket accordingly.
   - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify to the next round, and it stops after 8 players are left (and 8 players are winners).
+  - [ ] Make the tournament description modifiable.
     - This can technically already be achieved by hosting 8 separate tournaments.
   - [ ] Make double-elimination brackets an option(?).
 - Bracket visualization
@@ -169,3 +171,9 @@ Below a short list of things that would be nice to add in the future.
 - Code cleanup
   - [ ] Clean up parts of the code with more logical function names.
   - [ ] Remove old code that is no longer relevant.
+- Issues
+  - [ ] Clarify the start time is a multiple of 10 minutes.
+  - [ ] Give more feedback on errors.
+  - [ ] Make the parameters of main.py named, and include a help, to help the user understand how to use the script and what is missing if they just call main.py.
+  - [ ] Add "try .. except .."-constructs to not immediately crash when Lichess API occasionally fails to return proper answers.
+  -

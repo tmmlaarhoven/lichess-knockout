@@ -682,10 +682,15 @@ class KnockOut:
                 self._UnconfirmedParticipants[JUser["username"].lower()] = JUser
 
             # Remove departed participants
+            UserToRemove = dict()
             for UserName, User in self._Participants.items():
                 if UserName not in self._UnconfirmedParticipants:
                     self.tprint(f"Removing player {UserName}.")
-                    self._Participants.pop(UserName)
+                    UserToRemove[UserName] = UserName
+
+            # Remove users that left
+            for UserName in UsersToRemove:
+                self._Participants.pop(UserName)
 
             # Add newly registered participants
             for UserName, User in self._UnconfirmedParticipants.items():
