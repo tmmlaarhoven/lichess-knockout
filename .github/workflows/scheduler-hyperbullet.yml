@@ -21,4 +21,4 @@ jobs:
             pip install matplotlib requests configparser pygithub
       - name: Run tournament runner until completion
         # Below is the way the script is called, with the given configuration file
-        run: python main.py config-hyperbullet.ini ${{ secrets.LICHESSTOKEN }} ${{ secrets.GITHUBTOKEN }}
+        run: python main.py -c config-hyperbullet.ini -l ${{ secrets.LICHESSTOKEN }} -g ${{ secrets.GITHUBTOKEN }}
