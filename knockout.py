@@ -160,9 +160,15 @@ class KnockOut:
         self._LogFile = None
 
         # Set up a github authentication workflow
-        auth = github.Auth.Token(self._GitHubToken)
-        g = github.Github(auth = auth)
-        self._GitHubRepo = g.get_user().get_repo(self._GitHubRepoName)
+        while True:
+            try:
+                auth = github.Auth.Token(self._GitHubToken)
+                g = github.Github(auth = auth)
+                self._GitHubRepo = g.get_user().get_repo(self._GitHubRepoName)
+                break
+            except:
+                self.tprint("Failing to connect to GitHub. Retrying...")
+                time.sleep(3)
 
 
 
@@ -227,7 +233,7 @@ class KnockOut:
         if no proper response is obtained from the server.
         """
         RequestSuccess = False
-        for _ in range(5):
+        for i in range(5):
             try:
                 Response = requests.get(RequestEndpoint,
                                 headers = {"Authorization": f"Bearer {self._LichessToken}"})
@@ -236,19 +242,15 @@ class KnockOut:
                 break
             except:
                 self.tprint(f"Lichess API GET-request at {RequestEndpoint} failed!")
-                self.tprint(f"Response code: {Response.status_code}.")
-                self.tprint("Trying again in 3 seconds...")
+                self.tprint(f"Attempt {i+1}/5. {'Trying again in 3 seconds...' if i < 4 else ''}")
                 time.sleep(3)
 
         # Exit if we did not succeed creating a tournament
         if not RequestSuccess:
             self.tprint(f"Unable to process API request!")
-            self.tprint(f"Response code: {Response.status_code}.")
-            self.tprint("For debugging, this was the response: ")
-            self.tprint(Response)
-            self.tprint("Goodbye!")
             if KillOnFail:
                 self._KillTournament()
+            self.tprint("Goodbye!")
             sys.exit()
 
         # Return response if everything worked successfully
@@ -264,7 +266,7 @@ class KnockOut:
         if no proper response is obtained from the server.
         """
         RequestSuccess = False
-        for _ in range(5):
+        for i in range(5):
             try:
                 Response = requests.post(RequestEndpoint,
                                 headers = {"Authorization": f"Bearer {self._LichessToken}"},
@@ -274,17 +276,12 @@ class KnockOut:
                 break
             except:
                 self.tprint(f"Lichess API POST-request at {RequestEndpoint} failed!")
-                self.tprint(f"Response code: {Response.status_code}.")
-                self.tprint("Trying again in 3 seconds...")
+                self.tprint(f"Attempt {i+1}/5. {'Trying again in 3 seconds...' if i < 4 else ''}")
                 time.sleep(3)
 
         # Exit if we did not succeed creating a tournament
         if not RequestSuccess:
             self.tprint(f"Unable to process API request!")
-            self.tprint(f"Response code: {Response.status_code}.")
-            self.tprint("For debugging, this was the response: ")
-            self.tprint(Response)
-            self.tprint(Response.json())
             if KillOnFail:
                 self._KillTournament()
             self.tprint("Goodbye!")
