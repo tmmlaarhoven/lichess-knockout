@@ -262,7 +262,7 @@ class KnockOut:
     def _RunPostRequest(self, RequestEndpoint: str, RequestData: dict, KillOnFail: bool = False):
         """
         Run a Lichess API request, and handle potential errors.
-        If the flag KillOnFail is true, the tournament will be aborted
+        If the flag KillOnFail is set to true, the tournament will be aborted
         if no proper response is obtained from the server.
         """
         RequestSuccess = False
