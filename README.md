@@ -179,7 +179,6 @@ Below a short list of things that would be nice to add in the future.
   - [ ] Remove old code that is no longer relevant.
 - Issues
   - [ ] Clarify the start time is a multiple of 10 minutes.
-  - [ ] Give more feedback on errors.
+  - [x] Give more feedback on errors.
   - [ ] Make the parameters of main.py named, and include a help, to help the user understand how to use the script and what is missing if they just call main.py.
-  - [ ] Add "try .. except .."-constructs to not immediately crash when Lichess API occasionally fails to return proper answers.
-  -
+  - [x] Add "try .. except .."-constructs to not immediately crash when Lichess API occasionally fails to return proper answers.
