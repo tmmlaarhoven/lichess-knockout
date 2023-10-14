@@ -1,0 +1,125 @@
+23:25:20: Opened a new log file.
+23:25:24: Finished creating a new Lichess swiss tournament!
+23:25:24: Tournament available at https://lichess.org/swiss/oyOfNtv0.
+23:25:24: Waiting for start...
+23:25:24: 
+23:25:24: === LIST OF PARTICIPANTS ===
+23:25:24:   (No participants yet.)
+23:25:24: 
+23:25:24: Not yet starting (0/8), so sleeping for 10 seconds...
+23:25:35: 
+23:25:35: === LIST OF PARTICIPANTS ===
+23:25:35:   (No participants yet.)
+23:25:35: 
+23:25:35: Not yet starting (0/8), so sleeping for 10 seconds...
+23:25:46: 
+23:25:46: === LIST OF PARTICIPANTS ===
+23:25:46:   (No participants yet.)
+23:25:46: 
+23:25:46: Not yet starting (0/8), so sleeping for 10 seconds...
+23:25:57: 
+23:25:57: === LIST OF PARTICIPANTS ===
+23:25:57:   (No participants yet.)
+23:25:57: 
+23:25:57: Not yet starting (0/8), so sleeping for 10 seconds...
+23:26:09: 
+23:26:09: === LIST OF PARTICIPANTS ===
+23:26:09:   (No participants yet.)
+23:26:09: 
+23:26:09: Not yet starting (0/8), so sleeping for 10 seconds...
+23:26:20: 
+23:26:20: === LIST OF PARTICIPANTS ===
+23:26:20:   (No participants yet.)
+23:26:20: 
+23:26:20: Not yet starting (0/8), so sleeping for 10 seconds...
+23:26:31: 
+23:26:31: === LIST OF PARTICIPANTS ===
+23:26:31:   (No participants yet.)
+23:26:31: 
+23:26:31: Not yet starting (0/8), so sleeping for 10 seconds...
+23:26:42: 
+23:26:42: === LIST OF PARTICIPANTS ===
+23:26:42:   (No participants yet.)
+23:26:42: 
+23:26:42: Not yet starting (0/8), so sleeping for 10 seconds...
+23:26:53: 
+23:26:53: === LIST OF PARTICIPANTS ===
+23:26:53:   (No participants yet.)
+23:26:53: 
+23:26:53: Not yet starting (0/8), so sleeping for 10 seconds...
+23:27:04: 
+23:27:04: === LIST OF PARTICIPANTS ===
+23:27:04:   (No participants yet.)
+23:27:04: 
+23:27:04: Not yet starting (0/8), so sleeping for 10 seconds...
+23:27:15: Adding player testingko0.
+23:27:15: Adding player testingko2.
+23:27:15: Adding player testingko1.
+23:27:15: 
+23:27:15: === LIST OF PARTICIPANTS ===
+23:27:15:  1. TestingKO0           (1979) [testingko0]
+23:27:15:  2. TestingKO2           (1796) [testingko2]
+23:27:15:  3. TestingKO1           (1723) [testingko1]
+23:27:15: 
+23:27:15: Not yet starting (3/8), so sleeping for 10 seconds...
+23:27:26: Adding player testingko3.
+23:27:26: Adding player testingko6.
+23:27:26: Adding player testingko4.
+23:27:26: Adding player testingko5.
+23:27:26: 
+23:27:26: === LIST OF PARTICIPANTS ===
+23:27:26:  1. TestingKO0           (1979) [testingko0]
+23:27:26:  2. TestingKO2           (1796) [testingko2]
+23:27:26:  3. TestingKO1           (1723) [testingko1]
+23:27:26:  4. TestingKO3           (1766) [testingko3]
+23:27:26:  5. TestingKO6           (1751) [testingko6]
+23:27:26:  6. TestingKO4           (1500) [testingko4]
+23:27:26:  7. TestingKO5           (1500) [testingko5]
+23:27:26: 
+23:27:26: Close to starting (7/8), so sleeping for 5 seconds...
+23:27:32: Adding player testingko7.
+23:27:32: Reached maximum participants!
+23:27:32: Enough players to start!
+23:27:32: 
+23:27:32: === LIST OF PARTICIPANTS ===
+23:27:32:  1. TestingKO0           (1979) [testingko0]
+23:27:32:  2. TestingKO2           (1796) [testingko2]
+23:27:32:  3. TestingKO7           (1768) [testingko7]
+23:27:32:  4. TestingKO3           (1766) [testingko3]
+23:27:32:  5. TestingKO6           (1751) [testingko6]
+23:27:32:  6. TestingKO1           (1723) [testingko1]
+23:27:32:  7. TestingKO4           (1500) [testingko4]
+23:27:32:  8. TestingKO5           (1500) [testingko5]
+23:27:32: 
+23:27:34: Finished waiting to start!
+23:27:34: Starting tournament...
+23:27:34: Starting Lichess tournament...
+23:27:38: Finished starting Lichess tournament!
+23:27:38: Making an empty bracket...
+23:27:41: Uploaded new bracket!
+23:27:41: Finished waiting for start (tournament almost started)!
+23:27:41: Starting/preparing matches for match round 1...
+23:27:41: Finished starting/preparing match round 1!
+23:27:41: Starting round 1.1 (1)...
+23:27:41: 
+23:27:41: === LIST OF MATCHES ===
+23:27:41:           testingko0 - testingko5           : 
+23:27:41:           testingko6 - testingko3           : 
+23:27:41:           testingko7 - testingko1           : 
+23:27:41:           testingko4 - testingko2           : 
+23:27:41: 
+23:27:41: Pushing pairings to API...
+23:27:47: Pushing pairings to API again...
+23:27:51: Updating the bracket...
+23:27:53: Uploaded updated bracket!
+23:27:53: Started round 1.1 (1)!
+23:27:53: Waiting for round 1.1 (1) to finish...
+23:27:54: Sleeping (5), waiting for round to finish...
+23:28:00: Sleeping (5), waiting for round to finish...
+23:28:06: Sleeping (5), waiting for round to finish...
+23:28:12: Sleeping (5), waiting for round to finish...
+23:28:18: Sleeping (5), waiting for round to finish...
+23:28:24: Sleeping (5), waiting for round to finish...
+23:28:30: Sleeping (5), waiting for round to finish...
+23:28:36: Sleeping (5), waiting for round to finish...
+23:28:42: Sleeping (5), waiting for round to finish...

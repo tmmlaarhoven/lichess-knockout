@@ -217,6 +217,98 @@ class KnockOut:
 
 
     # =======================================================
+    #       REQUEST HANDLING
+    # =======================================================
+
+    def _RunGetRequest(self, RequestEndpoint: str, KillOnFail: bool = False):
+        """
+        Run a Lichess API request, and handle potential errors.
+        If the flag KillOnFail is true, the tournament will be aborted
+        if no proper response is obtained from the server.
+        """
+        RequestSuccess = False
+        for _ in range(5):
+            try:
+                Response = requests.get(RequestEndpoint,
+                                headers = {"Authorization": f"Bearer {self._LichessToken}"})
+                Response.raise_for_status()
+                RequestSuccess = True
+                break
+            except:
+                self.tprint(f"Lichess API GET-request at {RequestEndpoint} failed!")
+                self.tprint(f"Response code: {Response.status_code}.")
+                self.tprint("Trying again in 3 seconds...")
+                time.sleep(3)
+
+        # Exit if we did not succeed creating a tournament
+        if not RequestSuccess:
+            self.tprint(f"Unable to process API request!")
+            self.tprint(f"Response code: {Response.status_code}.")
+            self.tprint("For debugging, this was the response: ")
+            self.tprint(Response)
+            self.tprint("Goodbye!")
+            if KillOnFail:
+                self._KillTournament()
+            sys.exit()
+
+        # Return response if everything worked successfully
+        self.tprint("Lichess API GET-request succeeded! Continuing in 3 seconds...")
+        time.sleep(3)
+        return Response
+
+
+    def _RunPostRequest(self, RequestEndpoint: str, RequestData: dict, KillOnFail: bool = False):
+        """
+        Run a Lichess API request, and handle potential errors.
+        If the flag KillOnFail is true, the tournament will be aborted
+        if no proper response is obtained from the server.
+        """
+        RequestSuccess = False
+        for _ in range(5):
+            try:
+                Response = requests.post(RequestEndpoint,
+                                headers = {"Authorization": f"Bearer {self._LichessToken}"},
+                                data = RequestData)
+                Response.raise_for_status()
+                RequestSuccess = True
+                break
+            except:
+                self.tprint(f"Lichess API POST-request at {RequestEndpoint} failed!")
+                self.tprint(f"Response code: {Response.status_code}.")
+                self.tprint("Trying again in 3 seconds...")
+                time.sleep(3)
+
+        # Exit if we did not succeed creating a tournament
+        if not RequestSuccess:
+            self.tprint(f"Unable to process API request!")
+            self.tprint(f"Response code: {Response.status_code}.")
+            self.tprint("For debugging, this was the response: ")
+            self.tprint(Response)
+            self.tprint(Response.json())
+            if KillOnFail:
+                self._KillTournament()
+            self.tprint("Goodbye!")
+            sys.exit()
+
+        # Return response if everything worked successfully
+        self.tprint("Lichess API POST-request succeeded! Continuing in 3 seconds...")
+        time.sleep(3)
+        return Response
+
+
+    def _KillTournament(self):
+        """
+        In case we fail to connect to the server, we abort the tournament.
+        """
+        self.tprint("Attempting to cancel the tournament...")
+        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/terminate"
+        RequestData = dict()
+        self._RunPostRequest(RequestEndpoint, RequestData, False)
+        self.tprint("Successfully canceled the tournament")
+
+
+
+    # =======================================================
     #       BRACKET VISUALIZATION FUNCTIONS
     # =======================================================
 
@@ -574,25 +666,25 @@ class KnockOut:
 
         self.tprint("Creating new Lichess Swiss tournament...")
 
-        # Create Lichess Swiss tournament
-        Response = requests.post(f"https://lichess.org/api/swiss/new/{self._TeamId}",
-                                headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                                data = {"name": self._Title,
-                                        "clock.limit": self._ClockInit,
-                                        "clock.increment": self._ClockInc,
-                                        "nbRounds": self._TotalRounds,
-                                        "startsAt": self._StartTime,
-                                        "roundInterval": 99999999,
-                                        "variant": self._Variant,
-                                        "description": self._Description,
-                                        "rated": ("true" if self._Rated else "false"),
-                                        "chatFor": self._ChatFor})
-        time.sleep(3)
-        print(Response)
-        print(Response.json())
+        # Create Lichess Swiss tournament with error handling
+        RequestEndpoint = f"https://lichess.org/api/swiss/new/{self._TeamId}"
+        RequestData = dict()
+        RequestData["name"]             = self._Title
+        RequestData["clock.limit"]      = self._ClockInit
+        RequestData["clock.increment"]  = self._ClockInc
+        RequestData["nbRounds"]         = self._TotalRounds
+        RequestData["startsAt"]         = self._StartTime
+        RequestData["roundInterval"]    = 99999999
+        RequestData["variant"]          = self._Variant
+        RequestData["description"]      = self._Description
+        RequestData["rated"]            = ("true" if self._Rated else "false")
+        RequestData["chatFor"]          = self._ChatFor
+        Response = self._RunPostRequest(RequestEndpoint, RequestData, False)
 
-        # Parse response as JSON
+        # At this point we know the request succeeded, so we can continue
+        self.tprint("Tournament creation succeeded!")
         JResponse = Response.json()
+        self.tprint(Response)
 
         # Store some data in the object
         self._SwissId = JResponse["id"]
@@ -603,15 +695,17 @@ class KnockOut:
 
         # Update the tournament description
         self._Description = self._Description + f"\n\nBracket: https://raw.githubusercontent.com/{self._GitHubUserName}/{self._GitHubRepoName}/main/png/{self._SwissId}.png"
-        #self.tprint(self._Description)
-        Response = requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/edit",
-                                headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                                data = {"clock.limit": self._ClockInit,
-                                        "clock.increment": self._ClockInc,
-                                        "nbRounds": self._TotalRounds,
-                                        "description": self._Description})
-        time.sleep(3)
 
+        # Attempt to push update to server - at most 5 attempts
+        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+        RequestData = dict()
+        RequestData["clock.limit"]      = self._ClockInit
+        RequestData["clock.increment"]  = self._ClockInc
+        RequestData["nbRounds"]         = self._TotalRounds
+        RequestData["description"]      = self._Description
+        Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
+
+        # At this point we know that the update also succeeded
         self.tprint(f"Finished creating a new Lichess swiss tournament!")
         self.tprint(f"Tournament available at {self._SwissUrl}.")
 
@@ -625,13 +719,15 @@ class KnockOut:
 
         # Set list of allowed participants in API to current list of participants
         self._AllowedPlayers = "\n".join(self._Participants.keys())
-        Response = requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/edit",
-                                headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                                data = {"clock.limit": self._ClockInit,
-                                        "clock.increment": self._ClockInc,
-                                        "nbRounds": self._TotalRounds,
-                                        "conditions.allowList": self._AllowedPlayers})
-        time.sleep(3)
+
+        # Prepare proper post request
+        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+        RequestData = dict()
+        RequestData["clock.limit"]          = self._ClockInit
+        RequestData["clock.increment"]      = self._ClockInc
+        RequestData["nbRounds"]             = self._TotalRounds
+        RequestData["conditions.allowList"] = self._AllowedPlayers
+        Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Message players who were left out
         for UserName in self._UnconfirmedParticipants:
@@ -675,8 +771,9 @@ class KnockOut:
 
             # Stream Lichess list of participants via API and store in temporary variable
             self._UnconfirmedParticipants = dict()
-            Lines = requests.get(f"https://lichess.org/api/swiss/{self._SwissId}/results",
-                                 headers = {"Authorization": f"Bearer {self._LichessToken}"}).iter_lines()
+            RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/results"
+            Response = self._RunGetRequest(RequestEndpoint, True)
+            Lines = Response.iter_lines()
             for Line in Lines:
                 JUser = json.loads(Line.decode("utf-8"))
                 self._UnconfirmedParticipants[JUser["username"].lower()] = JUser
@@ -741,9 +838,7 @@ class KnockOut:
 
         # If not enough participants, abort everything
         if len(self._Participants) < self._MinParticipants:
-            r = requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/terminate",
-                  headers = {"Authorization": f"Bearer {self._LichessToken}"})
-            self.tprint("Cancelled the tournament")
+            self._KillTournament()
             sys.exit()
 
         else:
@@ -769,14 +864,14 @@ class KnockOut:
         TimeLeft = self._StartTime - 1000 * round(time.time())
         if TimeLeft > 15000:
             self._StartTime = 1000 * round(time.time()) + 15000
-            Response = requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/edit",
-                                headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                                data = {"clock.limit": self._ClockInit,
-                                        "clock.increment": self._ClockInc,
-                                        "nbRounds": self._TotalRounds,
-                                        "conditions.allowList": self._AllowedPlayers,
-                                        "startsAt": self._StartTime})
-            time.sleep(1)
+            ResponseEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+            ResponseData = dict()
+            ResponseData["clock.limit"]             = self._ClockInit
+            ResponseData["clock.increment"]         = self._ClockInc
+            ResponseData["nbRounds"]                = self._TotalRounds
+            ResponseData["conditions.allowList"]    = self._AllowedPlayers
+            ResponseData["startsAt"]                = self._StartTime
+            Response = self._RunPostRequest(ResponseEndpoint, ResponseData, True)
 
         self.tprint("Finished waiting to start!")
 
@@ -803,13 +898,13 @@ class KnockOut:
             self.tprint("Updating number of rounds on Lichess...")
             self._MatchRounds = ActualMatchRounds
             self._TotalRounds = self._MatchRounds * self._GamesPerMatch
-            Response = requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/edit",
-                                     headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                                     data = {"clock.limit": self._ClockInit,
-                                             "clock.increment": self._ClockInc,
-                                             "nbRounds": self._TotalRounds,
-                                             "conditions.allowList": self._AllowedPlayers})
-            time.sleep(3)
+            ResponseEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+            ResponseData = dict()
+            ResponseData["clock.limit"]             = self._ClockInit
+            ResponseData["clock.increment"]         = self._ClockInc
+            ResponseData["nbRounds"]                = self._TotalRounds
+            ResponseData["conditions.allowList"]    = self._AllowedPlayers
+            self._RunPostRequest(ResponseEndpoint, ResponseData, True)
             self.tprint("Finished updating API!")
 
         # Make bracket and save locally
@@ -915,44 +1010,45 @@ class KnockOut:
         # Push the manual pairings to the API
         self._CurPairings = "\n".join(PairingList)
         self.tprint("Pushing pairings to API...")
-        r = requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/edit",
-                          headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                          data = {"clock.limit": self._ClockInit,
-                                  "clock.increment": self._ClockInc,
-                                  "nbRounds": self._TotalRounds,
-                                  "conditions.allowList": self._AllowedPlayers,
-                                  "manualPairings": self._CurPairings})
-        time.sleep(3)
+        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+        RequestData = dict()
+        RequestData["clock.limit"]          = self._ClockInit
+        RequestData["clock.increment"]      = self._ClockInc
+        RequestData["nbRounds"]             = self._TotalRounds
+        RequestData["conditions.allowList"] = self._AllowedPlayers
+        RequestData["manualPairings"]       = self._CurPairings
+        Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Update game start time to 15 seconds from now
         NewRoundStartTime = 1000 * round(time.time()) + 15000
         if self.GetRound() == 0:
             # Tournament start, Lichess API endpoint .../edit
-            requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/edit",
-                          headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                          data = {"clock.limit": self._ClockInit,
-                                  "clock.increment": self._ClockInc,
-                                  "nbRounds": self._TotalRounds,
-                                  "conditions.allowList": self._AllowedPlayers,
-                                  "startsAt": NewRoundStartTime})
-            time.sleep(1)
+            RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+            RequestData = dict()
+            RequestData["clock.limit"]          = self._ClockInit
+            RequestData["clock.increment"]      = self._ClockInc
+            RequestData["nbRounds"]             = self._TotalRounds
+            RequestData["conditions.allowList"] = self._AllowedPlayers
+            RequestData["manualPairings"]       = self._CurPairings
+            RequestData["startsAt"]             = NewRoundStartTime
+            Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
         else:
             # New round start, Lichess API endpoint .../schedule-next-round
-            requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/schedule-next-round",
-                          headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                          data = {"date": NewRoundStartTime})
-            time.sleep(1)
+            RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/schedule-next-round"
+            RequestData = dict()
+            RequestData["data"]                 = NewRoundStartTime
+            Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Push the manual pairings to the API again to make sure
         self.tprint("Pushing pairings to API again...")
-        r = requests.post(f"https://lichess.org/api/swiss/{self._SwissId}/edit",
-                          headers = {"Authorization": f"Bearer {self._LichessToken}"},
-                          data = {"clock.limit": self._ClockInit,
-                                  "clock.increment": self._ClockInc,
-                                  "nbRounds": self._TotalRounds,
-                                  "conditions.allowList": self._AllowedPlayers,
-                                  "manualPairings": self._CurPairings})
-        time.sleep(3)
+        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+        RequestData = dict()
+        RequestData["clock.limit"]          = self._ClockInit
+        RequestData["clock.increment"]      = self._ClockInc
+        RequestData["nbRounds"]             = self._TotalRounds
+        RequestData["conditions.allowList"] = self._AllowedPlayers
+        RequestData["manualPairings"]       = self._CurPairings
+        Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Update the bracket
         self.tprint(f"Updating the bracket...")
@@ -974,8 +1070,8 @@ class KnockOut:
 
         while True:
             # Get Lichess response how many games are running
-            Response = requests.get(f"https://lichess.org/api/swiss/{self._SwissId}",
-                             headers = {"Authorization": f"Bearer {self._LichessToken}"})
+            RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}"
+            Response = self._RunGetRequest(RequestEndpoint, True)
             JResponse = Response.json()
 
             if (JResponse["round"] == self.GetRound() + 1) and (JResponse["nbOngoing"] == 0):
@@ -1001,8 +1097,9 @@ class KnockOut:
 
         # Fetch user scores from Swiss event
         GameScores = dict()
-        Lines = requests.get(f"https://lichess.org/api/swiss/{self._SwissId}/results",
-                        headers = {"Authorization": f"Bearer {self._LichessToken}"}).iter_lines()
+        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/results"
+        Response = self._RunGetRequest(RequestEndpoint, True)
+        Lines = Response.iter_lines()
         for Line in Lines:
             JUser = json.loads(Line.decode("utf-8"))
             UserName = JUser["username"].lower()

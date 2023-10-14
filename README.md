@@ -35,6 +35,12 @@ There are two ways to use this tool:
 - Create a single tournament instantly by locally running the script;
 - Run tournaments on a repeating time schedule by running the script from the cloud.
 
+**The latter method has a major drawback which should be carefully considered when choosing this option.** GitHub Actions has a limit of 6 hours on the time it lets any action run. Since the script needs to be active from the moment a tournament is created until the moment the tournament finishes, this for instance rules out:
+   - Making a tournament more than 6 hours before the start of the tournament;
+   - Making a tournament 3 hours before the start of a tournament, if the tournament is expected to run more than 3 hours;
+   - Making a tournament in the cloud at all, if the tournament is expected to run more than 6 hours.
+It would be fine to run the script on a schedule to open the tournament for registration 1 hour before the tournament starts, and running a 1+0 knock-out tournament with 1 game per match (which means the tournament will likely not be more than 7-8 rounds, which should be done in 1 hour). For larger and longer events, say with 200 participants and matches consisting of 5 games of 10+0, GitHub will kill the script before the end of the tournament, thereby ruining the tournament.
+
 Both methods of using this script should be fairly straightforward to use, if you follow the steps outlined in this README. If you get stuck getting the tool to work, feel free to contact me for help.
 
 ## Installation (short version)
