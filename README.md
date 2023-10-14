@@ -153,21 +153,22 @@ Below a short list of things that would be nice to add in the future.
 - Functionality
   - [x] Make a tool to run knock-out events on Lichess via manual pairings.
   - [x] Automate all aspects of the tournament organization.
-  - [ ] Make starting the tournament early (when `MaxParticipants` is reached) optional, rather than mandatory.
+  - [ ] Make starting the tournament early (when `MaxParticipants` is reached) optional.
   - [ ] Allow the organizer to specify their own chosen player seeding in the input.
   - [ ] Allow the organizer to specify which users are allowed to join from the start.
   - [ ] Implement different tiebreak options that people may want to use.
-  - [ ] Terminate matches early if the winner is already decided (for >=2 games per match) and update the bracket accordingly.
-  - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify to the next round, and it stops after 8 players are left (and 8 players are winners).
-  - [ ] Make the tournament description modifiable.
+  - [ ] Terminate matches early if the winner is already decided (for >=2 games per match).
+  - [ ] Update brackets to show winners if matches are decided early.
+  - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify as winners(?)
     - This can technically already be achieved by hosting 8 separate tournaments.
+  - [ ] Make the tournament description modifiable.
   - [ ] Make double-elimination brackets an option(?).
 - Bracket visualization
   - [x] Automatically generate visual brackets, upload them to GitHub, and link them in the tournament description.
-  - [ ] Find a better hosting service than GitHub for uploading brackets(?) as GitHub file refresh rates are very poor.
+  - [ ] Find a hosting service for uploading brackets with better refresh rates(?)
   - [ ] Visualize BYEs in a cleaner way.
   - [ ] Make shorter URLs for the brackets, via e.g. https://bracket.thijs.com/qWeRtY12.png.
-    - That would only work for myself, as the forwarding depends on where the file is being hosted, or it would require an additional API for my domain.
+    - That would only work for myself, as the forwarding depends on where the file is being hosted.
 - Cloud hosting
   - [x] Integrate the functionality with GitHub Actions.
   - [x] Make it possible for others to clone the repository and host their own scheduled events.
@@ -179,5 +180,8 @@ Below a short list of things that would be nice to add in the future.
   - [ ] Clean up parts of the code with more logical function names.
   - [ ] Remove old code that is no longer relevant.
   - [x] Give more feedback on errors, and do not just crash when API's fail to respond properly.
-  - [x] Make the parameters of main.py named, and include a help, to help the user understand how to use the script and what is missing if they just call main.py.
-  - [x] Add "try .. except .."-constructs to not immediately crash when Lichess API occasionally fails to return proper answers.
+  - [x] Make the parameters of main.py named, and include a help and descriptions.
+  - [x] Add "try .. except .."-constructs to not immediately crash when Lichess API occasionally fails.
+- Issues
+  - [x] Fix issue of players withdrawing and the script crashing.
+  - [x] Fix issue of script not sending pairings in time for round 1.
