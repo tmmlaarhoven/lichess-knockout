@@ -2,7 +2,7 @@ name: Hourly HyperBullet
 on:
   schedule:
     # Below is the schedule, in cron format
-    - cron:  '30 * * * *'
+    - cron:  '0 2-23/4 * * *'
 permissions:
   contents: write
 jobs:
