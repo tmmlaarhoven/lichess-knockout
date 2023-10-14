@@ -288,7 +288,7 @@ class KnockOut:
             sys.exit()
 
         # Return response if everything worked successfully
-        self.tprint("Lichess API POST-request succeeded! Continuing in 3 seconds...")
+        self.tprint("Lichess API POST-request succeeded! Continuing in 2 seconds...")
         time.sleep(2)
         return Response
 
