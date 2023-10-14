@@ -111,7 +111,7 @@ class KnockOut:
         # - Value 1 gives top player in bracket white first
         self._TopGetsWhite = random.randrange(0, 2)
 
-        self._Description = f"Event starts at {self._MaxParticipants} players. "
+        self._Description = f"Event starts at {self._MaxParticipants} players. Registration closes 30 seconds before start. "
         self._Description = self._Description + f"Each match consists of {self._GamesPerMatch} game(s). "
         if self._TieBreak == "color":
             self._Description = self._Description + "In case of a tie, the player with more black games in the match advances. "
@@ -242,8 +242,8 @@ class KnockOut:
                 break
             except:
                 self.tprint(f"Lichess API GET-request at {RequestEndpoint} failed!")
-                self.tprint(f"Attempt {i+1}/5. {'Trying again in 3 seconds...' if i < 4 else ''}")
-                time.sleep(3)
+                self.tprint(f"Attempt {i+1}/5. {'Trying again in 2 seconds...' if i < 4 else ''}")
+                time.sleep(2)
 
         # Exit if we did not succeed creating a tournament
         if not RequestSuccess:
@@ -254,8 +254,8 @@ class KnockOut:
             sys.exit()
 
         # Return response if everything worked successfully
-        self.tprint("Lichess API GET-request succeeded! Continuing in 3 seconds...")
-        time.sleep(3)
+        self.tprint("Lichess API GET-request succeeded! Continuing in 2 seconds...")
+        time.sleep(2)
         return Response
 
 
@@ -276,8 +276,8 @@ class KnockOut:
                 break
             except:
                 self.tprint(f"Lichess API POST-request at {RequestEndpoint} failed!")
-                self.tprint(f"Attempt {i+1}/5. {'Trying again in 3 seconds...' if i < 4 else ''}")
-                time.sleep(3)
+                self.tprint(f"Attempt {i+1}/5. {'Trying again in 2 seconds...' if i < 4 else ''}")
+                time.sleep(2)
 
         # Exit if we did not succeed creating a tournament
         if not RequestSuccess:
@@ -289,7 +289,7 @@ class KnockOut:
 
         # Return response if everything worked successfully
         self.tprint("Lichess API POST-request succeeded! Continuing in 3 seconds...")
-        time.sleep(3)
+        time.sleep(2)
         return Response
 
 
@@ -815,17 +815,17 @@ class KnockOut:
             # Compute percentage of open spots left to register
             SpotsLeft = round(100 * (self._MaxParticipants - len(self._Participants)) / self._MaxParticipants)
 
-            # Less than 15 seconds left: close participants, and head for start
-            if TimeLeft < 15000:
+            # Less than 30 seconds left: close participants, and head for start
+            if TimeLeft < 30000:
                 ReadyToStart = True
                 break
 
             self.PrintParticipants()
 
-            # Less than a minute left or less than 30% spots left: make API queries every 5 seconds
+            # Less than a minute left or less than 30% spots left: make API queries every 3 seconds
             if TimeLeft < 60000 or SpotsLeft < 30:
                 self.tprint(f"Close to starting ({len(self._Participants)}/{self._MaxParticipants}), so sleeping for 5 seconds...")
-                time.sleep(5)
+                time.sleep(3)
             # Otherwise: make API queries every 10 seconds
             else:
                 self.tprint(f"Not yet starting ({len(self._Participants)}/{self._MaxParticipants}), so sleeping for 10 seconds...")
@@ -857,10 +857,10 @@ class KnockOut:
 
         self.PrintParticipants()
 
-        # Reduce waiting time to start event
+        # Reduce waiting time to start event in at most 30 seconds
         TimeLeft = self._StartTime - 1000 * round(time.time())
-        if TimeLeft > 15000:
-            self._StartTime = 1000 * round(time.time()) + 15000
+        if TimeLeft > 30000:
+            self._StartTime = 1000 * round(time.time()) + 30000
             ResponseEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
             ResponseData = dict()
             ResponseData["clock.limit"]             = self._ClockInit
