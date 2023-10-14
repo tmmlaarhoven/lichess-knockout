@@ -174,11 +174,10 @@ Below a short list of things that would be nice to add in the future.
 - Documentation and usability
   - [x] Write a README with an extensive manual how to use this script.
   - [ ] Turn this into a package on [pypi.org](https://pypi.org) for each use.
+  - [ ] Clarify that the start time is a multiple of 10 minutes.
 - Code cleanup
   - [ ] Clean up parts of the code with more logical function names.
   - [ ] Remove old code that is no longer relevant.
-- Issues
-  - [ ] Clarify the start time is a multiple of 10 minutes.
-  - [x] Give more feedback on errors.
-  - [ ] Make the parameters of main.py named, and include a help, to help the user understand how to use the script and what is missing if they just call main.py.
+  - [x] Give more feedback on errors, and do not just crash when API's fail to respond properly.
+  - [x] Make the parameters of main.py named, and include a help, to help the user understand how to use the script and what is missing if they just call main.py.
   - [x] Add "try .. except .."-constructs to not immediately crash when Lichess API occasionally fails to return proper answers.
