@@ -52,12 +52,12 @@ Below are installation instructions which apply both for running the script loca
 4. Configure the GitHub and Lichess settings in `config.ini`.
 5. *(optional)* Configure the other settings in `config.ini` as desired.
 6. Depending on whether you want to create a single tournament locally, or create a schedule of tournaments in the cloud, follow one of these steps:
-  - Creating a single tournament locally:
-    - Download your copy of the repository, run `python main.py -c config.ini -l <LICHESSTOKEN> -g <GITHUBTOKEN>`, and keep the script running until the event is over.
-  - Creating a schedule of tournaments in the cloud:
-    - Store the tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
-    - Modify the file `.github/workflows/runner.yml` to adjust the time schedule accordingly (see more details below).
-    - Simply wait until GitHub Actions starts running and starts creating/hosting events.
+   1. Creating a single tournament locally:
+       - Download your copy of the repository, run `python main.py -c config.ini -l <LICHESSTOKEN> -g <GITHUBTOKEN>`, and keep the script running until the event is over.
+   2. Creating a schedule of tournaments in the cloud:
+       - Store the tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
+       - Modify the file `.github/workflows/runner.yml` to adjust the time schedule accordingly (see more details below).
+       - Simply wait until GitHub Actions starts running and starts creating/hosting events.
 
 ## Installation (long version)
 
@@ -82,24 +82,24 @@ Below are installation instructions which apply both for running the script loca
 5. *(optional)* Configure the other settings in `config.ini` as desired.
    - In the same file `config.ini`, other parameters under [Options] can be modified to change various tournament settings.
 6. Depending on whether you want to create a single tournament locally, or create a schedule of tournaments in the cloud, follow one of these steps:
-   - Creating a single tournament locally:
-     - Download your copy of the repository to your computer.
-     - Navigate to the base folder containing the file `main.py`.
-     - Open command line in this folder.
-     - Make sure python is installed on your computer; if not, you can install it from [Python.org](https://www.python.org/).
-     - Run the command `python main.py -c config.ini -l <LICHESSTOKEN> -g <GITHUBTOKEN>` where you replace `<LICHESSTOKEN>` and `<GITHUBTOKEN>` with your tokens `lip_...` and `github_...`.
-     - The output in the command line should guide you through what it is doing, and should soon show that it has successfully created the event.
-     - Keep the script running in the background until the tournament is over.
-   - Creating a schedule of tournaments in the cloud:
-     - Store the earlier tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
-       - NOTE: These secrets are only used for running the cloud scheduler; when running the script locally, this step can be skipped.
-       - One way to go there is to navigate directly to `https://github.com/{yourgithubname}/{yourclonedreponame}/settings/secrets/actions`.
-       - Alternatively, navigate to your newly cloned repository on GitHub, choose "Settings" in the top menu, and choose "Secrets and variables" - "Actions" in the left menu.
-       - When you reach the right page, make two secrets for the Lichess and GitHub tokens.
-         - Click "New repository secret"; use name `GITHUBTOKEN`; paste the GitHub token starting `github_...`; and click "Add secret".
-         - Click "New repository secret"; use name `LICHESSTOKEN`; paste the Lichess token starting `lip_...`; and click "Add secret".
-     - Modify the file `.github/workflows/runner.yml` to adjust the time schedule accordingly (see more details below).
-     - Simply wait until GitHub Actions starts running and starts creating/hosting events.
+    1. Creating a single tournament locally:
+       - Download your copy of the repository to your computer.
+       - Navigate to the base folder containing the file `main.py`.
+       - Open command line in this folder.
+       - Make sure python is installed on your computer; if not, you can install it from [Python.org](https://www.python.org/).
+       - Run the command `python main.py -c config.ini -l <LICHESSTOKEN> -g <GITHUBTOKEN>` where you replace `<LICHESSTOKEN>` and `<GITHUBTOKEN>` with your tokens `lip_...` and `github_...`.
+       - The output in the command line should guide you through what it is doing, and should soon show that it has successfully created the event.
+       - Keep the script running in the background until the tournament is over.
+    2. Creating a schedule of tournaments in the cloud:
+       - Store the earlier tokens as secrets `GITHUBTOKEN` and `LICHESSTOKEN` in the GitHub Actions of the repository.
+          - NOTE: These secrets are only used for running the cloud scheduler; when running the script locally, this step can be skipped.
+          - One way to go there is to navigate directly to `https://github.com/{yourgithubname}/{yourclonedreponame}/settings/secrets/actions`.
+          - Alternatively, navigate to your newly cloned repository on GitHub, choose "Settings" in the top menu, and choose "Secrets and variables" - "Actions" in the left menu.
+          - When you reach the right page, make two secrets for the Lichess and GitHub tokens.
+             - Click "New repository secret"; use name `GITHUBTOKEN`; paste the token starting `github_...`; and click "Add secret".
+             - Click "New repository secret"; use name `LICHESSTOKEN`; paste the token starting `lip_...`; and click "Add secret".
+        - Modify the file `.github/workflows/runner.yml` to adjust the time schedule accordingly (see more details below).
+        - Simply wait until GitHub Actions starts running and starts creating/hosting events.
 
 ## Changing the tournament parameters
 
