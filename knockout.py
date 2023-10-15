@@ -63,7 +63,7 @@ class KnockOut:
         """
         # Load configuration variables
         self._ConfigFile        = ConfigFile
-        Config = configparser.ConfigParser()
+        Config = configparser.ConfigParser(inline_comment_prefixes = ";")
         Config.read(self._ConfigFile)
         self._GitHubUserName    = Config["GitHub"]["Username"].strip()
         self._GitHubRepoName    = Config["GitHub"]["Repository"].strip()
