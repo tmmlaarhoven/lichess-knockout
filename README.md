@@ -182,7 +182,7 @@ Below a short list of things that would be nice to add in the future.
     - That would only work for myself, as the forwarding depends on where the file is being hosted.
 - Documentation and usability
   - [x] Write a README with an extensive manual how to use this script.
-  - [ ] Turn this into a package on [pypi.org](https://pypi.org) for each use.
+  - [ ] Turn this into a package on [pypi.org](https://pypi.org) for easy use.
   - [ ] Clarify that the start time is a multiple of 10 minutes.
 - Code cleanup
   - [x] Clean up parts of the code with more logical function names.
