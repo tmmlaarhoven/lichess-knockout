@@ -154,7 +154,7 @@ The latter drawback of inconsistent rankings can potentially be overcome if Lich
 ## TODO-list
 
 Below a short list of things that would be nice to add in the future.
-- Functionality
+- Basic functionality
   - [x] Make a tool to run knock-out events on Lichess via manual pairings.
   - [x] Automate all aspects of the tournament organization.
   - [ ] Make starting the tournament early (when `MaxParticipants` is reached) optional.
@@ -162,30 +162,34 @@ Below a short list of things that would be nice to add in the future.
   - [ ] Allow the organizer to specify which users are allowed to join from the start.
   - [ ] Implement different tiebreak options that people may want to use.
   - [ ] Terminate matches early if the winner is already decided (for >=2 games per match).
-  - [ ] Update brackets to show winners if matches are decided early.
   - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify as winners(?)
-    - This can technically already be achieved by hosting 8 separate tournaments.
   - [ ] Make the tournament description modifiable.
   - [ ] Make double-elimination brackets an option(?).
-- Bracket visualization
-  - [x] Automatically generate visual brackets, upload them to GitHub, and link them in the tournament description.
-  - [ ] Find a hosting service for uploading brackets with better refresh rates(?)
-  - [ ] Visualize BYEs in a cleaner way.
-  - [ ] Make shorter URLs for the brackets, via e.g. https://bracket.thijs.com/qWeRtY12.png.
-    - That would only work for myself, as the forwarding depends on where the file is being hosted.
+  - [ ] Test the functionality with a larger number of participants.
 - Cloud hosting
   - [x] Integrate the functionality with GitHub Actions.
   - [x] Make it possible for others to clone the repository and host their own scheduled events.
+  - [ ] Find a hosting service for uploading brackets with better refresh rates(?)
+- Bracket visualization
+  - [x] Automatically generate visual brackets.
+  - [x] Automatically upload the brackets to GitHub
+  - [x] Add links in the tournament description to the brackets.
+  - [x] Add trophies to the visualization for the winner and runner-up.
+  - [ ] Update brackets to show winners if matches are decided early.
+  - [ ] Visualize BYEs in a nicer way.
+  - [ ] Make shorter URLs for the brackets, via e.g. https://bracket.thijs.com/qWeRtY12.png.
+    - That would only work for myself, as the forwarding depends on where the file is being hosted.
 - Documentation and usability
   - [x] Write a README with an extensive manual how to use this script.
   - [ ] Turn this into a package on [pypi.org](https://pypi.org) for each use.
   - [ ] Clarify that the start time is a multiple of 10 minutes.
 - Code cleanup
-  - [ ] Clean up parts of the code with more logical function names.
-  - [ ] Remove old code that is no longer relevant.
+  - [x] Clean up parts of the code with more logical function names.
+  - [x] Remove old code that is no longer relevant.
   - [x] Give more feedback on errors, and do not just crash when API's fail to respond properly.
   - [x] Make the parameters of main.py named, and include a help and descriptions.
   - [x] Add "try .. except .."-constructs to not immediately crash when Lichess API occasionally fails.
 - Issues
   - [x] Fix issue of players withdrawing and the script crashing.
   - [x] Fix issue of script not sending pairings in time for round 1.
+  - [ ] Fix issue of endpoint `/schedule-next-round` with fixed wait times between rounds.
