@@ -158,14 +158,15 @@ Below a short list of things that would be nice to add in the future.
   - [x] Make a tool to run knock-out events on Lichess via manual pairings.
   - [x] Automate all aspects of the tournament organization.
   - [ ] Make starting the tournament early (when `MaxParticipants` is reached) optional.
-  - [ ] Allow the organizer to specify their own chosen player seeding in the input.
-  - [ ] Allow the organizer to specify which users are allowed to join from the start.
-  - [ ] Implement different tiebreak options that people may want to use.
-  - [ ] Terminate matches early if the winner is already decided (for >=2 games per match).
-  - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify as winners(?)
+  - [ ] Allow users to specify their own chosen player seeding as input.
+  - [ ] Allow users to specify which users are allowed to join from the start.
   - [ ] Make the tournament description modifiable.
-  - [ ] Make double-elimination brackets an option(?).
+  - [ ] Terminate matches early if the winner is already decided (for >=2 games per match).
   - [ ] Test the functionality with a larger number of participants.
+- Advanced functionality
+  - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify as winners(?)
+  - [ ] Implement different tiebreak options that people may want to use.
+  - [ ] Make double-elimination brackets an option(?).
 - Cloud hosting
   - [x] Integrate the functionality with GitHub Actions.
   - [x] Make it possible for others to clone the repository and host their own scheduled events.
