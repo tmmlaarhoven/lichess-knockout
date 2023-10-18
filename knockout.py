@@ -34,6 +34,7 @@ If the missing functionality related to swiss events
 gets added, the script can be adapted to only use
 berserk and not needing manual API requests.
 """
+
 import configparser
 import datetime
 import github
@@ -57,13 +58,36 @@ class KnockOut:
     a KO tournament without further human intervention.
     """
 
+    # Class variables, independent of the object instance
+    # Bracket drawing: foreground colors
+    _Bracket_ColorName    = (186/255, 186/255, 186/255)
+    _Bracket_ColorWin     = ( 98/255, 153/255,  36/255)
+    _Bracket_ColorLoss    = (204/255,  51/255,  51/255)
+    _Bracket_ColorGold    = (255/255, 203/255,  55/255)
+    _Bracket_ColorSilver  = (207/255, 194/255, 170/255)
+    _Bracket_ColorDraw    = (123/255, 153/255, 153/255)
+    _Bracket_ColorArrow   = ( 60/255,  60/255,  60/255)
+
+    # Background colors
+    _Bracket_ColorBGAll   = ( 22/255,  21/255,  18/255)
+    _Bracket_ColorBGScore = ( 38/255,  36/255,  33/255)
+    _Bracket_ColorBGName  = ( 58/255,  56/255,  51/255)
+
+    # Delay on API requests
+    _ApiDelay             = 3
+    _ApiAttempts          = 5
+
     def __init__(self, LichessToken, GitHubToken, ConfigFile):
         """
         Initialize a new KO tournament object.
         """
-        # Load configuration variables
+        # Store arguments in object
         self._ConfigFile        = ConfigFile
-        Config = configparser.ConfigParser(inline_comment_prefixes = ";")
+        self._LichessToken      = LichessToken
+        self._GitHubToken       = GitHubToken
+
+        # Load configuration variables
+        Config                  = configparser.ConfigParser(inline_comment_prefixes = ";")
         Config.read(self._ConfigFile)
         self._GitHubUserName    = Config["GitHub"]["Username"].strip()
         self._GitHubRepoName    = Config["GitHub"]["Repository"].strip()
@@ -75,54 +99,42 @@ class KnockOut:
         self._Variant           = Config["Options"]["Variant"].strip()
         self._ClockInit         = int(Config["Options"]["ClockInit"])
         self._ClockInc          = int(Config["Options"]["ClockInc"])
-        self._ChatFor           = int(Config["Options"]["ChatFor"])       # 0: None; 10: Team leaders; 20: Team members; 30 Lichess
+        self._ChatFor           = int(Config["Options"]["ChatFor"])
         self._RandomizeSeeds    = Config["Options"].getboolean("RandomizeSeeds")
         self._Title             = Config["Options"]["EventName"].strip()
         self._MinutesToStart    = int(Config["Options"]["MinutesToStart"])
         self._TieBreak          = Config["Options"]["TieBreak"]
 
-        # Check validity of input data
-        AllowedTitleChars = "abcdefghijklmnopqrstuvwxyz0123456789 ,.-"
-        assert (self._ClockInit in {0, 15, 30, 45, 60, 90, 120, 180, 240, 300,
-                                    360, 420, 480, 600, 900, 1200, 1500, 1800,
-                                    2400, 3000, 3600, 4200, 4800, 5400, 6000,
-                                    6600, 7200, 7800, 8400, 9000, 9600, 10200,
-                                    10800}), "Invalid clock time!"
-        assert (self._ClockInc in range(121)), "Invalid clock increment!"
-        assert (self._ChatFor in {0, 10, 20, 30}), "Invalid ChatFor parameter!"
-        assert (all([x.lower() in AllowedTitleChars for x in self._Title])), "Illegal characters in title!"
-        assert (self._MinutesToStart >= 5), "Cannot start in less than 5 minutes!"
-        assert (self._TieBreak in {"rating", "color"}), "Improper tiebreak specified!"
-        assert ((self._TieBreak != "color") or (self._GamesPerMatch % 2 == 1)), "Deciding winner by color only possible for odd match lengths!"
+        # Check validity of input data, rule out PEBKAC
+        self._ValidateInput()
 
         # Variables which should not be modified
-        self._LichessToken = LichessToken
-        self._GitHubToken = GitHubToken
-        self._SwissId = None
-        self._SwissUrl = None
-        self._Winner = None
-        self._Loser = None
-        self._MatchRounds = math.ceil(math.log2(self._MaxParticipants))
-        self._TotalRounds = self._GamesPerMatch * self._MatchRounds
-        self._TreeSize = -1                         # If e.g. 5 players, it is 8
+        self._SwissId           = None
+        self._SwissUrl          = None
+        self._Winner            = None
+        self._Loser             = None
+        self._MatchRounds       = math.ceil(math.log2(self._MaxParticipants))
+        self._TotalRounds       = self._GamesPerMatch * self._MatchRounds
+        self._TreeSize          = -1                         # If e.g. 5 players, it is 8
 
         # Decide white/black in initial games in each match
         # - Value 0 gives bottom player in bracket white first
         # - Value 1 gives top player in bracket white first
-        self._TopGetsWhite = random.randrange(0, 2)
+        self._TopGetsWhite      = random.randrange(0, 2)
 
-        self._Description = f"Event starts at {self._MaxParticipants} players. Registration closes 30 seconds before start. "
-        self._Description = self._Description + f"Each match consists of {self._GamesPerMatch} game(s). "
+        self._Description       = f"Event starts at {self._MaxParticipants} players. "
+        self._Description      += f"Registration closes 30 seconds before start. "
+        self._Description      += f"Each match consists of {self._GamesPerMatch} game(s). "
         if self._TieBreak == "color":
-            self._Description = self._Description + "In case of a tie, the player with more black games in the match advances. "
+            self._Description  += "In case of a tie, the player with more black games in the match advances. "
         else:
-            self._Description = self._Description + "In case of a tie, the lower-rated player (at the start of the event) advances. "
-        self._Started = False
-        self._UnconfirmedParticipants = dict()      # The players registered on Lichess
-        self._Participants = dict()                 # The players reg. on Lichess, confirmed to play, with scores
-        self._AllowedPlayers = ""
-        self._CurGame = -1
-        self._CurMatch = -1
+            self._Description  += "In case of a tie, the lower-rated player at the start of the event advances. "
+        self._Started           = False
+        self._UnconfirmedParticipants = dict()  # The players registered on Lichess
+        self._Participants      = dict()        # The players registered, confirmed to play, with scores
+        self._AllowedPlayers    = ""
+        self._CurGame           = -1
+        self._CurMatch          = -1
 
         assert (self._TotalRounds >= 3), "Parameters indicate not enough rounds"
 
@@ -131,24 +143,12 @@ class KnockOut:
         # Means:      [A-B,  C-D,  E-F,  G-H]   [A-D,  F-H]   [D-F]
         # Based on tree pairings from trees.py
         # Add * to show a player advances
-        self._Pairings = []
-        self._CurPairings = None        # API string to pass to Lichess
+        self._Pairings          = []
+        self._CurPairings       = None        # API string to pass to Lichess
 
         # Start at specified in configuration, rounded to multiple of 10 minutes
-        self._StartTime = 1000 * round(time.time()) + 60 * 1000 * self._MinutesToStart
-        self._StartTime = 600000 * (self._StartTime // 600000)     # Round to multiple of 10 minutes
-
-        # Bracket drawing: foreground colors
-        self._Bracket_ColorName    = (186/256, 186/256, 186/256)
-        self._Bracket_ColorWin     = ( 98/256, 153/256,  36/256)
-        self._Bracket_ColorLoss    = (204/256,  51/256,  51/256)
-        self._Bracket_ColorDraw    = (123/256, 153/256, 153/256)
-        self._Bracket_ColorArrow   = ( 60/256,  60/256,  60/256)
-
-        # Background colors
-        self._Bracket_ColorBGAll   = ( 22/256,  21/256,  18/256)
-        self._Bracket_ColorBGScore = ( 38/256,  36/256,  33/256)
-        self._Bracket_ColorBGName  = ( 58/256,  56/256,  51/256)
+        self._StartTime         = 1000 * round(time.time()) + 60 * 1000 * self._MinutesToStart
+        self._StartTime         = 600000 * (self._StartTime // 600000)     # Round to multiple of 10 minutes
 
         # Create a bracket image folder, if it does not exist
         if not os.path.exists("png"):
@@ -157,7 +157,7 @@ class KnockOut:
             os.makedirs("logs")
 
         # No file name known yet, so no log yet
-        self._LogFile = None
+        self._LogFile           = None
 
         # Set up a github authentication workflow
         while True:
@@ -168,18 +168,128 @@ class KnockOut:
                 break
             except:
                 self.tprint("Failing to connect to GitHub. Retrying...")
-                time.sleep(3)
+                time.sleep(self._ApiDelay)
 
 
 
     # =======================================================
-    #       EXTERNAL FUNCTIONS
+    #       Validating all user input before start
+    # =======================================================
+
+    def _ValidateInput(self):
+        """
+        Do checks on the user-provided input, to make sure we can get started.
+        """
+
+        # Convenient for checking validity of various strings
+        alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        numeric = "0123456789"
+
+        # GitHub username
+        NameChars = alphabet + numeric + ",.-_"
+        NameLength = 39
+        assert (all([x in NameChars for x in self._GitHubUserName])), "Invalid GitHub username"
+        assert (len(self._GitHubUserName) <= NameLength), "GitHub username too long"
+        assert (len(self._GitHubUserName) >= 1), "GitHub username too short"
+
+        # GitHub repository
+        RepoChars = alphabet + numeric + ".-_"
+        assert (all([(x in RepoChars) for x in self._GitHubRepoName])), "Invalid GitHub repository"
+        RepoEndpoint = f"https://api.github.com/repos/{self._GitHubUserName}/{self._GitHubRepoName}"
+        Response = self._RunGetRequest(RepoEndpoint, False, False)
+        JResponse = Response.json()
+        assert ("id" in JResponse), "GitHub repository not found"
+
+        # Lichess user token
+        TokenEndpoint = "https://lichess.org/api/token/test"
+        Response = self._RunPostRequest(TokenEndpoint, self._LichessToken)
+        JResponse = Response.json()
+        assert (self._LichessToken in JResponse), "Invalid Lichess token"
+        assert ("tournament:write" in JResponse[self._LichessToken]["scopes"]), "Incorrect Lichess token scopes"
+        self._LichessUsername = JResponse[self._LichessToken].get("userId")
+
+        # Lichess team name
+        TeamChars = alphabet + numeric + "-"
+        assert (all([x in TeamChars for x in self._TeamId])), "Invalid Lichess team ID"
+        TeamEndpoint = f"https://lichess.org/api/team/{self._TeamId}"
+        Response = self._RunGetRequest(TeamEndpoint, False, True)
+        TeamResponse = Response.json()
+        assert ("id" in TeamResponse), "Lichess team not found"
+        # Cannot check if user is team leader, as it can be hidden
+
+        # Event name
+        EventChars = alphabet + numeric + " ,.-"
+        assert (all([x.lower() in EventChars for x in self._Title])), "Illegal event name"
+        assert ((len(self._Title) in range(2, 31)) or (self._Title == "")), "Event name has improper length"
+
+        # Tiebreak criterium
+        assert (self._TieBreak in {"rating", "color"}), "No proper tiebreak specified"
+        assert ((self._TieBreak != "color") or (self._GamesPerMatch % 2 == 1)), "Deciding winner by color only possible for odd match lengths"
+
+        # Randomizing seeds
+        assert (self._RandomizeSeeds in {True, False}), "RandomizeSeeds not a boolean value"
+
+        # Minutes to start
+        assert (self._MinutesToStart >= 5), "Minutes to start too short (less than 5 minutes)"
+        assert (self._MinutesToStart <= 60 * 24 * 7), "Minutes to start too long (more than a week)"
+
+        # Minimum, maximum participants
+        assert (self._MinParticipants >= 4), "Minimum number of participants too low (must be at least 4)"
+        assert (self._MinParticipants <= self._MaxParticipants), "Minimum number of participants higher than maximum"
+        assert (self._MaxParticipants <= 8192), "Maximum number of participants too high (must be at most 8192)"
+
+        # Games per match
+        assert (self._GamesPerMatch >= 1), "Need at least 1 game per match"
+        assert (self._GamesPerMatch <= 20), "Too many games per match"
+
+        # Rated or not
+        assert (self._Rated in {True, False}), "Rated not a boolean value"
+
+        # Time control
+        AllowedInit = {0, 15, 30, 45, 60, 90, 120, 180, 240, 300, 360, 420, 480, 600,
+                       900, 1200, 1500, 1800, 2400, 3000, 3600, 4200, 4800, 5400, 6000,
+                       6600, 7200, 7800, 8400, 9000, 9600, 10200, 10800}
+        assert (self._ClockInit in AllowedInit), "Invalid initial clock time"
+        assert (self._ClockInc >= 0), "Invalid increment time"
+        assert (self._ClockInc <= 120), "Increment too high (above 1 minute per move)"
+        # Specific restrictions from https://lichess.org/api#tag/Swiss-tournaments/operation/apiSwissNew
+        assert (self._ClockInit + self._ClockInc > 0), "Cannot play 0+0"
+        assert (((self._ClockInit, self._ClockInc) not in {(0, 1), (15, 0)})
+                or (self._Variant == "standard")
+                or (not self._Rated)), "Degenerate variant time controls cannot be rated"
+
+        # Chess variant
+        AllVariants = {"standard", "chess960", "crazyhouse", "antichess", "atomic", "horde",
+                       "kingOfTheHill", "racingKings", "threeCheck", "fromPosition"}
+        assert (self._Variant in AllVariants), "Improper chess variant specified"
+
+        # Chat settings
+        assert (self._ChatFor in {0, 10, 20, 30}), "Improper ChatFor parameter (must be 0/10/20/30)"
+
+
+
+    # =======================================================
+    #       Internal calculations
+    # =======================================================
+
+    def _GetRound(self) -> int:
+        return self._CurMatch * self._GamesPerMatch + self._CurGame
+
+
+
+    def _BracketFile(self) -> str:
+        return f"png{os.sep}{self._SwissId}.png"
+
+
+
+    # =======================================================
+    #       Logging functions
     # =======================================================
 
     def tprint(self, s):
         ToPrint = f"{datetime.datetime.now().strftime('%H:%M:%S')}: {s}"
         print(ToPrint)
-        if self._LogFile is not None:
+        if hasattr(self, "_LogFile") and (self._LogFile is not None):
             self._LogFile.write(ToPrint + "\n")
 
 
@@ -217,54 +327,58 @@ class KnockOut:
 
 
 
-    def GetRound(self) -> int:
-        return self._CurMatch * self._GamesPerMatch + self._CurGame
-
-
-
     # =======================================================
-    #       REQUEST HANDLING
+    #       API request handling
     # =======================================================
 
-    def _RunGetRequest(self, RequestEndpoint: str, KillOnFail: bool = False):
+    def _RunGetRequest(self, RequestEndpoint: str, KillOnFail: bool, Authorize: bool = True):
         """
-        Run a Lichess API request, and handle potential errors.
+        Run an API request, and handle potential errors.
         If the flag KillOnFail is true, the tournament will be aborted
         if no proper response is obtained from the server.
         """
+        self.tprint(f"GET-request to {RequestEndpoint}.")
+
+        # Try to run the request a number of times
         RequestSuccess = False
-        for i in range(5):
+        for i in range(self._ApiAttempts):
             try:
-                Response = requests.get(RequestEndpoint,
+                if Authorize:
+                    Response = requests.get(RequestEndpoint,
                                 headers = {"Authorization": f"Bearer {self._LichessToken}"})
+                else:
+                    Response = requests.get(RequestEndpoint)
                 Response.raise_for_status()
                 RequestSuccess = True
                 break
             except:
-                self.tprint(f"Lichess API GET-request at {RequestEndpoint} failed!")
-                self.tprint(f"Attempt {i+1}/5. {'Trying again in 2 seconds...' if i < 4 else ''}")
-                time.sleep(2)
+                self.tprint(f"GET-request at {RequestEndpoint} failed!")
+                self.tprint(f"Attempt {i+1}/{self._ApiAttempts}. {f'Trying again in {self._ApiDelay} seconds...' if i < self._ApiAttempts - 1 else ''}")
+                time.sleep(self._ApiDelay)
 
         # Exit if we did not succeed creating a tournament
         if not RequestSuccess:
-            self.tprint(f"Unable to process API request!")
+            self.tprint(f"Unable to process GET-request!")
             if KillOnFail:
                 self._KillTournament()
             self.tprint("Goodbye!")
             sys.exit()
 
         # Return response if everything worked successfully
-        self.tprint("Lichess API GET-request succeeded! Continuing in 2 seconds...")
-        time.sleep(2)
+        self.tprint(f"GET-request succeeded! Continuing in {self._ApiDelay} seconds...")
+        time.sleep(self._ApiDelay)
         return Response
 
 
-    def _RunPostRequest(self, RequestEndpoint: str, RequestData: dict, KillOnFail: bool = False):
+    def _RunPostRequest(self, RequestEndpoint: str, RequestData, KillOnFail: bool = False):
         """
-        Run a Lichess API request, and handle potential errors.
+        Run an API request, and handle potential errors.
         If the flag KillOnFail is set to true, the tournament will be aborted
         if no proper response is obtained from the server.
         """
+        self.tprint(f"POST-request to {RequestEndpoint}.")
+
+        # Try to run the request a number of times
         RequestSuccess = False
         for i in range(5):
             try:
@@ -275,21 +389,22 @@ class KnockOut:
                 RequestSuccess = True
                 break
             except:
-                self.tprint(f"Lichess API POST-request at {RequestEndpoint} failed!")
-                self.tprint(f"Attempt {i+1}/5. {'Trying again in 2 seconds...' if i < 4 else ''}")
-                time.sleep(2)
+                self.tprint(f"POST-request at {RequestEndpoint} failed!")
+                self.tprint(Response)
+                self.tprint(f"Attempt {i+1}/{self._ApiAttempts}. {f'Trying again in {self._ApiDelay} seconds...' if i < self._ApiAttempts - 1 else ''}")
+                time.sleep(self._ApiDelay)
 
         # Exit if we did not succeed creating a tournament
         if not RequestSuccess:
-            self.tprint(f"Unable to process API request!")
+            self.tprint(f"Unable to process POST-request!")
             if KillOnFail:
                 self._KillTournament()
             self.tprint("Goodbye!")
             sys.exit()
 
         # Return response if everything worked successfully
-        self.tprint("Lichess API POST-request succeeded! Continuing in 2 seconds...")
-        time.sleep(2)
+        self.tprint(f"POST-request succeeded! Continuing in {self._ApiDelay} seconds...")
+        time.sleep(self._ApiDelay)
         return Response
 
 
@@ -306,7 +421,7 @@ class KnockOut:
 
 
     # =======================================================
-    #       BRACKET VISUALIZATION FUNCTIONS
+    #       Bracket visualization
     # =======================================================
 
     def _Bracket_GetCoordinates(self, r, i):
@@ -548,7 +663,7 @@ class KnockOut:
                     fontweight = "bold",
                     ha = "center",
                     va = "center",
-                    color = (255/255, 203/255, 55/255))
+                    color = self._Bracket_ColorGold)
 
         # Show finals loser with trophy
         im2 = f"trophies/lichess-silver.png"
@@ -567,7 +682,7 @@ class KnockOut:
                     fontweight = "bold",
                     ha = "center",
                     va = "center",
-                    color = (207/255, 194/255, 170/255))
+                    color = self._Bracket_ColorSilver)
 
 
 
@@ -605,7 +720,7 @@ class KnockOut:
         plt.xlim(0, self._Xtotal)
         plt.ylim(0, self._Ytotal)
         self._fig.tight_layout()
-        plt.savefig(f"png{os.sep}{self._SwissId}.png")
+        plt.savefig(self._BracketFile())
 
 
 
@@ -614,7 +729,7 @@ class KnockOut:
         Once the bracket image has been generated, upload it.
         """
         # Load contents to upload
-        with open(f"png{os.sep}{self._SwissId}.png", "rb") as file:
+        with open(self._BracketFile(), "rb") as file:
             content = file.read()
             image_data = bytearray(content)
             image_bytes = bytes(image_data)
@@ -638,10 +753,13 @@ class KnockOut:
 
 
 
-    def _Bracket_MakeBracket(self, New = False):
+    def _Bracket_MakeBracket(self):
         """
         Main routine for drawing a bracket.
         """
+        New = True
+        if os.path.exists(self._BracketFile()):
+            New = False
         self._Bracket_Initialize()
         self._Bracket_DrawEmptyScheme()
         self._Bracket_FillScheme()
@@ -653,14 +771,17 @@ class KnockOut:
 
 
     # =======================================================
-    #       LICHESS FUNCTIONS
+    #       High-level functions
     # =======================================================
 
-    def _LichessCreate(self):
+    def _Create(self):
         """
-        Set up a new Lichess Swiss tournament via the API.
+        Set up a new tournament on Lichess.
         """
+        # Sanity check that we only do this when we should
+        assert (self._SwissId is None), "Non-empty tournament object!"
 
+        # Set up Lichess swiss tournament
         self.tprint("Creating new Lichess Swiss tournament...")
 
         # Create Lichess Swiss tournament with error handling
@@ -708,49 +829,6 @@ class KnockOut:
 
 
 
-    def _LichessStart(self):
-        """
-        Start the tournament on Lichess, and wrap up some final actions.
-        """
-        self.tprint("Starting Lichess tournament...")
-
-        # Set list of allowed participants in API to current list of participants
-        self._AllowedPlayers = "\n".join(self._Participants.keys())
-
-        # Prepare proper post request
-        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
-        RequestData = dict()
-        RequestData["clock.limit"]          = self._ClockInit
-        RequestData["clock.increment"]      = self._ClockInc
-        RequestData["nbRounds"]             = self._TotalRounds
-        RequestData["conditions.allowList"] = self._AllowedPlayers
-        Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
-
-        # Message players who were left out
-        for UserName in self._UnconfirmedParticipants:
-            if UserName not in self._Participants:
-                self.tprint(f"Sorry {UserName}, you were too late!")
-
-        self.tprint("Finished starting Lichess tournament!")
-
-
-
-    # =======================================================
-    #       HIGH-LEVEL FUNCTIONS
-    # =======================================================
-
-    def _Create(self):
-        """
-        Set up a new tournament on Lichess.
-        """
-        # Sanity check that we only do this when we should
-        assert (self._SwissId is None), "Non-empty tournament object!"
-
-        # Set up Lichess swiss tournament
-        self._LichessCreate()
-
-
-
     def _WaitForStart(self):
         """
         Run a loop of listening to the Lichess API to see if we should be starting.
@@ -769,7 +847,7 @@ class KnockOut:
             # Stream Lichess list of participants via API and store in temporary variable
             self._UnconfirmedParticipants = dict()
             RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/results"
-            Response = self._RunGetRequest(RequestEndpoint, True)
+            Response = self._RunGetRequest(RequestEndpoint, True, True)
             Lines = Response.iter_lines()
             for Line in Lines:
                 JUser = json.loads(Line.decode("utf-8"))
@@ -822,10 +900,10 @@ class KnockOut:
 
             self.PrintParticipants()
 
-            # Less than a minute left or less than 30% spots left: make API queries every 3 seconds
+            # Less than a minute left or less than 30% spots left: make API queries every few seconds
             if TimeLeft < 60000 or SpotsLeft < 30:
                 self.tprint(f"Close to starting ({len(self._Participants)}/{self._MaxParticipants}), so sleeping for 5 seconds...")
-                time.sleep(3)
+                time.sleep(self._ApiDelay)
             # Otherwise: make API queries every 10 seconds
             else:
                 self.tprint(f"Not yet starting ({len(self._Participants)}/{self._MaxParticipants}), so sleeping for 10 seconds...")
@@ -881,8 +959,22 @@ class KnockOut:
         """
         self.tprint("Starting tournament...")
 
-        # Finalize starting Lichess event
-        self._LichessStart()
+        # Set list of allowed participants in API to current list of participants
+        self._AllowedPlayers = "\n".join(self._Participants.keys())
+
+        # Prepare proper post request
+        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+        RequestData = dict()
+        RequestData["clock.limit"]          = self._ClockInit
+        RequestData["clock.increment"]      = self._ClockInc
+        RequestData["nbRounds"]             = self._TotalRounds
+        RequestData["conditions.allowList"] = self._AllowedPlayers
+        _ = self._RunPostRequest(RequestEndpoint, RequestData, True)
+
+        # Message players who were left out
+        for UserName in self._UnconfirmedParticipants:
+            if UserName not in self._Participants:
+                self.tprint(f"Sorry {UserName}, you were too late!")
 
         # Update rounds if fewer participants than expected
         ActualMatchRounds = math.ceil(math.log2(len(self._Participants)))
@@ -906,7 +998,7 @@ class KnockOut:
 
         # Make bracket and save locally
         self.tprint("Making an empty bracket...")
-        self._Bracket_MakeBracket(True)
+        self._Bracket_MakeBracket()
 
         # Set flag accordingly
         self._Started = True
@@ -972,7 +1064,7 @@ class KnockOut:
         """
         Start a new (sub)round.
         """
-        self.tprint(f"Starting round {self._CurMatch+1}.{self._CurGame+1} ({self.GetRound()+1})...")
+        self.tprint(f"Starting round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1})...")
 
         # Do sanity check that pairings are ready
         assert (len(self._Pairings[-1]) >= 2), "No games to pair!"
@@ -1018,7 +1110,7 @@ class KnockOut:
 
         # Update game start time to 15 seconds from now
         NewRoundStartTime = 1000 * round(time.time()) + 15000
-        if self.GetRound() == 0:
+        if self._GetRound() == 0:
             # Tournament start, Lichess API endpoint .../edit
             RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
             RequestData = dict()
@@ -1051,7 +1143,7 @@ class KnockOut:
         self.tprint(f"Updating the bracket...")
         self._Bracket_MakeBracket()
 
-        self.tprint(f"Started round {self._CurMatch+1}.{self._CurGame+1} ({self.GetRound()+1})!")
+        self.tprint(f"Started round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1})!")
 
 
 
@@ -1059,7 +1151,7 @@ class KnockOut:
         """
         Listen to API and wait for round to finish.
         """
-        self.tprint(f"Waiting for round {self._CurMatch+1}.{self._CurGame+1} ({self.GetRound()+1}) to finish...")
+        self.tprint(f"Waiting for round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1}) to finish...")
 
         # Get Lichess API endpoint https://lichess.org/api/swiss/{id}
         # Check that "round": 13, and "nbOngoing": 0
@@ -1068,10 +1160,10 @@ class KnockOut:
         while True:
             # Get Lichess response how many games are running
             RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}"
-            Response = self._RunGetRequest(RequestEndpoint, True)
+            Response = self._RunGetRequest(RequestEndpoint, True, True)
             JResponse = Response.json()
 
-            if (JResponse["round"] == self.GetRound() + 1) and (JResponse["nbOngoing"] == 0):
+            if (JResponse["round"] == self._GetRound() + 1) and (JResponse["nbOngoing"] == 0):
                 # Games have all finished
                 break
 
@@ -1082,7 +1174,7 @@ class KnockOut:
             self.tprint("Sleeping (5), waiting for round to finish...")
             time.sleep(5)
 
-        self.tprint(f"Finished waiting for round {self._CurMatch+1}.{self._CurGame+1} ({self.GetRound()+1}) to finish!")
+        self.tprint(f"Finished waiting for round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1}) to finish!")
 
 
 
@@ -1090,12 +1182,12 @@ class KnockOut:
         """
         Finish (sub)round, do post-processing.
         """
-        self.tprint(f"Finishing round {self._CurMatch+1}.{self._CurGame+1} ({self.GetRound()+1})...")
+        self.tprint(f"Finishing round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1})...")
 
         # Fetch user scores from Swiss event
         GameScores = dict()
         RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/results"
-        Response = self._RunGetRequest(RequestEndpoint, True)
+        Response = self._RunGetRequest(RequestEndpoint, True, True)
         Lines = Response.iter_lines()
         for Line in Lines:
             JUser = json.loads(Line.decode("utf-8"))
@@ -1123,7 +1215,7 @@ class KnockOut:
 
         self.PrintMatches()
 
-        self.tprint(f"Round {self._CurMatch+1}.{self._CurGame+1} ({self.GetRound()+1}) finished!")
+        self.tprint(f"Round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1}) finished!")
 
 
 
@@ -1205,6 +1297,10 @@ class KnockOut:
         self.tprint("Finished finalizing the tournament!")
 
 
+
+    # =======================================================
+    #       The main routine
+    # =======================================================
 
     def MainLoop(self):
         """
