@@ -129,12 +129,12 @@ class KnockOut:
         self._TopGetsWhite      = [random.randrange(0, 2) for _ in range(self._MatchRounds)]
         self.tprint(self._TopGetsWhite)
 
-        self._Description       = f"Knock-out tournament for {self._MinParticipants}-{self._MaxParticipants} players. "
-        self._Description      += f"Each match consists of {self._GamesPerMatch} game(s). "
-        self._Description      += f"Registration closes 30 seconds before start. "
+        self._Description       = f"Knock-out tournament for up to {self._MaxParticipants} players. "
+        self._Description      += f"Each match consists of {self._GamesPerMatch} game{'s' if (self._GamesPerMatch > 1) else ''}. "
+        self._Description      += f"Registration closes 30 seconds before the start. "
         if self._TieBreak == "color":
             self._Description  += "In case of a tie, the player with more black games advances. "
-        else:
+        else: # if self._TieBreak == "rating":
             self._Description  += "In case of a tie, the lower-rated player advances. "
         self._Started           = False
         self._UnconfirmedParticipants = dict()  # The players registered on Lichess
@@ -499,7 +499,7 @@ class KnockOut:
         self._Bracket_DisplayScores.append({
             "Color": self._Bracket_ColorDraw,
             "ColorGame": self._Bracket_ColorDraw,
-            "Weight": "normal",
+            "Weight": "bold",
             "WeightGame": "bold"})
         self._Bracket_DisplayScores.append({
             "Color": self._Bracket_ColorWin,
@@ -836,7 +836,7 @@ class KnockOut:
         self._fig.tight_layout()
         plt.savefig(self._BracketFile())
         plt.cla()
-        plt.clf()
+        plt.close("all")
 
 
 

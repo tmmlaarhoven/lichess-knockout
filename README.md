@@ -153,11 +153,11 @@ The latter drawback of inconsistent rankings can potentially be overcome if Lich
 
 ## TODO-list
 
-Below a short list of things that would be nice to add in the future.
+Below a list of things that would be nice to add in the future, or which have been done recently.
 - Basic functionality
   - [x] Make a tool to run knock-out events on Lichess via manual pairings.
   - [x] Automate all aspects of the tournament organization.
-  - [ ] Make starting the tournament early (when `MaxParticipants` is reached) optional.
+  - [x] Make starting the tournament early (when `MaxParticipants` is reached) optional.
   - [ ] Allow users to specify their own chosen player seeding as input.
   - [ ] Allow users to specify which users are allowed to join from the start.
   - [ ] Make the tournament description modifiable.
@@ -165,28 +165,32 @@ Below a short list of things that would be nice to add in the future.
   - [ ] Test the functionality with a larger number of participants.
 - Advanced functionality
   - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify as winners(?)
-  - [ ] Implement different tiebreak options that people may want to use.
+  - [ ] Implement different tiebreak options that people may want to use(?)
   - [ ] Make double-elimination brackets an option(?)
+  - [ ] Make it possible to have later matches (SF, F) consist of more games(?)
+  - [ ] Use even number of games and (in case of tie) randomly decide colors for Armageddon game(?)
+  - [ ] Give one player time odds in Armageddon style(?) -- Likely impossible.
 - Cloud hosting
   - [x] Integrate the functionality with GitHub Actions.
   - [x] Make it possible for others to clone the repository and host their own scheduled events.
+  - [x] Automatically upload updated brackets to GitHub.
   - [ ] Find a hosting service for uploading brackets with better refresh rates(?)
 - Bracket visualization
   - [x] Automatically generate visual brackets.
-  - [x] Automatically upload the brackets to GitHub
+  - [x] Automatically upload updated brackets to GitHub.
   - [x] Add links in the tournament description to the brackets.
   - [x] Add trophies to the visualization for the winner and runner-up.
   - [x] Show round numbers in bracket visualization (1-3 for R1, 4-6 for R2, etc.).
   - [x] Update brackets to show URL to tournament in bottom right corner.
   - [x] Add winner visualization for 4-player tournaments.
   - [x] Improve visualization of winner/loser in bracket with darker/lighter colors.
+  - [x] Visualize who had white/black in each game in the bracket.
+  - [x] Make shorter URLs for the brackets, https://ko.thijs.com/png/qWeRtY12.png. (Only for me.)
   - [ ] Display winners if matches are decided early.
   - [ ] Visualize BYEs in a nicer way.
-  - [ ] Make shorter URLs for the brackets, via e.g. https://ko.thijs.com/png/qWeRtY12.png.
-    - That would only work for myself, as the forwarding depends on where the file is being hosted.
 - Documentation and usability
   - [x] Write a README with an extensive manual how to use this script.
-  - [ ] Turn this into a package on [pypi.org](https://pypi.org) for easy use.
+  - [ ] Turn this into a python package on [pypi.org](https://pypi.org) for easy use.
   - [ ] Clarify that the start time is a multiple of 10 minutes.
 - Code cleanup
   - [x] Clean up parts of the code with more logical function names.
@@ -194,7 +198,9 @@ Below a short list of things that would be nice to add in the future.
   - [x] Give more feedback on errors, and do not just crash when API's fail to respond properly.
   - [x] Make the parameters of main.py named, and include a help and descriptions.
   - [x] Add "try .. except .."-constructs to not immediately crash when Lichess API occasionally fails.
+  - [ ] In the bracket visualization, clean up the function names and ad hoc variables.
 - Issues
   - [x] Fix issue of players withdrawing and the script crashing.
   - [x] Fix issue of script not sending pairings in time for round 1.
+  - [x] Fix issue of not closing figures properly, and having many figures open.
   - [ ] Fix issue of endpoint `/schedule-next-round` with fixed wait times between rounds.
