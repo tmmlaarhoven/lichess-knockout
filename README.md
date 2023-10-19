@@ -166,7 +166,7 @@ Below a short list of things that would be nice to add in the future.
 - Advanced functionality
   - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify as winners(?)
   - [ ] Implement different tiebreak options that people may want to use.
-  - [ ] Make double-elimination brackets an option(?).
+  - [ ] Make double-elimination brackets an option(?)
 - Cloud hosting
   - [x] Integrate the functionality with GitHub Actions.
   - [x] Make it possible for others to clone the repository and host their own scheduled events.
@@ -178,7 +178,10 @@ Below a short list of things that would be nice to add in the future.
   - [x] Add trophies to the visualization for the winner and runner-up.
   - [ ] Update brackets to show winners if matches are decided early.
   - [ ] Visualize BYEs in a nicer way.
-  - [ ] Make shorter URLs for the brackets, via e.g. https://bracket.thijs.com/qWeRtY12.png.
+  - [ ] Update brackets to show URL to tournament in bottom right corner.
+  - [ ] Add trophies and winner/loser for 4-player tournaments.
+  - [ ] Show round numbers in bracket visualization (1-3 for R1, 4-6 for R2, etc.).
+  - [ ] Make shorter URLs for the brackets, via e.g. https://ko.thijs.com/png/qWeRtY12.png.
     - That would only work for myself, as the forwarding depends on where the file is being hosted.
 - Documentation and usability
   - [x] Write a README with an extensive manual how to use this script.

@@ -73,9 +73,9 @@ class KnockOut:
     _Bracket_ColorBGScore = ( 38/255,  36/255,  33/255)
     _Bracket_ColorBGName  = ( 58/255,  56/255,  51/255)
 
-    # Delay on API requests
-    _ApiDelay             = 3
-    _ApiAttempts          = 5
+    # API request parameters
+    _ApiDelay             = 3       # Wait 3 seconds between API requests
+    _ApiAttempts          = 5       # Retry 5 times at API endpoints before giving up
 
     def __init__(self, LichessToken, GitHubToken, ConfigFile):
         """
@@ -122,13 +122,13 @@ class KnockOut:
         # - Value 1 gives top player in bracket white first
         self._TopGetsWhite      = random.randrange(0, 2)
 
-        self._Description       = f"Event starts at {self._MaxParticipants} players. "
-        self._Description      += f"Registration closes 30 seconds before start. "
+        self._Description       = f"Knock-out tournament for {self._MinParticipants}-{self._MaxParticipants} players. "
         self._Description      += f"Each match consists of {self._GamesPerMatch} game(s). "
+        self._Description      += f"Registration closes 30 seconds before start. "
         if self._TieBreak == "color":
-            self._Description  += "In case of a tie, the player with more black games in the match advances. "
+            self._Description  += "In case of a tie, the player with more black games advances. "
         else:
-            self._Description  += "In case of a tie, the lower-rated player at the start of the event advances. "
+            self._Description  += "In case of a tie, the lower-rated player advances. "
         self._Started           = False
         self._UnconfirmedParticipants = dict()  # The players registered on Lichess
         self._Participants      = dict()        # The players registered, confirmed to play, with scores
@@ -137,6 +137,7 @@ class KnockOut:
         self._CurMatch          = -1
 
         assert (self._TotalRounds >= 3), "Parameters indicate not enough rounds"
+        assert (self._TotalRounds <= 100), "Parameters indicate too many rounds"
 
         # List of lists of implicit pairings
         # Pairings = [[(A, True, [1, 1, 0, 1]), (B, False, [0, 0, 1, 0]), C, D, E, F, G, H], [A, D*, F*, H], [D*, F]]
@@ -380,7 +381,7 @@ class KnockOut:
 
         # Try to run the request a number of times
         RequestSuccess = False
-        for i in range(5):
+        for i in range(self._ApiAttempts):
             try:
                 Response = requests.post(RequestEndpoint,
                                 headers = {"Authorization": f"Bearer {self._LichessToken}"},
@@ -811,8 +812,13 @@ class KnockOut:
 
         self.tprint("Opened a new log file.")
 
-        # Update the tournament description
-        self._Description = self._Description + f"\n\nBracket: https://raw.githubusercontent.com/{self._GitHubUserName}/{self._GitHubRepoName}/main/png/{self._SwissId}.png"
+        # Update the tournament description with bracket URL
+        if (self._GitHubUserName == "tmmlaarhoven") and (self._GitHubRepoName == "lichess-knockout"):
+            # Custom short URL on my own domain
+            self._Description += f"\n\nPairings: https://ko.thijs.com/png/{self._SwissId}.png"
+        else:
+            # Otherwise the standard GitHub location where the file is hosted
+            self._Description += f"\n\nPairings: https://raw.githubusercontent.com/{self._GitHubUserName}/{self._GitHubRepoName}/main/png/{self._SwissId}.png"
 
         # Attempt to push update to server - at most 5 attempts
         RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
@@ -1171,8 +1177,8 @@ class KnockOut:
                 self.tprint("Tournament already finished early!")
                 sys.exit()
 
-            self.tprint("Sleeping (5), waiting for round to finish...")
-            time.sleep(5)
+            self.tprint(f"Sleeping ({self._ApiDelay}), waiting for round to finish...")
+            time.sleep(self._ApiDelay)
 
         self.tprint(f"Finished waiting for round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1}) to finish!")
 
@@ -1198,7 +1204,7 @@ class KnockOut:
             self._Participants[UserName]["points"] = JUser["points"]
         GameScores["BYE"] = 0
 
-        time.sleep(3)
+        time.sleep(self._ApiDelay)
 
         # Process all matches one by one
         for i in range(len(self._Pairings[-1]) // 2):
