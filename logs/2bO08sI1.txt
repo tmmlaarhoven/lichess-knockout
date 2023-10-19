@@ -1,0 +1,46 @@
+17:28:59: Opened a new log file.
+17:28:59: POST-request to https://lichess.org/api/swiss/2bO08sI1/edit.
+17:29:00: POST-request succeeded! Continuing in 3 seconds...
+17:29:03: Finished creating a new Lichess swiss tournament!
+17:29:03: Tournament available at https://lichess.org/swiss/2bO08sI1.
+17:29:03: Waiting for start...
+17:29:03: GET-request to https://lichess.org/api/swiss/2bO08sI1/results.
+17:29:03: GET-request succeeded! Continuing in 3 seconds...
+17:29:06: 
+17:29:06: === LIST OF PARTICIPANTS ===
+17:29:06:   (No participants yet.)
+17:29:06: 
+17:29:06: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:29:16: GET-request to https://lichess.org/api/swiss/2bO08sI1/results.
+17:29:17: GET-request succeeded! Continuing in 3 seconds...
+17:29:20: 
+17:29:20: === LIST OF PARTICIPANTS ===
+17:29:20:   (No participants yet.)
+17:29:20: 
+17:29:20: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:29:30: GET-request to https://lichess.org/api/swiss/2bO08sI1/results.
+17:29:30: GET-request succeeded! Continuing in 3 seconds...
+17:29:33: Adding player testingko0.
+17:29:33: Adding player testingko1.
+17:29:33: Adding player testingko2.
+17:29:33: Adding player testingko3.
+17:29:33: Adding player testingko4.
+17:29:33: Adding player testingko5.
+17:29:33: Adding player testingko6.
+17:29:33: Adding player testingko7.
+17:29:33: Reached maximum participants!
+17:29:33: 
+17:29:33: === LIST OF PARTICIPANTS ===
+17:29:33:  1. TestingKO0           (1500) [testingko0]
+17:29:33:  2. TestingKO1           (1500) [testingko1]
+17:29:33:  3. TestingKO2           (1500) [testingko2]
+17:29:33:  4. TestingKO3           (1500) [testingko3]
+17:29:33:  5. TestingKO4           (1500) [testingko4]
+17:29:33:  6. TestingKO5           (1500) [testingko5]
+17:29:33:  7. TestingKO6           (1500) [testingko6]
+17:29:33:  8. TestingKO7           (1500) [testingko7]
+17:29:33: 
+17:29:33: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:29:43: GET-request to https://lichess.org/api/swiss/2bO08sI1/results.
+17:29:44: GET-request succeeded! Continuing in 3 seconds...
+17:29:47: Adding player testingko8.

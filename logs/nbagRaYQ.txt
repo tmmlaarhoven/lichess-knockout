@@ -1,0 +1,402 @@
+17:38:51: Opened a new log file.
+17:38:51: POST-request to https://lichess.org/api/swiss/nbagRaYQ/edit.
+17:38:51: POST-request succeeded! Continuing in 3 seconds...
+17:38:54: Finished creating a new Lichess swiss tournament!
+17:38:54: Tournament available at https://lichess.org/swiss/nbagRaYQ.
+17:38:54: Waiting for start...
+17:38:54: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:38:55: GET-request succeeded! Continuing in 3 seconds...
+17:38:58: 
+17:38:58: === LIST OF PARTICIPANTS ===
+17:38:58:   (No participants yet.)
+17:38:58: 
+17:38:58: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:39:08: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:39:09: GET-request succeeded! Continuing in 3 seconds...
+17:39:12: Adding player testingko0.
+17:39:12: Adding player testingko1.
+17:39:12: Adding player testingko2.
+17:39:12: Adding player testingko3.
+17:39:12: Adding player testingko4.
+17:39:12: 
+17:39:12: === LIST OF PARTICIPANTS ===
+17:39:12:  1. TestingKO0           (1500) [testingko0]
+17:39:12:  2. TestingKO1           (1500) [testingko1]
+17:39:12:  3. TestingKO2           (1500) [testingko2]
+17:39:12:  4. TestingKO3           (1500) [testingko3]
+17:39:12:  5. TestingKO4           (1500) [testingko4]
+17:39:12: 
+17:39:12: Not yet starting (5/8), so sleeping for another 10 seconds...
+17:39:22: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:39:22: GET-request succeeded! Continuing in 3 seconds...
+17:39:25: Adding player testingko5.
+17:39:25: Adding player testingko6.
+17:39:25: Adding player testingko7.
+17:39:25: Reached maximum participants!
+17:39:25: 
+17:39:25: === LIST OF PARTICIPANTS ===
+17:39:25:  1. TestingKO0           (1500) [testingko0]
+17:39:25:  2. TestingKO1           (1500) [testingko1]
+17:39:25:  3. TestingKO2           (1500) [testingko2]
+17:39:25:  4. TestingKO3           (1500) [testingko3]
+17:39:25:  5. TestingKO4           (1500) [testingko4]
+17:39:25:  6. TestingKO5           (1500) [testingko5]
+17:39:25:  7. TestingKO6           (1500) [testingko6]
+17:39:25:  8. TestingKO7           (1500) [testingko7]
+17:39:25: 
+17:39:25: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:39:35: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:39:36: GET-request succeeded! Continuing in 3 seconds...
+17:39:39: 
+17:39:39: === LIST OF PARTICIPANTS ===
+17:39:39:  1. TestingKO0           (1500) [testingko0]
+17:39:39:  2. TestingKO1           (1500) [testingko1]
+17:39:39:  3. TestingKO2           (1500) [testingko2]
+17:39:39:  4. TestingKO3           (1500) [testingko3]
+17:39:39:  5. TestingKO4           (1500) [testingko4]
+17:39:39:  6. TestingKO5           (1500) [testingko5]
+17:39:39:  7. TestingKO6           (1500) [testingko6]
+17:39:39:  8. TestingKO7           (1500) [testingko7]
+17:39:39: 
+17:39:39: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:39:49: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:39:49: GET-request succeeded! Continuing in 3 seconds...
+17:39:52: 
+17:39:52: === LIST OF PARTICIPANTS ===
+17:39:52:  1. TestingKO0           (1500) [testingko0]
+17:39:52:  2. TestingKO1           (1500) [testingko1]
+17:39:52:  3. TestingKO2           (1500) [testingko2]
+17:39:52:  4. TestingKO3           (1500) [testingko3]
+17:39:52:  5. TestingKO4           (1500) [testingko4]
+17:39:52:  6. TestingKO5           (1500) [testingko5]
+17:39:52:  7. TestingKO6           (1500) [testingko6]
+17:39:52:  8. TestingKO7           (1500) [testingko7]
+17:39:52: 
+17:39:52: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:40:02: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:40:03: GET-request succeeded! Continuing in 3 seconds...
+17:40:06: Removing player testingko0.
+17:40:06: Removing player testingko1.
+17:40:06: Removing player testingko6.
+17:40:06: Adding player testingko8.
+17:40:06: Adding player testingko9.
+17:40:06: 
+17:40:06: === LIST OF PARTICIPANTS ===
+17:40:06:  1. TestingKO2           (1500) [testingko2]
+17:40:06:  2. TestingKO3           (1500) [testingko3]
+17:40:06:  3. TestingKO4           (1500) [testingko4]
+17:40:06:  4. TestingKO5           (1500) [testingko5]
+17:40:06:  5. TestingKO7           (1500) [testingko7]
+17:40:06:  6. TestingKO8           (1500) [testingko8]
+17:40:06:  7. TestingKO9           (1500) [testingko9]
+17:40:06: 
+17:40:06: Not yet starting (7/8), so sleeping for another 10 seconds...
+17:40:16: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:40:16: GET-request succeeded! Continuing in 3 seconds...
+17:40:19: Removing player testingko7.
+17:40:19: Removing player testingko8.
+17:40:19: Removing player testingko9.
+17:40:19: 
+17:40:19: === LIST OF PARTICIPANTS ===
+17:40:19:  1. TestingKO2           (1500) [testingko2]
+17:40:19:  2. TestingKO3           (1500) [testingko3]
+17:40:19:  3. TestingKO4           (1500) [testingko4]
+17:40:19:  4. TestingKO5           (1500) [testingko5]
+17:40:19: 
+17:40:19: Not yet starting (4/8), so sleeping for another 10 seconds...
+17:40:29: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:40:30: GET-request succeeded! Continuing in 3 seconds...
+17:40:33: 
+17:40:33: === LIST OF PARTICIPANTS ===
+17:40:33:  1. TestingKO2           (1500) [testingko2]
+17:40:33:  2. TestingKO3           (1500) [testingko3]
+17:40:33:  3. TestingKO4           (1500) [testingko4]
+17:40:33:  4. TestingKO5           (1500) [testingko5]
+17:40:33: 
+17:40:33: Not yet starting (4/8), so sleeping for another 10 seconds...
+17:40:43: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:40:44: GET-request succeeded! Continuing in 3 seconds...
+17:40:47: 
+17:40:47: === LIST OF PARTICIPANTS ===
+17:40:47:  1. TestingKO2           (1500) [testingko2]
+17:40:47:  2. TestingKO3           (1500) [testingko3]
+17:40:47:  3. TestingKO4           (1500) [testingko4]
+17:40:47:  4. TestingKO5           (1500) [testingko5]
+17:40:47: 
+17:40:47: Not yet starting (4/8), so sleeping for another 10 seconds...
+17:40:57: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:40:57: GET-request succeeded! Continuing in 3 seconds...
+17:41:00: 
+17:41:00: === LIST OF PARTICIPANTS ===
+17:41:00:  1. TestingKO2           (1500) [testingko2]
+17:41:00:  2. TestingKO3           (1500) [testingko3]
+17:41:00:  3. TestingKO4           (1500) [testingko4]
+17:41:00:  4. TestingKO5           (1500) [testingko5]
+17:41:00: 
+17:41:00: Not yet starting (4/8), so sleeping for another 10 seconds...
+17:41:10: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:41:11: GET-request succeeded! Continuing in 3 seconds...
+17:41:14: Adding player testingko0.
+17:41:14: Adding player testingko1.
+17:41:14: Adding player testingko9.
+17:41:14: 
+17:41:14: === LIST OF PARTICIPANTS ===
+17:41:14:  1. TestingKO2           (1500) [testingko2]
+17:41:14:  2. TestingKO3           (1500) [testingko3]
+17:41:14:  3. TestingKO4           (1500) [testingko4]
+17:41:14:  4. TestingKO5           (1500) [testingko5]
+17:41:14:  5. TestingKO0           (1500) [testingko0]
+17:41:14:  6. TestingKO1           (1500) [testingko1]
+17:41:14:  7. TestingKO9           (1500) [testingko9]
+17:41:14: 
+17:41:14: Not yet starting (7/8), so sleeping for another 10 seconds...
+17:41:24: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:41:24: GET-request succeeded! Continuing in 3 seconds...
+17:41:27: 
+17:41:27: === LIST OF PARTICIPANTS ===
+17:41:27:  1. TestingKO2           (1500) [testingko2]
+17:41:27:  2. TestingKO3           (1500) [testingko3]
+17:41:27:  3. TestingKO4           (1500) [testingko4]
+17:41:27:  4. TestingKO5           (1500) [testingko5]
+17:41:27:  5. TestingKO0           (1500) [testingko0]
+17:41:27:  6. TestingKO1           (1500) [testingko1]
+17:41:27:  7. TestingKO9           (1500) [testingko9]
+17:41:27: 
+17:41:27: Not yet starting (7/8), so sleeping for another 10 seconds...
+17:41:37: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:41:38: GET-request succeeded! Continuing in 3 seconds...
+17:41:41: 
+17:41:41: === LIST OF PARTICIPANTS ===
+17:41:41:  1. TestingKO2           (1500) [testingko2]
+17:41:41:  2. TestingKO3           (1500) [testingko3]
+17:41:41:  3. TestingKO4           (1500) [testingko4]
+17:41:41:  4. TestingKO5           (1500) [testingko5]
+17:41:41:  5. TestingKO0           (1500) [testingko0]
+17:41:41:  6. TestingKO1           (1500) [testingko1]
+17:41:41:  7. TestingKO9           (1500) [testingko9]
+17:41:41: 
+17:41:41: Not yet starting (7/8), so sleeping for another 10 seconds...
+17:41:51: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:41:52: GET-request succeeded! Continuing in 3 seconds...
+17:41:55: 
+17:41:55: === LIST OF PARTICIPANTS ===
+17:41:55:  1. TestingKO2           (1500) [testingko2]
+17:41:55:  2. TestingKO3           (1500) [testingko3]
+17:41:55:  3. TestingKO4           (1500) [testingko4]
+17:41:55:  4. TestingKO5           (1500) [testingko5]
+17:41:55:  5. TestingKO0           (1500) [testingko0]
+17:41:55:  6. TestingKO1           (1500) [testingko1]
+17:41:55:  7. TestingKO9           (1500) [testingko9]
+17:41:55: 
+17:41:55: Not yet starting (7/8), so sleeping for another 10 seconds...
+17:42:05: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:42:05: GET-request succeeded! Continuing in 3 seconds...
+17:42:08: 
+17:42:08: === LIST OF PARTICIPANTS ===
+17:42:08:  1. TestingKO2           (1500) [testingko2]
+17:42:08:  2. TestingKO3           (1500) [testingko3]
+17:42:08:  3. TestingKO4           (1500) [testingko4]
+17:42:08:  4. TestingKO5           (1500) [testingko5]
+17:42:08:  5. TestingKO0           (1500) [testingko0]
+17:42:08:  6. TestingKO1           (1500) [testingko1]
+17:42:08:  7. TestingKO9           (1500) [testingko9]
+17:42:08: 
+17:42:08: Not yet starting (7/8), so sleeping for another 10 seconds...
+17:42:18: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:42:19: GET-request succeeded! Continuing in 3 seconds...
+17:42:22: Adding player testingko6.
+17:42:22: Reached maximum participants!
+17:42:22: 
+17:42:22: === LIST OF PARTICIPANTS ===
+17:42:22:  1. TestingKO2           (1500) [testingko2]
+17:42:22:  2. TestingKO3           (1500) [testingko3]
+17:42:22:  3. TestingKO4           (1500) [testingko4]
+17:42:22:  4. TestingKO5           (1500) [testingko5]
+17:42:22:  5. TestingKO0           (1500) [testingko0]
+17:42:22:  6. TestingKO1           (1500) [testingko1]
+17:42:22:  7. TestingKO9           (1500) [testingko9]
+17:42:22:  8. TestingKO6           (1500) [testingko6]
+17:42:22: 
+17:42:22: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:42:32: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:42:33: GET-request succeeded! Continuing in 3 seconds...
+17:42:36: 
+17:42:36: === LIST OF PARTICIPANTS ===
+17:42:36:  1. TestingKO2           (1500) [testingko2]
+17:42:36:  2. TestingKO3           (1500) [testingko3]
+17:42:36:  3. TestingKO4           (1500) [testingko4]
+17:42:36:  4. TestingKO5           (1500) [testingko5]
+17:42:36:  5. TestingKO0           (1500) [testingko0]
+17:42:36:  6. TestingKO1           (1500) [testingko1]
+17:42:36:  7. TestingKO9           (1500) [testingko9]
+17:42:36:  8. TestingKO6           (1500) [testingko6]
+17:42:36: 
+17:42:36: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:42:46: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:42:46: GET-request succeeded! Continuing in 3 seconds...
+17:42:49: 
+17:42:49: === LIST OF PARTICIPANTS ===
+17:42:49:  1. TestingKO2           (1500) [testingko2]
+17:42:49:  2. TestingKO3           (1500) [testingko3]
+17:42:49:  3. TestingKO4           (1500) [testingko4]
+17:42:49:  4. TestingKO5           (1500) [testingko5]
+17:42:49:  5. TestingKO0           (1500) [testingko0]
+17:42:49:  6. TestingKO1           (1500) [testingko1]
+17:42:49:  7. TestingKO9           (1500) [testingko9]
+17:42:49:  8. TestingKO6           (1500) [testingko6]
+17:42:49: 
+17:42:49: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:42:59: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:43:00: GET-request succeeded! Continuing in 3 seconds...
+17:43:03: 
+17:43:03: === LIST OF PARTICIPANTS ===
+17:43:03:  1. TestingKO2           (1500) [testingko2]
+17:43:03:  2. TestingKO3           (1500) [testingko3]
+17:43:03:  3. TestingKO4           (1500) [testingko4]
+17:43:03:  4. TestingKO5           (1500) [testingko5]
+17:43:03:  5. TestingKO0           (1500) [testingko0]
+17:43:03:  6. TestingKO1           (1500) [testingko1]
+17:43:03:  7. TestingKO9           (1500) [testingko9]
+17:43:03:  8. TestingKO6           (1500) [testingko6]
+17:43:03: 
+17:43:03: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:43:13: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:43:14: GET-request succeeded! Continuing in 3 seconds...
+17:43:17: 
+17:43:17: === LIST OF PARTICIPANTS ===
+17:43:17:  1. TestingKO2           (1500) [testingko2]
+17:43:17:  2. TestingKO3           (1500) [testingko3]
+17:43:17:  3. TestingKO4           (1500) [testingko4]
+17:43:17:  4. TestingKO5           (1500) [testingko5]
+17:43:17:  5. TestingKO0           (1500) [testingko0]
+17:43:17:  6. TestingKO1           (1500) [testingko1]
+17:43:17:  7. TestingKO9           (1500) [testingko9]
+17:43:17:  8. TestingKO6           (1500) [testingko6]
+17:43:17: 
+17:43:17: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:43:27: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:43:27: GET-request succeeded! Continuing in 3 seconds...
+17:43:30: 
+17:43:30: === LIST OF PARTICIPANTS ===
+17:43:30:  1. TestingKO2           (1500) [testingko2]
+17:43:30:  2. TestingKO3           (1500) [testingko3]
+17:43:30:  3. TestingKO4           (1500) [testingko4]
+17:43:30:  4. TestingKO5           (1500) [testingko5]
+17:43:30:  5. TestingKO0           (1500) [testingko0]
+17:43:30:  6. TestingKO1           (1500) [testingko1]
+17:43:30:  7. TestingKO9           (1500) [testingko9]
+17:43:30:  8. TestingKO6           (1500) [testingko6]
+17:43:30: 
+17:43:30: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:43:40: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:43:41: GET-request succeeded! Continuing in 3 seconds...
+17:43:44: 
+17:43:44: === LIST OF PARTICIPANTS ===
+17:43:44:  1. TestingKO2           (1500) [testingko2]
+17:43:44:  2. TestingKO3           (1500) [testingko3]
+17:43:44:  3. TestingKO4           (1500) [testingko4]
+17:43:44:  4. TestingKO5           (1500) [testingko5]
+17:43:44:  5. TestingKO0           (1500) [testingko0]
+17:43:44:  6. TestingKO1           (1500) [testingko1]
+17:43:44:  7. TestingKO9           (1500) [testingko9]
+17:43:44:  8. TestingKO6           (1500) [testingko6]
+17:43:44: 
+17:43:44: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:43:54: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:43:55: GET-request succeeded! Continuing in 3 seconds...
+17:43:58: 
+17:43:58: === LIST OF PARTICIPANTS ===
+17:43:58:  1. TestingKO2           (1500) [testingko2]
+17:43:58:  2. TestingKO3           (1500) [testingko3]
+17:43:58:  3. TestingKO4           (1500) [testingko4]
+17:43:58:  4. TestingKO5           (1500) [testingko5]
+17:43:58:  5. TestingKO0           (1500) [testingko0]
+17:43:58:  6. TestingKO1           (1500) [testingko1]
+17:43:58:  7. TestingKO9           (1500) [testingko9]
+17:43:58:  8. TestingKO6           (1500) [testingko6]
+17:43:58: 
+17:43:58: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:44:08: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:44:08: GET-request succeeded! Continuing in 3 seconds...
+17:44:11: 
+17:44:11: === LIST OF PARTICIPANTS ===
+17:44:11:  1. TestingKO2           (1500) [testingko2]
+17:44:11:  2. TestingKO3           (1500) [testingko3]
+17:44:11:  3. TestingKO4           (1500) [testingko4]
+17:44:11:  4. TestingKO5           (1500) [testingko5]
+17:44:11:  5. TestingKO0           (1500) [testingko0]
+17:44:11:  6. TestingKO1           (1500) [testingko1]
+17:44:11:  7. TestingKO9           (1500) [testingko9]
+17:44:11:  8. TestingKO6           (1500) [testingko6]
+17:44:11: 
+17:44:11: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:44:21: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:44:22: GET-request succeeded! Continuing in 3 seconds...
+17:44:25: 
+17:44:25: === LIST OF PARTICIPANTS ===
+17:44:25:  1. TestingKO2           (1500) [testingko2]
+17:44:25:  2. TestingKO3           (1500) [testingko3]
+17:44:25:  3. TestingKO4           (1500) [testingko4]
+17:44:25:  4. TestingKO5           (1500) [testingko5]
+17:44:25:  5. TestingKO0           (1500) [testingko0]
+17:44:25:  6. TestingKO1           (1500) [testingko1]
+17:44:25:  7. TestingKO9           (1500) [testingko9]
+17:44:25:  8. TestingKO6           (1500) [testingko6]
+17:44:25: 
+17:44:25: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:44:35: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:44:36: GET-request succeeded! Continuing in 3 seconds...
+17:44:39: 
+17:44:39: === LIST OF PARTICIPANTS ===
+17:44:39:  1. TestingKO2           (1500) [testingko2]
+17:44:39:  2. TestingKO3           (1500) [testingko3]
+17:44:39:  3. TestingKO4           (1500) [testingko4]
+17:44:39:  4. TestingKO5           (1500) [testingko5]
+17:44:39:  5. TestingKO0           (1500) [testingko0]
+17:44:39:  6. TestingKO1           (1500) [testingko1]
+17:44:39:  7. TestingKO9           (1500) [testingko9]
+17:44:39:  8. TestingKO6           (1500) [testingko6]
+17:44:39: 
+17:44:39: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:44:49: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:44:49: GET-request succeeded! Continuing in 3 seconds...
+17:44:52: 
+17:44:52: === LIST OF PARTICIPANTS ===
+17:44:52:  1. TestingKO2           (1500) [testingko2]
+17:44:52:  2. TestingKO3           (1500) [testingko3]
+17:44:52:  3. TestingKO4           (1500) [testingko4]
+17:44:52:  4. TestingKO5           (1500) [testingko5]
+17:44:52:  5. TestingKO0           (1500) [testingko0]
+17:44:52:  6. TestingKO1           (1500) [testingko1]
+17:44:52:  7. TestingKO9           (1500) [testingko9]
+17:44:52:  8. TestingKO6           (1500) [testingko6]
+17:44:52: 
+17:44:52: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:45:02: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:45:03: GET-request succeeded! Continuing in 3 seconds...
+17:45:06: 
+17:45:06: === LIST OF PARTICIPANTS ===
+17:45:06:  1. TestingKO2           (1500) [testingko2]
+17:45:06:  2. TestingKO3           (1500) [testingko3]
+17:45:06:  3. TestingKO4           (1500) [testingko4]
+17:45:06:  4. TestingKO5           (1500) [testingko5]
+17:45:06:  5. TestingKO0           (1500) [testingko0]
+17:45:06:  6. TestingKO1           (1500) [testingko1]
+17:45:06:  7. TestingKO9           (1500) [testingko9]
+17:45:06:  8. TestingKO6           (1500) [testingko6]
+17:45:06: 
+17:45:06: Not yet starting (8/8), so sleeping for another 10 seconds...
+17:45:16: GET-request to https://lichess.org/api/swiss/nbagRaYQ/results.
+17:45:17: GET-request succeeded! Continuing in 3 seconds...
+17:45:20: 
+17:45:20: === LIST OF PARTICIPANTS ===
+17:45:20:  1. TestingKO2           (1500) [testingko2]
+17:45:20:  2. TestingKO3           (1500) [testingko3]
+17:45:20:  3. TestingKO4           (1500) [testingko4]
+17:45:20:  4. TestingKO5           (1500) [testingko5]
+17:45:20:  5. TestingKO0           (1500) [testingko0]
+17:45:20:  6. TestingKO1           (1500) [testingko1]
+17:45:20:  7. TestingKO9           (1500) [testingko9]
+17:45:20:  8. TestingKO6           (1500) [testingko6]
+17:45:20: 
+17:45:20: Not yet starting (8/8), so sleeping for another 10 seconds...

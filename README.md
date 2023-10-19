@@ -176,11 +176,12 @@ Below a short list of things that would be nice to add in the future.
   - [x] Automatically upload the brackets to GitHub
   - [x] Add links in the tournament description to the brackets.
   - [x] Add trophies to the visualization for the winner and runner-up.
-  - [ ] Update brackets to show winners if matches are decided early.
+  - [x] Show round numbers in bracket visualization (1-3 for R1, 4-6 for R2, etc.).
+  - [x] Update brackets to show URL to tournament in bottom right corner.
+  - [x] Add winner visualization for 4-player tournaments.
+  - [x] Improve visualization of winner/loser in bracket with darker/lighter colors.
+  - [ ] Display winners if matches are decided early.
   - [ ] Visualize BYEs in a nicer way.
-  - [ ] Update brackets to show URL to tournament in bottom right corner.
-  - [ ] Add trophies and winner/loser for 4-player tournaments.
-  - [ ] Show round numbers in bracket visualization (1-3 for R1, 4-6 for R2, etc.).
   - [ ] Make shorter URLs for the brackets, via e.g. https://ko.thijs.com/png/qWeRtY12.png.
     - That would only work for myself, as the forwarding depends on where the file is being hosted.
 - Documentation and usability

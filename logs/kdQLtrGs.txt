@@ -1,0 +1,76 @@
+17:33:24: Opened a new log file.
+17:33:24: POST-request to https://lichess.org/api/swiss/kdQLtrGs/edit.
+17:33:25: POST-request succeeded! Continuing in 3 seconds...
+17:33:28: Finished creating a new Lichess swiss tournament!
+17:33:28: Tournament available at https://lichess.org/swiss/kdQLtrGs.
+17:33:28: Waiting for start...
+17:33:28: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:33:28: GET-request succeeded! Continuing in 3 seconds...
+17:33:31: 
+17:33:31: === LIST OF PARTICIPANTS ===
+17:33:31:   (No participants yet.)
+17:33:31: 
+17:33:31: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:33:41: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:33:42: GET-request succeeded! Continuing in 3 seconds...
+17:33:45: 
+17:33:45: === LIST OF PARTICIPANTS ===
+17:33:45:   (No participants yet.)
+17:33:45: 
+17:33:45: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:33:55: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:33:56: GET-request succeeded! Continuing in 3 seconds...
+17:33:59: 
+17:33:59: === LIST OF PARTICIPANTS ===
+17:33:59:   (No participants yet.)
+17:33:59: 
+17:33:59: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:34:09: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:34:09: GET-request succeeded! Continuing in 3 seconds...
+17:34:12: 
+17:34:12: === LIST OF PARTICIPANTS ===
+17:34:12:   (No participants yet.)
+17:34:12: 
+17:34:12: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:34:22: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:34:23: GET-request succeeded! Continuing in 3 seconds...
+17:34:26: 
+17:34:26: === LIST OF PARTICIPANTS ===
+17:34:26:   (No participants yet.)
+17:34:26: 
+17:34:26: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:34:36: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:34:37: GET-request succeeded! Continuing in 3 seconds...
+17:34:40: 
+17:34:40: === LIST OF PARTICIPANTS ===
+17:34:40:   (No participants yet.)
+17:34:40: 
+17:34:40: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:34:50: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:34:51: GET-request succeeded! Continuing in 3 seconds...
+17:34:54: 
+17:34:54: === LIST OF PARTICIPANTS ===
+17:34:54:   (No participants yet.)
+17:34:54: 
+17:34:54: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:35:04: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:35:04: GET-request succeeded! Continuing in 3 seconds...
+17:35:07: 
+17:35:07: === LIST OF PARTICIPANTS ===
+17:35:07:   (No participants yet.)
+17:35:07: 
+17:35:07: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:35:17: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:35:18: GET-request succeeded! Continuing in 3 seconds...
+17:35:21: 
+17:35:21: === LIST OF PARTICIPANTS ===
+17:35:21:   (No participants yet.)
+17:35:21: 
+17:35:21: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:35:31: GET-request to https://lichess.org/api/swiss/kdQLtrGs/results.
+17:35:32: GET-request succeeded! Continuing in 3 seconds...
+17:35:35: 
+17:35:35: === LIST OF PARTICIPANTS ===
+17:35:35:   (No participants yet.)
+17:35:35: 
+17:35:35: Not yet starting (0/8), so sleeping for another 10 seconds...

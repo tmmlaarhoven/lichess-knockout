@@ -1,0 +1,47 @@
+17:46:34: Opened a new log file.
+17:46:34: POST-request to https://lichess.org/api/swiss/AykwqVD5/edit.
+17:46:35: POST-request succeeded! Continuing in 3 seconds...
+17:46:38: Finished creating a new Lichess swiss tournament!
+17:46:38: Tournament available at https://lichess.org/swiss/AykwqVD5.
+17:46:38: Waiting for start...
+17:46:38: GET-request to https://lichess.org/api/swiss/AykwqVD5/results.
+17:46:38: GET-request succeeded! Continuing in 3 seconds...
+17:46:41: 
+17:46:41: === LIST OF PARTICIPANTS ===
+17:46:41:   (No participants yet.)
+17:46:41: 
+17:46:41: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:46:51: GET-request to https://lichess.org/api/swiss/AykwqVD5/results.
+17:46:51: GET-request succeeded! Continuing in 3 seconds...
+17:46:54: 
+17:46:54: === LIST OF PARTICIPANTS ===
+17:46:54:   (No participants yet.)
+17:46:54: 
+17:46:54: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:47:04: GET-request to https://lichess.org/api/swiss/AykwqVD5/results.
+17:47:05: GET-request succeeded! Continuing in 3 seconds...
+17:47:08: 
+17:47:08: === LIST OF PARTICIPANTS ===
+17:47:08:   (No participants yet.)
+17:47:08: 
+17:47:08: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:47:18: GET-request to https://lichess.org/api/swiss/AykwqVD5/results.
+17:47:18: GET-request succeeded! Continuing in 3 seconds...
+17:47:21: Adding player testingko0.
+17:47:21: Adding player testingko1.
+17:47:21: Adding player testingko2.
+17:47:21: Adding player testingko3.
+17:47:21: Adding player testingko4.
+17:47:21: Adding player testingko5.
+17:47:21: Adding player testingko6.
+17:47:21: 
+17:47:21: === LIST OF PARTICIPANTS ===
+17:47:21:  1. TestingKO0           (1500) [testingko0]
+17:47:21:  2. TestingKO1           (1500) [testingko1]
+17:47:21:  3. TestingKO2           (1500) [testingko2]
+17:47:21:  4. TestingKO3           (1500) [testingko3]
+17:47:21:  5. TestingKO4           (1500) [testingko4]
+17:47:21:  6. TestingKO5           (1500) [testingko5]
+17:47:21:  7. TestingKO6           (1500) [testingko6]
+17:47:21: 
+17:47:21: Making a preliminary bracket...

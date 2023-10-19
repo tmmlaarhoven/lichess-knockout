@@ -60,22 +60,27 @@ class KnockOut:
 
     # Class variables, independent of the object instance
     # Bracket drawing: foreground colors
-    _Bracket_ColorName    = (186/255, 186/255, 186/255)
-    _Bracket_ColorWin     = ( 98/255, 153/255,  36/255)
-    _Bracket_ColorLoss    = (204/255,  51/255,  51/255)
-    _Bracket_ColorGold    = (255/255, 203/255,  55/255)
-    _Bracket_ColorSilver  = (207/255, 194/255, 170/255)
-    _Bracket_ColorDraw    = (123/255, 153/255, 153/255)
-    _Bracket_ColorArrow   = ( 60/255,  60/255,  60/255)
+    _Bracket_ColorName          = (186/255, 186/255, 186/255)
+    _Bracket_ColorNameWinner    = (220/255, 220/255, 220/255)
+    _Bracket_ColorNameLoser     = (150/255, 150/255, 150/255)
+    _Bracket_ColorURL           = (100/255, 100/255, 100/255)
+    _Bracket_ColorWin           = ( 98/255, 153/255,  36/255)
+    _Bracket_ColorLoss          = (204/255,  51/255,  51/255)
+    _Bracket_ColorLossGame      = ( 71/255,  39/255,  36/255)
+    _Bracket_ColorGold          = (255/255, 203/255,  55/255)
+    _Bracket_ColorSilver        = (207/255, 194/255, 170/255)
+    _Bracket_ColorDraw          = (123/255, 153/255, 153/255)
+    _Bracket_ColorArrow         = ( 60/255,  60/255,  60/255)
 
     # Background colors
-    _Bracket_ColorBGAll   = ( 22/255,  21/255,  18/255)
-    _Bracket_ColorBGScore = ( 38/255,  36/255,  33/255)
-    _Bracket_ColorBGName  = ( 58/255,  56/255,  51/255)
+    _Bracket_ColorBGAll         = ( 22/255,  21/255,  18/255)
+    _Bracket_ColorBGScoreBlack  = ( 33/255,  31/255,  28/255)
+    _Bracket_ColorBGScoreWhite  = ( 43/255,  41/255,  38/255)
+    _Bracket_ColorBGName        = ( 58/255,  56/255,  51/255)
 
     # API request parameters
-    _ApiDelay             = 3       # Wait 3 seconds between API requests
-    _ApiAttempts          = 5       # Retry 5 times at API endpoints before giving up
+    _ApiDelay                   = 3       # Wait 3 seconds between API requests
+    _ApiAttempts                = 5       # Retry 5 times at API endpoints before giving up
 
     def __init__(self, LichessToken, GitHubToken, ConfigFile):
         """
@@ -94,6 +99,7 @@ class KnockOut:
         self._TeamId            = Config["Lichess"]["TeamId"].strip()
         self._MaxParticipants   = int(Config["Options"]["MaxParticipants"])
         self._MinParticipants   = int(Config["Options"]["MinParticipants"])
+        self._StartAtMax        = Config["Options"].getboolean("StartAtMax")
         self._GamesPerMatch     = int(Config["Options"]["GamesPerMatch"])
         self._Rated             = Config["Options"].getboolean("Rated")
         self._Variant           = Config["Options"]["Variant"].strip()
@@ -115,12 +121,13 @@ class KnockOut:
         self._Loser             = None
         self._MatchRounds       = math.ceil(math.log2(self._MaxParticipants))
         self._TotalRounds       = self._GamesPerMatch * self._MatchRounds
-        self._TreeSize          = -1                         # If e.g. 5 players, it is 8
+        self._TreeSize          = 2 ** self._MatchRounds                   # If e.g. 5 players, it is 8
 
         # Decide white/black in initial games in each match
         # - Value 0 gives bottom player in bracket white first
         # - Value 1 gives top player in bracket white first
-        self._TopGetsWhite      = random.randrange(0, 2)
+        self._TopGetsWhite      = [random.randrange(0, 2) for _ in range(self._MatchRounds)]
+        self.tprint(self._TopGetsWhite)
 
         self._Description       = f"Knock-out tournament for {self._MinParticipants}-{self._MaxParticipants} players. "
         self._Description      += f"Each match consists of {self._GamesPerMatch} game(s). "
@@ -181,6 +188,7 @@ class KnockOut:
         """
         Do checks on the user-provided input, to make sure we can get started.
         """
+        self.tprint("Start validating user input...")
 
         # Convenient for checking validity of various strings
         alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -239,6 +247,9 @@ class KnockOut:
         assert (self._MinParticipants <= self._MaxParticipants), "Minimum number of participants higher than maximum"
         assert (self._MaxParticipants <= 8192), "Maximum number of participants too high (must be at most 8192)"
 
+        # Starting when the participant limit has been reached
+        assert (self._StartAtMax in {True, False}), "StartAtMax not a boolean value"
+
         # Games per match
         assert (self._GamesPerMatch >= 1), "Need at least 1 game per match"
         assert (self._GamesPerMatch <= 20), "Too many games per match"
@@ -266,6 +277,8 @@ class KnockOut:
 
         # Chat settings
         assert (self._ChatFor in {0, 10, 20, 30}), "Improper ChatFor parameter (must be 0/10/20/30)"
+
+        self.tprint("Finished validating user input!")
 
 
 
@@ -392,6 +405,7 @@ class KnockOut:
             except:
                 self.tprint(f"POST-request at {RequestEndpoint} failed!")
                 self.tprint(Response)
+                self.tprint(Response.content)
                 self.tprint(f"Attempt {i+1}/{self._ApiAttempts}. {f'Trying again in {self._ApiDelay} seconds...' if i < self._ApiAttempts - 1 else ''}")
                 time.sleep(self._ApiDelay)
 
@@ -467,7 +481,6 @@ class KnockOut:
         self._Ytotal += 2       # Make room for round titles
 
         # Initialize new, empty figure
-        plt.close()
         plt.figure()
         plt.style.use(['dark_background'])
         self._fig, self._ax = plt.subplots(figsize=(self._Xtotal/2,self._Ytotal/2))
@@ -478,9 +491,21 @@ class KnockOut:
 
         # List of display information depending on win/loss/draw
         self._Bracket_DisplayScores = []
-        self._Bracket_DisplayScores.append({"Color": self._Bracket_ColorLoss, "Weight": "normal"})
-        self._Bracket_DisplayScores.append({"Color": self._Bracket_ColorDraw, "Weight": "normal"})
-        self._Bracket_DisplayScores.append({"Color": self._Bracket_ColorWin,  "Weight": "bold"})
+        self._Bracket_DisplayScores.append({
+            "Color": self._Bracket_ColorLoss,
+            "ColorGame": self._Bracket_ColorLossGame,
+            "Weight": "normal",
+            "WeightGame": "bold"})
+        self._Bracket_DisplayScores.append({
+            "Color": self._Bracket_ColorDraw,
+            "ColorGame": self._Bracket_ColorDraw,
+            "Weight": "normal",
+            "WeightGame": "bold"})
+        self._Bracket_DisplayScores.append({
+            "Color": self._Bracket_ColorWin,
+            "ColorGame": self._Bracket_ColorWin,
+            "Weight": "bold",
+            "WeightGame": "bold"})
 
 
 
@@ -494,12 +519,24 @@ class KnockOut:
                      facecolor = self._Bracket_ColorBGName,
                      fill = True,
                      lw = 0))
+
         # Score box
-        self._ax.add_patch(mpl.patches.Rectangle((XBase + self._Xn, YBase), self._GamesPerMatch * self._Xg + 0.2, self._Yh,
-                     facecolor = self._Bracket_ColorBGScore,
+        self._ax.add_patch(mpl.patches.Rectangle((XBase + self._Xn, YBase),
+                     self._GamesPerMatch * self._Xg + 0.2,
+                     self._Yh,
+                     facecolor = self._Bracket_ColorBGScoreBlack,
                      fill = True,
                      lw = 0))
 
+        # White/black: alternating shading to indicate who was white
+        for g in range(self._GamesPerMatch):
+            self._ax.add_patch(mpl.patches.Rectangle((XBase + self._Xn + g * self._Xg + (0.1 if g > 0 else 0),
+                        YBase + ((g + 1 + self._TopGetsWhite[r]) % 2) * self._Yh / 2),
+                        self._Xg + (0.1 if g in {0, self._GamesPerMatch - 1} else 0.0),
+                        self._Yh / 2,
+                        facecolor = self._Bracket_ColorBGScoreWhite,
+                        fill = True,
+                        lw = 0))
 
 
     def _Bracket_DrawArrow(self, r, i):
@@ -540,6 +577,20 @@ class KnockOut:
 
 
 
+    def _Bracket_DrawURL(self):
+        """
+        Add the URL to the tournament in the bottom right corner.
+        """
+        plt.text((self._Xn + self._GamesPerMatch * self._Xg)/2 + (round(math.log2(self._TreeSize)) - 1) * self._Xw,
+            0.2,
+            f"https://lichess.org/swiss/{self._SwissId}",
+            fontsize = 12,
+            ha = "center",
+            va = "center",
+            color = self._Bracket_ColorURL)
+
+
+
     def _Bracket_DrawRoundTitles(self):
         """
         Draw titles above the rounds, to indicate which
@@ -556,10 +607,21 @@ class KnockOut:
         for r in range(round(math.log2(self._TreeSize))):
             MatchesLeft = self._TreeSize // (2 ** (r + 1))
             plt.text((self._Xn + self._GamesPerMatch * self._Xg)/2 + r * self._Xw,
-                     self._Ytotal - 1,
+                     self._Ytotal - 0.7,
                      RoundNames[MatchesLeft],
                      fontsize = 20,
                      fontweight = "bold",
+                     ha = "center",
+                     va = "center",
+                     color = self._Bracket_ColorName)
+            if self._GamesPerMatch == 1:
+                RoundText = f"(Round {r * self._GamesPerMatch + 1})"
+            else:
+                RoundText = f"(Rounds {r * self._GamesPerMatch + 1}-{(r + 1) * self._GamesPerMatch})"
+            plt.text((self._Xn + self._GamesPerMatch * self._Xg)/2 + r * self._Xw,
+                     self._Ytotal - 1.4,
+                     RoundText,
+                     fontsize = 14,
                      ha = "center",
                      va = "center",
                      color = self._Bracket_ColorName)
@@ -596,6 +658,12 @@ class KnockOut:
         MatchUserWon = [User1Won, User2Won]
         MatchUserScores = [UserScores1, UserScores2]
         MatchUserScoreStr = [UserScoreStr1, UserScoreStr2]
+        if User1Won == 2:
+            MatchUserNameColor = [self._Bracket_ColorNameWinner, self._Bracket_ColorNameLoser]
+        elif User2Won == 2:
+            MatchUserNameColor = [self._Bracket_ColorNameLoser, self._Bracket_ColorNameWinner]
+        else:
+            MatchUserNameColor = [self._Bracket_ColorName, self._Bracket_ColorName]
 
         # Fill in each of the two users in the match, from top to bottom
         for j in range(2):
@@ -611,7 +679,7 @@ class KnockOut:
                      fontweight = self._Bracket_DisplayScores[MatchUserWon[j]]["Weight"],
                      ha = "left",
                      va = "center",
-                     color = self._Bracket_ColorName)
+                     color = MatchUserNameColor[j])
 
             # Put total score
             plt.text(XBase + self._Xn - 0.8,
@@ -629,10 +697,10 @@ class KnockOut:
                          YBase + self._Yh - self._Yh / 4 - j * self._Yh / 2,
                          self._Bracket_FormatScore(MatchUserScores[j][g]),
                          fontsize = 16,
-                         fontweight = self._Bracket_DisplayScores[round(2*MatchUserScores[j][g])]["Weight"],
+                         fontweight = self._Bracket_DisplayScores[round(2*MatchUserScores[j][g])]["WeightGame"],
                          ha = "center",
                          va = "center",
-                         color = self._Bracket_DisplayScores[round(2*MatchUserScores[j][g])]["Color"])
+                         color = self._Bracket_DisplayScores[round(2*MatchUserScores[j][g])]["ColorGame"])
 
 
 
@@ -642,50 +710,62 @@ class KnockOut:
         Only if the tournament finished, and only if
         the tournament bracket is bigger than 4 players.
         """
-        assert (self._TreeSize > 4), "Cannot draw trophies with only 4 players."
         assert (self._CurMatch == self._MatchRounds - 1), "Not in the last match yet."
         assert (self._Winner is not None), "No winner yet."
         assert (self._Loser is not None), "No loser yet."
 
-        # Show winner with trophy
-        im = f"trophies/lichess-gold.png"
-        img = plt.imread(im)
-        imgar = 1.0
-        Xmin = (self._Xn + self._GamesPerMatch * self._Xg)/2 + (self._MatchRounds - 1) * self._Xw
-        Xmin = Xmin - 1.5
-        Xmax = Xmin + 3
-        Ymin = self._Ytotal / 2 + 1.3
-        Ymax = Ymin + (Xmax - Xmin) / imgar
-        plt.imshow(img, extent = (Xmin, Xmax, Ymin, Ymax))
-        plt.text(Xmin + 1.5,
-                Ymin - 0.5,
-                self._Participants[self._Winner]["username"],
-                    fontsize = 18,
-                    fontweight = "bold",
-                    ha = "center",
-                    va = "center",
-                    color = self._Bracket_ColorGold)
+        # Two cases: more than 4 players (with trophy icon), and 4 players (just text)
+        if self._TreeSize > 4:
+            # Show winner with trophy
+            im = f"trophies/lichess-gold.png"
+            img = plt.imread(im)
+            imgar = 1.0
+            Xmin = (self._Xn + self._GamesPerMatch * self._Xg)/2 + (self._MatchRounds - 1) * self._Xw
+            Xmin = Xmin - 1.5
+            Xmax = Xmin + 3
+            Ymin = self._Ytotal / 2 + 1.3
+            Ymax = Ymin + (Xmax - Xmin) / imgar
+            plt.imshow(img, extent = (Xmin, Xmax, Ymin, Ymax))
+            plt.text(Xmin + 1.5,
+                    Ymin - 0.5,
+                    self._Participants[self._Winner]["username"],
+                        fontsize = 18,
+                        fontweight = "bold",
+                        ha = "center",
+                        va = "center",
+                        color = self._Bracket_ColorGold)
 
-        # Show finals loser with trophy
-        im2 = f"trophies/lichess-silver.png"
-        img2 = plt.imread(im2)
-        imgar2 = 1.0
-        Xmin = (self._Xn + self._GamesPerMatch * self._Xg)/2 + (self._MatchRounds - 1) * self._Xw
-        Xmin = Xmin - 1
-        Xmax = Xmin + 2
-        Ymin = self._Ytotal / 2 - 5
-        Ymax = Ymin + (Xmax - Xmin) / imgar2
-        plt.imshow(img2, extent = (Xmin, Xmax, Ymin, Ymax))
-        plt.text(Xmin + 1,
-                Ymin - 0.5,
-                self._Participants[self._Loser]["username"],
-                    fontsize = 16,
-                    fontweight = "bold",
-                    ha = "center",
-                    va = "center",
-                    color = self._Bracket_ColorSilver)
-
-
+            # Show finals loser with trophy
+            im2 = f"trophies/lichess-silver.png"
+            img2 = plt.imread(im2)
+            imgar2 = 1.0
+            Xmin = (self._Xn + self._GamesPerMatch * self._Xg)/2 + (self._MatchRounds - 1) * self._Xw
+            Xmin = Xmin - 1
+            Xmax = Xmin + 2
+            Ymin = self._Ytotal / 2 - 4.5
+            Ymax = Ymin + (Xmax - Xmin) / imgar2
+            plt.imshow(img2, extent = (Xmin, Xmax, Ymin, Ymax))
+            plt.text(Xmin + 1,
+                    Ymin - 0.5,
+                    self._Participants[self._Loser]["username"],
+                        fontsize = 16,
+                        fontweight = "bold",
+                        ha = "center",
+                        va = "center",
+                        color = self._Bracket_ColorSilver)
+        # Only 4 players in event
+        else:
+            Xmin = (self._Xn + self._GamesPerMatch * self._Xg)/2 + (self._MatchRounds - 1) * self._Xw
+            Xmin = Xmin - 1.5
+            Ymin = self._Ytotal / 2 + 1.3
+            plt.text(Xmin + 1.5,
+                    Ymin - 0.5,
+                    self._Participants[self._Winner]["username"] + " won!",
+                        fontsize = 18,
+                        fontweight = "bold",
+                        ha = "center",
+                        va = "center",
+                        color = self._Bracket_ColorGold)
 
     def _Bracket_DrawEmptyScheme(self):
         """
@@ -700,6 +780,7 @@ class KnockOut:
                 self._Bracket_DrawMatchBlock(r, i)
                 if r < round(math.log2(self._TreeSize)) - 1:
                     self._Bracket_DrawArrow(r, i)
+        self._Bracket_DrawURL()
 
 
 
@@ -707,9 +788,41 @@ class KnockOut:
         """
         Based on pairing data, fill scheme with data and results.
         """
-        for r in range(len(self._Pairings)):
-            for i in range(self._TreeSize // (2 ** (r + 1))):
-                self._Bracket_FillMatchBlock(r, i)
+        # If proper pairings exist
+        if self._Pairings == []:
+
+            # Before start of event, make pretend bracket
+            PairingList = []
+            for i in range(self._TreeSize):
+
+                # Get seed number
+                t = trees.Trees[self._TreeSize][i] - 1
+
+                # Store right player in PairingList
+                ListPlayers = list(self._Participants.keys())
+                if t < len(self._Participants):
+                    PairingList.append([ListPlayers[t], False, []])
+                else:
+                    PairingList.append(["BYE", False, []])
+
+            assert (len(PairingList) == self._TreeSize), "Weird pairing list error"
+
+            # Store pairing list
+            self._Pairings.append(PairingList)
+
+            # After pairings have been finalized, do things properly
+            for r in range(len(self._Pairings)):
+                for i in range(self._TreeSize // (2 ** (r + 1))):
+                    self._Bracket_FillMatchBlock(r, i)
+
+            # Clear pairings again
+            self._Pairings = []
+
+        else:
+            # After pairings have been finalized, do things properly
+            for r in range(len(self._Pairings)):
+                for i in range(self._TreeSize // (2 ** (r + 1))):
+                    self._Bracket_FillMatchBlock(r, i)
 
 
 
@@ -722,6 +835,8 @@ class KnockOut:
         plt.ylim(0, self._Ytotal)
         self._fig.tight_layout()
         plt.savefig(self._BracketFile())
+        plt.cla()
+        plt.clf()
 
 
 
@@ -764,7 +879,7 @@ class KnockOut:
         self._Bracket_Initialize()
         self._Bracket_DrawEmptyScheme()
         self._Bracket_FillScheme()
-        if self._Winner is not None and self._TreeSize > 5:
+        if self._Winner is not None:
             self._Bracket_DrawWinners()
         self._Bracket_Save()
         self._Bracket_Upload(New)
@@ -803,7 +918,6 @@ class KnockOut:
         # At this point we know the request succeeded, so we can continue
         self.tprint("Tournament creation succeeded!")
         JResponse = Response.json()
-        self.tprint(Response)
 
         # Store some data in the object
         self._SwissId = JResponse["id"]
@@ -870,8 +984,11 @@ class KnockOut:
             for UserName in UsersToRemove:
                 self._Participants.pop(UserName)
 
-            # Add newly registered participants
+            # Add newly registered participants, if there is place
             for UserName, User in self._UnconfirmedParticipants.items():
+                if len(self._Participants) == self._MaxParticipants:
+                    break
+
                 if UserName not in self._Participants:
                     self.tprint(f"Adding player {UserName}.")
                     self._Participants[UserName] = User
@@ -886,10 +1003,13 @@ class KnockOut:
                         self.tprint("Reached maximum participants!")
 
                         # Jump out of the loop to start the event
-                        ReadyToStart = True
+                        if self._StartAtMax:
+                            ReadyToStart = True
+
+                        # Stop adding more players
                         break
 
-            # Do a further return for the above return case
+            # Do a further return in case we wish to start early
             if ReadyToStart:
                 break
 
@@ -904,15 +1024,33 @@ class KnockOut:
                 ReadyToStart = True
                 break
 
+            # Sort participants by rating or randomize seeds
+            if self._RandomizeSeeds:
+                # Do random shuffle of seeds
+                TempList = list(self._Participants.items())
+                random.shuffle(TempList)
+                self._Participants = dict(TempList)
+            else:
+                # Sort by rating
+                self._Participants = dict(sorted(self._Participants.items(), key=lambda item: item[1]["rating"], reverse = True))
+
+            # Assign seeds to participants
+            for Seed, User in enumerate(self._Participants.values()):
+                User["seed"] = Seed + 1
+
             self.PrintParticipants()
 
+            # Make bracket with current participants
+            self.tprint("Making a preliminary bracket...")
+            self._Bracket_MakeBracket()
+
             # Less than a minute left or less than 30% spots left: make API queries every few seconds
-            if TimeLeft < 60000 or SpotsLeft < 30:
-                self.tprint(f"Close to starting ({len(self._Participants)}/{self._MaxParticipants}), so sleeping for 5 seconds...")
-                time.sleep(self._ApiDelay)
+            if (TimeLeft < 60000) or ((self._StartAtMax) and (SpotsLeft < 30)):
+                self.tprint(f"Close to starting ({len(self._Participants)}/{self._MaxParticipants} participants)...")
+                # time.sleep(self._ApiDelay)
             # Otherwise: make API queries every 10 seconds
             else:
-                self.tprint(f"Not yet starting ({len(self._Participants)}/{self._MaxParticipants}), so sleeping for 10 seconds...")
+                self.tprint(f"Not yet starting ({len(self._Participants)}/{self._MaxParticipants}), so sleeping for another 10 seconds...")
                 time.sleep(10)
 
         # EndWhile
@@ -1003,7 +1141,7 @@ class KnockOut:
             self.tprint("Finished updating API!")
 
         # Make bracket and save locally
-        self.tprint("Making an empty bracket...")
+        self.tprint("Making the complete bracket...")
         self._Bracket_MakeBracket()
 
         # Set flag accordingly
@@ -1018,9 +1156,6 @@ class KnockOut:
         Preprocessing for match, such as making pairings.
         """
         self.tprint(f"Starting/preparing matches for match round {self._CurMatch+1}...")
-
-        # Randomize who gets white/black first in these matches
-        self._TopGetsWhite = random.randrange(0, 2)
 
         # First match round
         if self._CurMatch == 0:
@@ -1085,7 +1220,7 @@ class KnockOut:
             Player2 = self._Pairings[-1][2*i+1][0]
 
             # Identify white/black based on game number
-            if self._CurGame % 2 == (1 - self._TopGetsWhite):
+            if self._CurGame % 2 == (1 - self._TopGetsWhite[self._CurMatch]):
                 # Swap order
                 PlayerTemp = Player1
                 Player1 = Player2
@@ -1112,7 +1247,7 @@ class KnockOut:
         RequestData["nbRounds"]             = self._TotalRounds
         RequestData["conditions.allowList"] = self._AllowedPlayers
         RequestData["manualPairings"]       = self._CurPairings
-        Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
+        _ = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Update game start time to 15 seconds from now
         NewRoundStartTime = 1000 * round(time.time()) + 15000
@@ -1126,13 +1261,13 @@ class KnockOut:
             RequestData["conditions.allowList"] = self._AllowedPlayers
             RequestData["manualPairings"]       = self._CurPairings
             RequestData["startsAt"]             = NewRoundStartTime
-            Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
+            _ = self._RunPostRequest(RequestEndpoint, RequestData, True)
         else:
             # New round start, Lichess API endpoint .../schedule-next-round
             RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/schedule-next-round"
             RequestData = dict()
-            RequestData["data"]                 = NewRoundStartTime
-            Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
+            RequestData["date"]                 = NewRoundStartTime
+            _ = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Push the manual pairings to the API again to make sure
         self.tprint("Pushing pairings to API again...")
@@ -1143,7 +1278,7 @@ class KnockOut:
         RequestData["nbRounds"]             = self._TotalRounds
         RequestData["conditions.allowList"] = self._AllowedPlayers
         RequestData["manualPairings"]       = self._CurPairings
-        Response = self._RunPostRequest(RequestEndpoint, RequestData, True)
+        _ = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Update the bracket
         self.tprint(f"Updating the bracket...")
@@ -1177,8 +1312,8 @@ class KnockOut:
                 self.tprint("Tournament already finished early!")
                 sys.exit()
 
-            self.tprint(f"Sleeping ({self._ApiDelay}), waiting for round to finish...")
-            time.sleep(self._ApiDelay)
+            self.tprint(f"Waiting for round to finish...")
+            # time.sleep(self._ApiDelay)
 
         self.tprint(f"Finished waiting for round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1}) to finish!")
 
@@ -1204,7 +1339,7 @@ class KnockOut:
             self._Participants[UserName]["points"] = JUser["points"]
         GameScores["BYE"] = 0
 
-        time.sleep(self._ApiDelay)
+        # time.sleep(self._ApiDelay)
 
         # Process all matches one by one
         for i in range(len(self._Pairings[-1]) // 2):
@@ -1260,7 +1395,7 @@ class KnockOut:
                         Player1Won = False
                 else:
                     # Determine winner by color
-                    if self._TopGetsWhite:
+                    if self._TopGetsWhite[self._CurMatch]:
                         Player1Won = False
                     else:
                         Player1Won = True

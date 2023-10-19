@@ -1,0 +1,425 @@
+17:53:27: Opened a new log file.
+17:53:27: POST-request to https://lichess.org/api/swiss/z0KqSYkk/edit.
+17:53:27: POST-request succeeded! Continuing in 3 seconds...
+17:53:30: Finished creating a new Lichess swiss tournament!
+17:53:30: Tournament available at https://lichess.org/swiss/z0KqSYkk.
+17:53:30: Waiting for start...
+17:53:30: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:53:31: GET-request succeeded! Continuing in 3 seconds...
+17:53:34: 
+17:53:34: === LIST OF PARTICIPANTS ===
+17:53:34:   (No participants yet.)
+17:53:34: 
+17:53:34: Making a preliminary bracket...
+17:53:35: Uploaded new bracket!
+17:53:35: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:53:45: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:53:45: GET-request succeeded! Continuing in 3 seconds...
+17:53:48: 
+17:53:48: === LIST OF PARTICIPANTS ===
+17:53:48:   (No participants yet.)
+17:53:48: 
+17:53:48: Making a preliminary bracket...
+17:53:50: Uploaded updated bracket!
+17:53:50: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:54:00: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:54:00: GET-request succeeded! Continuing in 3 seconds...
+17:54:03: 
+17:54:03: === LIST OF PARTICIPANTS ===
+17:54:03:   (No participants yet.)
+17:54:03: 
+17:54:03: Making a preliminary bracket...
+17:54:05: Uploaded updated bracket!
+17:54:05: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:54:15: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:54:15: GET-request succeeded! Continuing in 3 seconds...
+17:54:18: 
+17:54:18: === LIST OF PARTICIPANTS ===
+17:54:18:   (No participants yet.)
+17:54:18: 
+17:54:18: Making a preliminary bracket...
+17:54:20: Uploaded updated bracket!
+17:54:20: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:54:30: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:54:30: GET-request succeeded! Continuing in 3 seconds...
+17:54:33: 
+17:54:33: === LIST OF PARTICIPANTS ===
+17:54:33:   (No participants yet.)
+17:54:33: 
+17:54:33: Making a preliminary bracket...
+17:54:35: Uploaded updated bracket!
+17:54:35: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:54:45: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:54:45: GET-request succeeded! Continuing in 3 seconds...
+17:54:48: Adding player testingko0.
+17:54:48: Adding player testingko1.
+17:54:48: 
+17:54:48: === LIST OF PARTICIPANTS ===
+17:54:48:  1. TestingKO0           (1500) [testingko0]
+17:54:48:  2. TestingKO1           (1500) [testingko1]
+17:54:48: 
+17:54:48: Making a preliminary bracket...
+17:54:50: Uploaded updated bracket!
+17:54:50: Not yet starting (2/8), so sleeping for another 10 seconds...
+17:55:00: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:55:00: GET-request succeeded! Continuing in 3 seconds...
+17:55:03: Adding player testingko2.
+17:55:03: 
+17:55:03: === LIST OF PARTICIPANTS ===
+17:55:03:  1. TestingKO0           (1500) [testingko0]
+17:55:03:  2. TestingKO1           (1500) [testingko1]
+17:55:03:  3. TestingKO2           (1500) [testingko2]
+17:55:03: 
+17:55:03: Making a preliminary bracket...
+17:55:05: Uploaded updated bracket!
+17:55:05: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:55:15: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:55:16: GET-request succeeded! Continuing in 3 seconds...
+17:55:19: 
+17:55:19: === LIST OF PARTICIPANTS ===
+17:55:19:  1. TestingKO0           (1500) [testingko0]
+17:55:19:  2. TestingKO1           (1500) [testingko1]
+17:55:19:  3. TestingKO2           (1500) [testingko2]
+17:55:19: 
+17:55:19: Making a preliminary bracket...
+17:55:20: Uploaded updated bracket!
+17:55:20: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:55:30: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:55:31: GET-request succeeded! Continuing in 3 seconds...
+17:55:34: 
+17:55:34: === LIST OF PARTICIPANTS ===
+17:55:34:  1. TestingKO0           (1500) [testingko0]
+17:55:34:  2. TestingKO1           (1500) [testingko1]
+17:55:34:  3. TestingKO2           (1500) [testingko2]
+17:55:34: 
+17:55:34: Making a preliminary bracket...
+17:55:35: Uploaded updated bracket!
+17:55:35: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:55:45: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:55:46: GET-request succeeded! Continuing in 3 seconds...
+17:55:49: 
+17:55:49: === LIST OF PARTICIPANTS ===
+17:55:49:  1. TestingKO0           (1500) [testingko0]
+17:55:49:  2. TestingKO1           (1500) [testingko1]
+17:55:49:  3. TestingKO2           (1500) [testingko2]
+17:55:49: 
+17:55:49: Making a preliminary bracket...
+17:55:50: Uploaded updated bracket!
+17:55:50: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:56:00: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:56:01: GET-request succeeded! Continuing in 3 seconds...
+17:56:04: 
+17:56:04: === LIST OF PARTICIPANTS ===
+17:56:04:  1. TestingKO0           (1500) [testingko0]
+17:56:04:  2. TestingKO1           (1500) [testingko1]
+17:56:04:  3. TestingKO2           (1500) [testingko2]
+17:56:04: 
+17:56:04: Making a preliminary bracket...
+17:56:05: Uploaded updated bracket!
+17:56:05: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:56:15: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:56:16: GET-request succeeded! Continuing in 3 seconds...
+17:56:19: 
+17:56:19: === LIST OF PARTICIPANTS ===
+17:56:19:  1. TestingKO0           (1500) [testingko0]
+17:56:19:  2. TestingKO1           (1500) [testingko1]
+17:56:19:  3. TestingKO2           (1500) [testingko2]
+17:56:19: 
+17:56:19: Making a preliminary bracket...
+17:56:20: Uploaded updated bracket!
+17:56:20: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:56:31: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:56:31: GET-request succeeded! Continuing in 3 seconds...
+17:56:34: 
+17:56:34: === LIST OF PARTICIPANTS ===
+17:56:34:  1. TestingKO0           (1500) [testingko0]
+17:56:34:  2. TestingKO1           (1500) [testingko1]
+17:56:34:  3. TestingKO2           (1500) [testingko2]
+17:56:34: 
+17:56:34: Making a preliminary bracket...
+17:56:36: Uploaded updated bracket!
+17:56:36: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:56:46: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:56:46: GET-request succeeded! Continuing in 3 seconds...
+17:56:49: 
+17:56:49: === LIST OF PARTICIPANTS ===
+17:56:49:  1. TestingKO0           (1500) [testingko0]
+17:56:49:  2. TestingKO1           (1500) [testingko1]
+17:56:49:  3. TestingKO2           (1500) [testingko2]
+17:56:49: 
+17:56:49: Making a preliminary bracket...
+17:56:51: Uploaded updated bracket!
+17:56:51: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:57:01: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:57:01: GET-request succeeded! Continuing in 3 seconds...
+17:57:04: 
+17:57:04: === LIST OF PARTICIPANTS ===
+17:57:04:  1. TestingKO0           (1500) [testingko0]
+17:57:04:  2. TestingKO1           (1500) [testingko1]
+17:57:04:  3. TestingKO2           (1500) [testingko2]
+17:57:04: 
+17:57:04: Making a preliminary bracket...
+17:57:06: Uploaded updated bracket!
+17:57:06: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:57:16: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:57:16: GET-request succeeded! Continuing in 3 seconds...
+17:57:19: 
+17:57:19: === LIST OF PARTICIPANTS ===
+17:57:19:  1. TestingKO0           (1500) [testingko0]
+17:57:19:  2. TestingKO1           (1500) [testingko1]
+17:57:19:  3. TestingKO2           (1500) [testingko2]
+17:57:19: 
+17:57:19: Making a preliminary bracket...
+17:57:21: Uploaded updated bracket!
+17:57:21: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:57:31: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:57:31: GET-request succeeded! Continuing in 3 seconds...
+17:57:34: 
+17:57:34: === LIST OF PARTICIPANTS ===
+17:57:34:  1. TestingKO0           (1500) [testingko0]
+17:57:34:  2. TestingKO1           (1500) [testingko1]
+17:57:34:  3. TestingKO2           (1500) [testingko2]
+17:57:34: 
+17:57:34: Making a preliminary bracket...
+17:57:36: Uploaded updated bracket!
+17:57:36: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:57:46: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:57:46: GET-request succeeded! Continuing in 3 seconds...
+17:57:49: 
+17:57:49: === LIST OF PARTICIPANTS ===
+17:57:49:  1. TestingKO0           (1500) [testingko0]
+17:57:49:  2. TestingKO1           (1500) [testingko1]
+17:57:49:  3. TestingKO2           (1500) [testingko2]
+17:57:49: 
+17:57:49: Making a preliminary bracket...
+17:57:51: Uploaded updated bracket!
+17:57:51: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:58:01: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:58:01: GET-request succeeded! Continuing in 3 seconds...
+17:58:04: 
+17:58:04: === LIST OF PARTICIPANTS ===
+17:58:04:  1. TestingKO0           (1500) [testingko0]
+17:58:04:  2. TestingKO1           (1500) [testingko1]
+17:58:04:  3. TestingKO2           (1500) [testingko2]
+17:58:04: 
+17:58:04: Making a preliminary bracket...
+17:58:06: Uploaded updated bracket!
+17:58:06: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:58:16: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:58:16: GET-request succeeded! Continuing in 3 seconds...
+17:58:19: 
+17:58:19: === LIST OF PARTICIPANTS ===
+17:58:19:  1. TestingKO0           (1500) [testingko0]
+17:58:19:  2. TestingKO1           (1500) [testingko1]
+17:58:19:  3. TestingKO2           (1500) [testingko2]
+17:58:19: 
+17:58:19: Making a preliminary bracket...
+17:58:21: Uploaded updated bracket!
+17:58:21: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:58:31: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:58:31: GET-request succeeded! Continuing in 3 seconds...
+17:58:34: 
+17:58:34: === LIST OF PARTICIPANTS ===
+17:58:34:  1. TestingKO0           (1500) [testingko0]
+17:58:34:  2. TestingKO1           (1500) [testingko1]
+17:58:34:  3. TestingKO2           (1500) [testingko2]
+17:58:34: 
+17:58:34: Making a preliminary bracket...
+17:58:37: Uploaded updated bracket!
+17:58:37: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:58:47: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:58:47: GET-request succeeded! Continuing in 3 seconds...
+17:58:50: 
+17:58:50: === LIST OF PARTICIPANTS ===
+17:58:50:  1. TestingKO0           (1500) [testingko0]
+17:58:50:  2. TestingKO1           (1500) [testingko1]
+17:58:50:  3. TestingKO2           (1500) [testingko2]
+17:58:50: 
+17:58:50: Making a preliminary bracket...
+17:58:52: Uploaded updated bracket!
+17:58:52: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:59:02: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:59:02: GET-request succeeded! Continuing in 3 seconds...
+17:59:05: 
+17:59:05: === LIST OF PARTICIPANTS ===
+17:59:05:  1. TestingKO0           (1500) [testingko0]
+17:59:05:  2. TestingKO1           (1500) [testingko1]
+17:59:05:  3. TestingKO2           (1500) [testingko2]
+17:59:05: 
+17:59:05: Making a preliminary bracket...
+17:59:07: Uploaded updated bracket!
+17:59:07: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:59:17: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:59:18: GET-request succeeded! Continuing in 3 seconds...
+17:59:21: 
+17:59:21: === LIST OF PARTICIPANTS ===
+17:59:21:  1. TestingKO0           (1500) [testingko0]
+17:59:21:  2. TestingKO1           (1500) [testingko1]
+17:59:21:  3. TestingKO2           (1500) [testingko2]
+17:59:21: 
+17:59:21: Making a preliminary bracket...
+17:59:22: Uploaded updated bracket!
+17:59:22: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:59:32: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:59:33: GET-request succeeded! Continuing in 3 seconds...
+17:59:36: 
+17:59:36: === LIST OF PARTICIPANTS ===
+17:59:36:  1. TestingKO0           (1500) [testingko0]
+17:59:36:  2. TestingKO1           (1500) [testingko1]
+17:59:36:  3. TestingKO2           (1500) [testingko2]
+17:59:36: 
+17:59:36: Making a preliminary bracket...
+17:59:37: Uploaded updated bracket!
+17:59:37: Not yet starting (3/8), so sleeping for another 10 seconds...
+17:59:47: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+17:59:48: GET-request succeeded! Continuing in 3 seconds...
+17:59:51: 
+17:59:51: === LIST OF PARTICIPANTS ===
+17:59:51:  1. TestingKO0           (1500) [testingko0]
+17:59:51:  2. TestingKO1           (1500) [testingko1]
+17:59:51:  3. TestingKO2           (1500) [testingko2]
+17:59:51: 
+17:59:51: Making a preliminary bracket...
+17:59:52: Uploaded updated bracket!
+17:59:52: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:00:02: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:00:02: GET-request succeeded! Continuing in 3 seconds...
+18:00:05: 
+18:00:05: === LIST OF PARTICIPANTS ===
+18:00:05:  1. TestingKO0           (1500) [testingko0]
+18:00:05:  2. TestingKO1           (1500) [testingko1]
+18:00:05:  3. TestingKO2           (1500) [testingko2]
+18:00:05: 
+18:00:05: Making a preliminary bracket...
+18:00:07: Uploaded updated bracket!
+18:00:07: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:00:17: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:00:18: GET-request succeeded! Continuing in 3 seconds...
+18:00:21: 
+18:00:21: === LIST OF PARTICIPANTS ===
+18:00:21:  1. TestingKO0           (1500) [testingko0]
+18:00:21:  2. TestingKO1           (1500) [testingko1]
+18:00:21:  3. TestingKO2           (1500) [testingko2]
+18:00:21: 
+18:00:21: Making a preliminary bracket...
+18:00:22: Uploaded updated bracket!
+18:00:22: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:00:32: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:00:33: GET-request succeeded! Continuing in 3 seconds...
+18:00:36: 
+18:00:36: === LIST OF PARTICIPANTS ===
+18:00:36:  1. TestingKO0           (1500) [testingko0]
+18:00:36:  2. TestingKO1           (1500) [testingko1]
+18:00:36:  3. TestingKO2           (1500) [testingko2]
+18:00:36: 
+18:00:36: Making a preliminary bracket...
+18:00:37: Uploaded updated bracket!
+18:00:37: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:00:47: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:00:48: GET-request succeeded! Continuing in 3 seconds...
+18:00:51: 
+18:00:51: === LIST OF PARTICIPANTS ===
+18:00:51:  1. TestingKO0           (1500) [testingko0]
+18:00:51:  2. TestingKO1           (1500) [testingko1]
+18:00:51:  3. TestingKO2           (1500) [testingko2]
+18:00:51: 
+18:00:51: Making a preliminary bracket...
+18:00:52: Uploaded updated bracket!
+18:00:52: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:01:02: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:01:03: GET-request succeeded! Continuing in 3 seconds...
+18:01:06: 
+18:01:06: === LIST OF PARTICIPANTS ===
+18:01:06:  1. TestingKO0           (1500) [testingko0]
+18:01:06:  2. TestingKO1           (1500) [testingko1]
+18:01:06:  3. TestingKO2           (1500) [testingko2]
+18:01:06: 
+18:01:06: Making a preliminary bracket...
+18:01:07: Uploaded updated bracket!
+18:01:07: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:01:17: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:01:18: GET-request succeeded! Continuing in 3 seconds...
+18:01:21: 
+18:01:21: === LIST OF PARTICIPANTS ===
+18:01:21:  1. TestingKO0           (1500) [testingko0]
+18:01:21:  2. TestingKO1           (1500) [testingko1]
+18:01:21:  3. TestingKO2           (1500) [testingko2]
+18:01:21: 
+18:01:21: Making a preliminary bracket...
+18:01:22: Uploaded updated bracket!
+18:01:22: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:01:32: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:01:33: GET-request succeeded! Continuing in 3 seconds...
+18:01:36: 
+18:01:36: === LIST OF PARTICIPANTS ===
+18:01:36:  1. TestingKO0           (1500) [testingko0]
+18:01:36:  2. TestingKO1           (1500) [testingko1]
+18:01:36:  3. TestingKO2           (1500) [testingko2]
+18:01:36: 
+18:01:36: Making a preliminary bracket...
+18:01:38: Uploaded updated bracket!
+18:01:38: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:01:48: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:01:48: GET-request succeeded! Continuing in 3 seconds...
+18:01:51: 
+18:01:51: === LIST OF PARTICIPANTS ===
+18:01:51:  1. TestingKO0           (1500) [testingko0]
+18:01:51:  2. TestingKO1           (1500) [testingko1]
+18:01:51:  3. TestingKO2           (1500) [testingko2]
+18:01:51: 
+18:01:51: Making a preliminary bracket...
+18:01:53: Uploaded updated bracket!
+18:01:53: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:02:03: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:02:03: GET-request succeeded! Continuing in 3 seconds...
+18:02:06: 
+18:02:06: === LIST OF PARTICIPANTS ===
+18:02:06:  1. TestingKO0           (1500) [testingko0]
+18:02:06:  2. TestingKO1           (1500) [testingko1]
+18:02:06:  3. TestingKO2           (1500) [testingko2]
+18:02:06: 
+18:02:06: Making a preliminary bracket...
+18:02:08: Uploaded updated bracket!
+18:02:08: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:02:18: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:02:18: GET-request succeeded! Continuing in 3 seconds...
+18:02:21: 
+18:02:21: === LIST OF PARTICIPANTS ===
+18:02:21:  1. TestingKO0           (1500) [testingko0]
+18:02:21:  2. TestingKO1           (1500) [testingko1]
+18:02:21:  3. TestingKO2           (1500) [testingko2]
+18:02:21: 
+18:02:21: Making a preliminary bracket...
+18:02:23: Uploaded updated bracket!
+18:02:23: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:02:33: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:02:33: GET-request succeeded! Continuing in 3 seconds...
+18:02:36: 
+18:02:36: === LIST OF PARTICIPANTS ===
+18:02:36:  1. TestingKO0           (1500) [testingko0]
+18:02:36:  2. TestingKO1           (1500) [testingko1]
+18:02:36:  3. TestingKO2           (1500) [testingko2]
+18:02:36: 
+18:02:36: Making a preliminary bracket...
+18:02:38: Uploaded updated bracket!
+18:02:38: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:02:48: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:02:48: GET-request succeeded! Continuing in 3 seconds...
+18:02:51: 
+18:02:51: === LIST OF PARTICIPANTS ===
+18:02:51:  1. TestingKO0           (1500) [testingko0]
+18:02:51:  2. TestingKO1           (1500) [testingko1]
+18:02:51:  3. TestingKO2           (1500) [testingko2]
+18:02:51: 
+18:02:51: Making a preliminary bracket...
+18:02:53: Uploaded updated bracket!
+18:02:53: Not yet starting (3/8), so sleeping for another 10 seconds...
+18:03:03: GET-request to https://lichess.org/api/swiss/z0KqSYkk/results.
+18:03:04: GET-request succeeded! Continuing in 3 seconds...
+18:03:07: 
+18:03:07: === LIST OF PARTICIPANTS ===
+18:03:07:  1. TestingKO0           (1500) [testingko0]
+18:03:07:  2. TestingKO1           (1500) [testingko1]
+18:03:07:  3. TestingKO2           (1500) [testingko2]
+18:03:07: 
+18:03:07: Making a preliminary bracket...

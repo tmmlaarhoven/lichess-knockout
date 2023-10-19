@@ -1,0 +1,34 @@
+17:36:04: Opened a new log file.
+17:36:04: POST-request to https://lichess.org/api/swiss/UZlmbBWO/edit.
+17:36:05: POST-request succeeded! Continuing in 3 seconds...
+17:36:08: Finished creating a new Lichess swiss tournament!
+17:36:08: Tournament available at https://lichess.org/swiss/UZlmbBWO.
+17:36:08: Waiting for start...
+17:36:08: GET-request to https://lichess.org/api/swiss/UZlmbBWO/results.
+17:36:08: GET-request succeeded! Continuing in 3 seconds...
+17:36:11: 
+17:36:11: === LIST OF PARTICIPANTS ===
+17:36:11:   (No participants yet.)
+17:36:11: 
+17:36:11: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:36:21: GET-request to https://lichess.org/api/swiss/UZlmbBWO/results.
+17:36:22: GET-request succeeded! Continuing in 3 seconds...
+17:36:25: 
+17:36:25: === LIST OF PARTICIPANTS ===
+17:36:25:   (No participants yet.)
+17:36:25: 
+17:36:25: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:36:35: GET-request to https://lichess.org/api/swiss/UZlmbBWO/results.
+17:36:36: GET-request succeeded! Continuing in 3 seconds...
+17:36:39: 
+17:36:39: === LIST OF PARTICIPANTS ===
+17:36:39:   (No participants yet.)
+17:36:39: 
+17:36:39: Not yet starting (0/8), so sleeping for another 10 seconds...
+17:36:49: GET-request to https://lichess.org/api/swiss/UZlmbBWO/results.
+17:36:49: GET-request succeeded! Continuing in 3 seconds...
+17:36:52: 
+17:36:52: === LIST OF PARTICIPANTS ===
+17:36:52:   (No participants yet.)
+17:36:52: 
+17:36:52: Not yet starting (0/8), so sleeping for another 10 seconds...
