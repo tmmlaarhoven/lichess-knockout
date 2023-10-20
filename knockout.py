@@ -859,17 +859,22 @@ class KnockOut:
         git_file = f"png/{self._SwissId}.png"
         if New:
             self._GitHubRepo.create_file(git_file,
-                                         f"Creating new bracket {self._SwissId}.png",
-                                         image_bytes,
-                                         branch="main")
+                f"Creating new bracket {self._SwissId}.png",
+                image_bytes,
+                branch="main")
             self.tprint("Uploaded new bracket!")
         else:
             contents = self._GitHubRepo.get_contents(git_file)
+            CommitMessage = f"Updating bracket {self._SwissId}.png"
+            if (self._CurMatch > -1) and (self._CurGame > -1):
+                CommitMessage += f" for round {self._CurMatch+1}.{self._CurGame+1}"
+            else:
+                CommitMessage += f" before tournament start"
             self._GitHubRepo.update_file(contents.path,
-                                         f"Updating bracket {self._SwissId}.png",
-                                         image_bytes,
-                                         contents.sha,
-                                         branch="main")
+                CommitMessage,
+                image_bytes,
+                contents.sha,
+                branch="main")
             self.tprint("Uploaded updated bracket!")
 
 
@@ -1242,8 +1247,10 @@ class KnockOut:
 
         self.PrintMatches()
 
+        # Make pairings string from pairing list
+        self._CurPairings = "\n".join(PairingList)
+
         # # Push the manual pairings to the API
-        # self._CurPairings = "\n".join(PairingList)
         # self.tprint("Pushing pairings to API...")
         # RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
         # RequestData = dict()
@@ -1432,7 +1439,8 @@ class KnockOut:
         else:
             self._Winner = self._Pairings[-1][1][0]
             self._Loser = self._Pairings[-1][0][0]
-        self.tprint(f"Winner: {self._Winner}")
+        self.tprint(f"Winner: {self._Winner}!")
+        self.tprint(f"Runner-up: {self._Loser}.")
 
         # Update the final bracket
         self._Bracket_MakeBracket()
