@@ -127,7 +127,8 @@ class KnockOut:
         # - Value 0 gives bottom player in bracket white first
         # - Value 1 gives top player in bracket white first
         self._TopGetsWhite      = [random.randrange(0, 2) for _ in range(self._MatchRounds)]
-        self.tprint(self._TopGetsWhite)
+        self.tprint("Coin flips for colors in bracket: ")
+        self.tpring(self._TopGetsWhite)
 
         self._Description       = f"Knock-out tournament for up to {self._MaxParticipants} players. "
         self._Description      += f"Each match consists of {self._GamesPerMatch} game{'s' if (self._GamesPerMatch > 1) else ''}. "
