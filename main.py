@@ -1,5 +1,6 @@
 import argparse
 import knockout
+import os
 import sys
 
 if __name__ == "__main__":
@@ -38,18 +39,27 @@ if __name__ == "__main__":
     # Parse the arguments
     Args = ArgParser.parse_args()
 
-    # Parse the parameters as appropriate
+    # Parse the configuration
+    assert (os.path.exists(Args.config)), "Configuration file does not exist"
     ConfigFile = Args.config
+
+    # Parse the Lichess token
     if Args.lichess is not None:
         LichessToken = Args.lichess
     else:
+        assert (os.path.exists(Args.lichessfile)), "Lichess token file does not exist"
         with open(Args.lichessfile) as LichessTokenFile:
             LichessToken = LichessTokenFile.readline().strip()
+    assert ("lip_" in LichessToken), "Lichess token not of the right format"
+
+    # Parse the GitHub token
     if Args.github is not None:
         GitHubToken = Args.github
     else:
+        assert (os.path.exists(Args.githubfile)), "GitHub token file does not exist"
         with open(Args.githubfile) as GitHubTokenFile:
             GitHubToken = GitHubTokenFile.readline().strip()
+    assert ("github_" in GitHubToken), "GitHub token not of the right format"
 
     # Set up the knockout tournament runner
     KO = knockout.KnockOut(LichessToken, GitHubToken, ConfigFile)

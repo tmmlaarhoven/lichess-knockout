@@ -205,9 +205,11 @@ class KnockOut:
         RepoChars = alphabet + numeric + ".-_"
         assert (all([(x in RepoChars) for x in self._GitHubRepoName])), "Invalid GitHub repository"
         RepoEndpoint = f"https://api.github.com/repos/{self._GitHubUserName}/{self._GitHubRepoName}"
-        Response = self._RunGetRequest(RepoEndpoint, False, False)
+        Response = self._RunGetRequest(RepoEndpoint, False, AuthorizeLichess=False, AuthorizeGitHub=True)
         JResponse = Response.json()
         assert ("id" in JResponse), "GitHub repository not found"
+        assert ("permissions" in JResponse), "GitHub token invalid"
+        assert (JResponse["permissions"].get("push", False)), "GitHub token does not permit pushing"
 
         # Lichess user token
         TokenEndpoint = "https://lichess.org/api/token/test"
@@ -345,7 +347,7 @@ class KnockOut:
     #       API request handling
     # =======================================================
 
-    def _RunGetRequest(self, RequestEndpoint: str, KillOnFail: bool, Authorize: bool = True):
+    def _RunGetRequest(self, RequestEndpoint: str, KillOnFail: bool, AuthorizeLichess: bool = True, AuthorizeGitHub: bool = False):
         """
         Run an API request, and handle potential errors.
         If the flag KillOnFail is true, the tournament will be aborted
@@ -357,9 +359,12 @@ class KnockOut:
         RequestSuccess = False
         for i in range(self._ApiAttempts):
             try:
-                if Authorize:
+                if AuthorizeLichess:
                     Response = requests.get(RequestEndpoint,
                                 headers = {"Authorization": f"Bearer {self._LichessToken}"})
+                elif AuthorizeGitHub:
+                    Response = requests.get(RequestEndpoint,
+                                headers = {"Authorization": f"Bearer {self._GitHubToken}"})
                 else:
                     Response = requests.get(RequestEndpoint)
                 Response.raise_for_status()
@@ -499,7 +504,7 @@ class KnockOut:
         self._Bracket_DisplayScores.append({
             "Color": self._Bracket_ColorDraw,
             "ColorGame": self._Bracket_ColorDraw,
-            "Weight": "bold",
+            "Weight": "normal",
             "WeightGame": "bold"})
         self._Bracket_DisplayScores.append({
             "Color": self._Bracket_ColorWin,
@@ -532,7 +537,7 @@ class KnockOut:
         for g in range(self._GamesPerMatch):
             self._ax.add_patch(mpl.patches.Rectangle((XBase + self._Xn + g * self._Xg + (0.1 if g > 0 else 0),
                         YBase + ((g + 1 + self._TopGetsWhite[r]) % 2) * self._Yh / 2),
-                        self._Xg + (0.1 if g in {0, self._GamesPerMatch - 1} else 0.0),
+                        self._Xg + (0.1 if (g == 0) else 0) + (0.1 if (g == self._GamesPerMatch - 1) else 0),
                         self._Yh / 2,
                         facecolor = self._Bracket_ColorBGScoreWhite,
                         fill = True,
