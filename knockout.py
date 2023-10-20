@@ -1242,17 +1242,17 @@ class KnockOut:
 
         self.PrintMatches()
 
-        # Push the manual pairings to the API
-        self._CurPairings = "\n".join(PairingList)
-        self.tprint("Pushing pairings to API...")
-        RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
-        RequestData = dict()
-        RequestData["clock.limit"]          = self._ClockInit
-        RequestData["clock.increment"]      = self._ClockInc
-        RequestData["nbRounds"]             = self._TotalRounds
-        RequestData["conditions.allowList"] = self._AllowedPlayers
-        RequestData["manualPairings"]       = self._CurPairings
-        _ = self._RunPostRequest(RequestEndpoint, RequestData, True)
+        # # Push the manual pairings to the API
+        # self._CurPairings = "\n".join(PairingList)
+        # self.tprint("Pushing pairings to API...")
+        # RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
+        # RequestData = dict()
+        # RequestData["clock.limit"]          = self._ClockInit
+        # RequestData["clock.increment"]      = self._ClockInc
+        # RequestData["nbRounds"]             = self._TotalRounds
+        # RequestData["conditions.allowList"] = self._AllowedPlayers
+        # RequestData["manualPairings"]       = self._CurPairings
+        # _ = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Update game start time to 15 seconds from now
         NewRoundStartTime = 1000 * round(time.time()) + 15000
@@ -1275,7 +1275,7 @@ class KnockOut:
             _ = self._RunPostRequest(RequestEndpoint, RequestData, True)
 
         # Push the manual pairings to the API again to make sure
-        self.tprint("Pushing pairings to API again...")
+        self.tprint("Pushing pairings to API...")
         RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/edit"
         RequestData = dict()
         RequestData["clock.limit"]          = self._ClockInit
