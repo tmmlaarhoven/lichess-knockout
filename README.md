@@ -158,19 +158,18 @@ Below a list of things that would be nice to add in the future, or which have be
   - [x] Make a tool to run knock-out events on Lichess via manual pairings.
   - [x] Automate all aspects of the tournament organization.
   - [x] Make starting the tournament early (when `MaxParticipants` is reached) optional.
+  - [x] Terminate matches early if the winner is already decided (for >=2 games per match).
+  - [x] Give early winners a 1-bye, and visualize in bracket.
+  - [ ] Use even number of games and (in case of tie) randomly decide colors for final Armageddon game.
   - [ ] Make it possible to continue running a pre-created event (say open registration a week early).
   - [ ] Allow player seeding as input for manual bracket setup.
-  - [ ] Allow specifying which users are allowed to join from the start.
-  - [ ] Terminate matches early if the winner is already decided (for >=2 games per match).
-  - [ ] Give early winners a 1-bye, losers a 0-bye, and visualize in bracket.
+  - [ ] Allow specifying which users are allowed to join the tournament.
   - [ ] Test the functionality with a larger number of participants.
 - Advanced functionality
   - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify as winners(?)
   - [ ] Implement different tiebreak options that people may want to use(?)
   - [ ] Make double-elimination brackets an option(?)
   - [ ] Make it possible to have later matches (SF, F) consist of more games(?)
-  - [ ] Use even number of games and (in case of tie) randomly decide colors for third Armageddon game(?)
-  - [ ] Give one player time odds in Armageddon style(?) -- Likely impossible.
 - Cloud hosting
   - [x] Integrate the functionality with GitHub Actions.
   - [x] Make it possible for others to clone the repository and host their own scheduled events.

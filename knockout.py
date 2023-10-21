@@ -121,7 +121,8 @@ class KnockOut:
         self._Loser             = None
         self._MatchRounds       = math.ceil(math.log2(self._MaxParticipants))
         self._TotalRounds       = self._GamesPerMatch * self._MatchRounds
-        self._TreeSize          = 2 ** self._MatchRounds                   # If e.g. 5 players, it is 8
+        self._SkippedRounds     = 0                         # If matches get decided early, increment by 1
+        self._TreeSize          = 2 ** self._MatchRounds    # If e.g. 5 players, it is 8
 
         # Decide white/black in initial games in each match
         # - Value 0 gives bottom player in bracket white first
@@ -290,12 +291,74 @@ class KnockOut:
     # =======================================================
 
     def _GetRound(self) -> int:
-        return self._CurMatch * self._GamesPerMatch + self._CurGame
+        return self._CurMatch * self._GamesPerMatch + self._CurGame - self._SkippedRounds
 
 
 
     def _BracketFile(self) -> str:
         return f"png{os.sep}{self._SwissId}.png"
+
+
+
+    def _MatchDecided(self, Bracket1, Bracket2) -> (bool, bool):
+        """
+        Given two parts of the pairing tree, decide if there are winners yet.
+        """
+
+        # Extract players for this game
+        Player1Won = False
+        Player2Won = False
+        Player1 = Bracket1[0]
+        Player2 = Bracket2[0]
+        Score1 = sum(Bracket1[2])
+        Score2 = sum(Bracket2[2])
+
+        User1 = self._Participants.get(Player1,
+                    {"username": "BYE", "rating": 0, "points": 0.0, "seed": -1})
+        User2 = self._Participants.get(Player2,
+                    {"username": "BYE", "rating": 0, "points": 0.0, "seed": -1})
+
+        # Player 1 won outright
+        if (Score1 > self._GamesPerMatch / 2 + 0.1) or (User2["username"] == "BYE"):
+            Player1Won = True
+
+        # Player 2 won outright
+        elif (Score2 > self._GamesPerMatch / 2 + 0.1) or (User1["username"] == "BYE"):
+            Player2Won = True
+
+        # Tiebreak deciding
+        else:
+
+            # Two possible methods: by rating, and by color
+            if self._TieBreak == "rating":
+                # Lower-rated player wins
+                if (Score1 > self._GamesPerMatch / 2 - 0.1) and (User1["rating"] <= User2["rating"]):
+                    Player1Won = True
+                elif (Score2 > self._GamesPerMatch / 2 - 0.1) and (User2["rating"] <= User1["rating"]):
+                    Player2Won = True
+            else:
+                # Determine winner by color
+                if (Score1 > self._GamesPerMatch / 2 - 0.1) and (not self._TopGetsWhite[self._CurMatch]):
+                    Player1Won = True
+                elif (Score2 > self._GamesPerMatch / 2 - 0.1) and (self._TopGetsWhite[self._CurMatch]):
+                    Player2Won = True
+
+        assert (not Player1Won or not Player2Won), "How did both win?"
+
+        # Store match results in self._Pairings
+        return (Player1Won, Player2Won)
+
+
+
+    def _AllMatchesDecided(self):
+        """
+        Check if all matches were decided early, in which case
+        no new round for this match needs to be scheduled.
+        """
+        for i in range(len(self._Pairings[-1]) // 2):
+            if (not self._Pairings[-1][2*i][1]) and (not self._Pairings[-1][2*i+1][1]):
+                return False
+        return True
 
 
 
@@ -380,7 +443,7 @@ class KnockOut:
         if not RequestSuccess:
             self.tprint(f"Unable to process GET-request!")
             if KillOnFail:
-                self._KillTournament()
+                self._Terminate()
             self.tprint("Goodbye!")
             sys.exit()
 
@@ -419,7 +482,7 @@ class KnockOut:
         if not RequestSuccess:
             self.tprint(f"Unable to process POST-request!")
             if KillOnFail:
-                self._KillTournament()
+                self._Terminate()
             self.tprint("Goodbye!")
             sys.exit()
 
@@ -429,15 +492,15 @@ class KnockOut:
         return Response
 
 
-    def _KillTournament(self):
+    def _Terminate(self):
         """
-        In case we fail to connect to the server, we abort the tournament.
+        In some cases we may wish to terminate the tournament at once.
         """
-        self.tprint("Attempting to cancel the tournament...")
+        self.tprint("Attempting to end/cancel the tournament...")
         RequestEndpoint = f"https://lichess.org/api/swiss/{self._SwissId}/terminate"
         RequestData = dict()
         self._RunPostRequest(RequestEndpoint, RequestData, False)
-        self.tprint("Successfully canceled the tournament")
+        self.tprint("Successfully ended/cancelled the tournament.")
 
 
 
@@ -1068,7 +1131,7 @@ class KnockOut:
 
         # If not enough participants, abort everything
         if len(self._Participants) < self._MinParticipants:
-            self._KillTournament()
+            self._Terminate()
             sys.exit()
 
         else:
@@ -1212,6 +1275,18 @@ class KnockOut:
 
 
 
+    def _SkipGames(self):
+        """
+        In case all matches were already decided, skip this game round, and push fake results to bracket.
+        """
+
+        self.tprint(f"All matches in match round {self._CurMatch+1} decided early!")
+
+        self._SkippedRounds += 1
+        self._TotalRounds -= 1          # Decrease the actual number of rounds by one
+
+
+
     def _StartGames(self):
         """
         Start a new (sub)round.
@@ -1230,20 +1305,27 @@ class KnockOut:
             Player1 = self._Pairings[-1][2*i][0]
             Player2 = self._Pairings[-1][2*i+1][0]
 
-            # Identify white/black based on game number
-            if self._CurGame % 2 == (1 - self._TopGetsWhite[self._CurMatch]):
-                # Swap order
-                PlayerTemp = Player1
-                Player1 = Player2
-                Player2 = PlayerTemp
-
-            # Store pairing in pairing list for API
+            # Take care of byes in the pairing tree
             if Player1 == "BYE" or Player2 == "BYE":
                 if Player1 == "BYE":
-                    PairingList.append(f"{Player2} 1")
-                else:
+                    self._Pairings[-1][2*i+1][1] = True
+                else: # if Player2 == "BYE"
+                    self._Pairings[-1][2*i][1] = True
+
+            # Calculate game pairings for this game round
+            if self._Pairings[-1][2*i][1] or self._Pairings[-1][2*i+1][1]:
+                # Match decided? Give a full point
+                if self._Pairings[-1][2*i][1]:
                     PairingList.append(f"{Player1} 1")
+                else: # if self._Pairings[-1][2*i+1][1]
+                    PairingList.append(f"{Player2} 1")
             else:
+                # Match undecided, make proper game pairing
+                if self._CurGame % 2 == (1 - self._TopGetsWhite[self._CurMatch]):
+                    # Swap order
+                    PlayerTemp = Player1
+                    Player1 = Player2
+                    Player2 = PlayerTemp
                 PairingList.append(f"{Player1} {Player2}")
 
         self.PrintMatches()
@@ -1326,7 +1408,6 @@ class KnockOut:
                 sys.exit()
 
             self.tprint(f"Waiting for round to finish...")
-            # time.sleep(self._ApiDelay)
 
         self.tprint(f"Finished waiting for round {self._CurMatch+1}.{self._CurGame+1} ({self._GetRound()+1}) to finish!")
 
@@ -1352,8 +1433,6 @@ class KnockOut:
             self._Participants[UserName]["points"] = JUser["points"]
         GameScores["BYE"] = 0
 
-        # time.sleep(self._ApiDelay)
-
         # Process all matches one by one
         for i in range(len(self._Pairings[-1]) // 2):
 
@@ -1364,8 +1443,20 @@ class KnockOut:
             assert (GameScores[Player1] + GameScores[Player2] == 1), f"Error: {Player1} {GameScores[Player1]} - {GameScores[Player2]} {Player2}"
 
             # Store results in self._Pairings
+            if self._Pairings[-1][2*i][1] or self._Pairings[-1][2*i+1][1]:
+                # Match was decided before this game
+                continue
+
+            # Match not yet decided, an actual game took place, update scores
             self._Pairings[-1][2*i][2].append(GameScores[Player1])
             self._Pairings[-1][2*i+1][2].append(GameScores[Player2])
+
+            # Compute potential match winners in the bracket
+            (Player1Won, Player2Won) = self._MatchDecided(self._Pairings[-1][2*i], self._Pairings[-1][2*i+1])
+
+            # Store match results in self._Pairings
+            self._Pairings[-1][2*i][1] = Player1Won
+            self._Pairings[-1][2*i+1][1] = Player2Won
 
         self.PrintMatches()
 
@@ -1377,46 +1468,19 @@ class KnockOut:
         """
         Do post-processing when a match round has finished.
         """
-        self.tprint(f"Conclusing match round {self._CurMatch+1}...")
+        self.tprint(f"Concluding match round {self._CurMatch+1}...")
 
         # Process all matches one by one
         for i in range(len(self._Pairings[-1]) // 2):
 
-            # Extract players for this game
-            Player1 = self._Pairings[-1][2*i][0]
-            Player2 = self._Pairings[-1][2*i+1][0]
-            Score1 = sum(self._Pairings[-1][2*i][2])
-            Score2 = sum(self._Pairings[-1][2*i+1][2])
-            # Player 1 won outright
+            # Compute match winners in the bracket
+            (Player1Won, Player2Won) = self._MatchDecided(self._Pairings[-1][2*i], self._Pairings[-1][2*i+1])
 
-            if Score1 > Score2:
-                Player1Won = True
-
-            # Player 2 won outright
-            elif Score1 < Score2:
-                Player1Won = False
-
-            # Tiebreak deciding
-            else:
-
-                # Two possible methods: by rating, and by color
-                if self._TieBreak == "rating":
-                    # Lower-rated player wins
-                    if self._Participants[Player1]["rating"] <= self._Participants[Player2]["rating"]:
-                        Player1Won = True
-                    else:
-                        Player1Won = False
-                else:
-                    # Determine winner by color
-                    if self._TopGetsWhite[self._CurMatch]:
-                        Player1Won = False
-                    else:
-                        Player1Won = True
-
+            assert (Player1Won or Player2Won), "Match undecided?"
 
             # Store match results in self._Pairings
             self._Pairings[-1][2*i][1] = Player1Won
-            self._Pairings[-1][2*i+1][1] = not Player1Won
+            self._Pairings[-1][2*i+1][1] = Player2Won
 
         self.PrintMatches()
 
@@ -1472,8 +1536,12 @@ class KnockOut:
             self._StartMatches()                    # Preprocessing for starting matches, e.g., getting pairings
             for g in range(self._GamesPerMatch):    # For each game round within a match round
                 self._CurGame = g                   # Update current game counter
+                if self._AllMatchesDecided():       # If all matches were decided early, skip ahead
+                    self._SkipGames()               # Do what must be done for skipping a round
+                    continue                        # Skip this game round
                 self._StartGames()                  # Preprocessing for starting games, e.g., pushing pairings
                 self._WaitForGamesToFinish()        # Loop and wait for all games to end
                 self._FinishGames()                 # Update match results via Lichess API results
             self._FinishMatches()                   # Last games have finished, decide winners/tiebreaks
         self._Finalize()                            # Finalize Lichess event
+        self._Terminate()                           # End the tournament, in case it did not already finish
