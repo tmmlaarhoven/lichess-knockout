@@ -5,11 +5,11 @@ Contact: mail@thijs.com
 This is an automated script to:
 - Schedule knock-out tournaments;
 - Listen to participants joining/leaving;
-- Start the tournament if the maximum number of
-participants has been reached;
-- Generate and ensure balanced seeded pairings;
-- "Eliminating" eliminated players from the event;
-- Making and updating visual tournament brackets.
+- Start the tournament automatically;
+- Generate and ensure seeded pairings;
+- Remove eliminated players from the event;
+- Make and update visual tournament brackets;
+- Synchronize everything with the cloud.
 
 This script is further integrated with GitHub Actions,
 so that the script can be run from the cloud to
@@ -236,8 +236,8 @@ class KnockOut:
         assert ((len(self._Title) in range(2, 31)) or (self._Title == "")), "Event name has improper length"
 
         # Tiebreak criterium
-        assert (self._TieBreak in {"rating", "color"}), "No proper tiebreak specified"
-        assert ((self._TieBreak != "color") or (self._GamesPerMatch % 2 == 1)), "Deciding winner by color only possible for odd match lengths"
+        assert (self._TieBreak in {"rating", "color", "armageddon"}), "No proper tiebreak specified"
+        assert ((self._TieBreak not in {"color", "armageddon"}) or (self._GamesPerMatch % 2 == 1)), "Deciding winner by color only possible for odd match lengths"
 
         # Randomizing seeds
         assert (self._RandomizeSeeds in {True, False}), "RandomizeSeeds not a boolean value"
@@ -304,7 +304,6 @@ class KnockOut:
         """
         Given two parts of the pairing tree, decide if there are winners yet.
         """
-
         # Extract players for this game
         Player1Won = False
         Player2Won = False
@@ -318,30 +317,50 @@ class KnockOut:
         User2 = self._Participants.get(Player2,
                     {"username": "BYE", "rating": 0, "points": 0.0, "seed": -1})
 
-        # Player 1 won outright
+        # Player 1 won outright with more than 50% score (or opponent is a bye)
         if (Score1 > self._GamesPerMatch / 2 + 0.1) or (User2["username"] == "BYE"):
             Player1Won = True
 
-        # Player 2 won outright
+        # Player 2 won outright with more than 50% score (or opponent is a bye)
         elif (Score2 > self._GamesPerMatch / 2 + 0.1) or (User1["username"] == "BYE"):
             Player2Won = True
 
-        # Tiebreak deciding
+        # Tiebreak decisions
         else:
 
-            # Two possible methods: by rating, and by color
-            if self._TieBreak == "rating":
+            # Method 1: by rating -- lower-rated player wins
+            if (self._TieBreak == "rating"):
                 # Lower-rated player wins
                 if (Score1 > self._GamesPerMatch / 2 - 0.1) and (User1["rating"] <= User2["rating"]):
                     Player1Won = True
                 elif (Score2 > self._GamesPerMatch / 2 - 0.1) and (User2["rating"] <= User1["rating"]):
                     Player2Won = True
-            else:
+
+            # Method 2: by color -- more black games wins
+            elif (self._TieBreak == "color"):
                 # Determine winner by color
                 if (Score1 > self._GamesPerMatch / 2 - 0.1) and (not self._TopGetsWhite[self._CurMatch]):
                     Player1Won = True
                 elif (Score2 > self._GamesPerMatch / 2 - 0.1) and (self._TopGetsWhite[self._CurMatch]):
                     Player2Won = True
+
+            # Method 3: Armageddon -- only last game if tie, and then decide by color
+            else: # if (self._TieBreak == "armageddon")
+
+                # Before Armageddon game, a score of 0.5 less also wins
+                if len(Bracket1[2]) < self._GamesPerMatch:
+                    if Score1 > (self._GamesPerMatch - 1) / 2 - 0.1:
+                        Player1Won = True
+                    elif Score2 > (self._GamesPerMatch - 1) / 2 - 0.1:
+                        Player2Won = True
+
+                # After final Armageddon game, decide tiebreak on black games
+                else:
+                    if (Score1 > self._GamesPerMatch / 2 - 0.1) and (not self._TopGetsWhite[self._CurMatch]):
+                        Player1Won = True
+                    elif (Score2 > self._GamesPerMatch / 2 - 0.1) and (self._TopGetsWhite[self._CurMatch]):
+                        Player2Won = True
+
 
         assert (not Player1Won or not Player2Won), "How did both win?"
 
@@ -533,9 +552,6 @@ class KnockOut:
         """
         Initialize drawing, and instantiate variables.
         """
-        # Bracket parameters
-        self._WinScore = self._GamesPerMatch / 2. + 0.2     # In case floats/rounding gives issues
-
         # Bracket width parameters
         self._Xn = 8      # Width of the name within the block
         self._Xg = 1      # Width of a single game result in a block
@@ -552,11 +568,8 @@ class KnockOut:
         # Initialize new, empty figure
         plt.figure()
         plt.style.use(['dark_background'])
-        self._fig, self._ax = plt.subplots(figsize=(self._Xtotal/2,self._Ytotal/2))
+        self._fig, self._ax = plt.subplots(figsize = (self._Xtotal/2, self._Ytotal/2))
         self._fig.patch.set_facecolor(self._Bracket_ColorBGAll)
-
-        # Temporary, remove later
-        self._userchars = "abcdefghijklmnopqrstuvwxyz0123456789-_"
 
         # List of display information depending on win/loss/draw
         self._Bracket_DisplayScores = []
