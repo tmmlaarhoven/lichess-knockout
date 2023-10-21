@@ -186,7 +186,7 @@ Below a list of things that would be nice to add in the future, or which have be
   - [x] Improve visualization of winner/loser in bracket with darker/lighter colors.
   - [x] Visualize who had white/black in each game in the bracket.
   - [x] Make shorter URLs for the brackets, https://ko.thijs.com/png/qWeRtY12.png. (Only for me.)
-  - [ ] Display winners if matches are decided early.
+  - [x] Display winners if matches are decided early.
   - [ ] Visualize BYEs in a nicer way.
 - Documentation and usability
   - [x] Write a README with an extensive manual how to use this script.
@@ -204,3 +204,4 @@ Below a list of things that would be nice to add in the future, or which have be
   - [x] Fix issue of script not sending pairings in time for round 1.
   - [x] Fix issue of not closing figures properly, and having many figures open.
   - [ ] Fix issue of endpoint `/schedule-next-round` with fixed wait times between rounds.
+  - [ ] Fix issue of figure size changing when trophies are added, and rightmost game box being odd-sized.
