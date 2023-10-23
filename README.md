@@ -205,3 +205,4 @@ Below a list of things that would be nice to address in the future, or which hav
   - [x] Fix issue of not closing figures properly, and having many figures open.
   - [x] Fix issue of endpoint `/schedule-next-round` with fixed wait times between rounds.
   - [ ] Fix issue of figure size changing when trophies are added, and rightmost game box being odd-sized.
+      - Draw nearly-invisible bounding box to overrule tight fit function.
