@@ -143,17 +143,17 @@ GitHub Actions will automatically pick up on the new `.yml` file if it is placed
 
 ## Design considerations
 
-The solution in this script, to host knock-out tournaments as Swiss events is a disguise, comes with benefits as well as drawbacks.
+The solution in this script, to host knock-out tournaments as Swiss events in disguise, comes with benefits as well as drawbacks.
 
-On the positive side, this solution means that users can easily find and join the event via the corresponding Lichess Swiss event, and the script will make sure to include a link to the up-to-date knockout bracket in the tournament description. This means that events are easy to find for users, and that they do not have to leave Lichess to find information about the event (except for viewing the bracket, hosted externally). The time until the tournament starts and until new rounds start can also be easily tracked via the Swiss event. Moreover, using the Swiss functionality means that no complicated authorization flows are needed to make manual pairings between users and force them to play games - we can simply provide the pairings to Lichess directly via the Lichess API for Swiss events, and Lichess will make sure the right players will play against one another. Lichess will automatically handle absent players, and assign wins to the opponents if needed.
+On the positive side, this solution means that users can easily find and join the event via the corresponding Lichess Swiss event in the associated team, and the script will make sure to include a link to the up-to-date knockout bracket in the tournament description. This means that events are easy to find for users, and that they do not have to leave Lichess to find information about the event (except for viewing the bracket, hosted externally). The time until the tournament starts and until new rounds start can also be easily tracked via the Swiss event. Moreover, using the Swiss functionality means that no complicated authorization flows are needed to make manual pairings between users and force them to play games - we can simply provide the pairings to Lichess directly via the Lichess API for Swiss events, and Lichess will make sure the right players will play against one another. Lichess will automatically handle absent players, and assign wins to their opponents if needed.
 
 On the negative side, this (unofficial) solution via Swiss events means that Lichess will think it is hosting a Swiss event, rather than a knock-out event. Therefore, on the tournament page, Lichess will rank players based on their total points, which may not reflect the players' standings in the knock-out bracket - someone winning their first match 2-0 and losing 1-1 on tiebreaks in the second match has more points than someone winning 1.5-0.5 and winning 1-1 on tiebreaks.
 
-The latter drawback of inconsistent rankings can potentially be overcome if Lichess allows Swiss tournament organizers to overrule the standard scoring of events. Allowing scoring to be altered would potentially open up the Swiss system to abuse of tournament organizers who manipulate the scoring system to make certain players win/lose, but it would also allow knock-out events to be scored properly.
+The latter drawback of inconsistent rankings can potentially be overcome if Lichess allows Swiss tournament organizers to overrule the standard scoring/ranking of events. Allowing scoring to be altered would potentially open up the Swiss system to abuse of tournament organizers who manipulate the scoring system to make certain players win/lose, but it would also allow knock-out events to be scored properly.
 
 ## TODO-list
 
-Below a list of things that would be nice to add in the future, or which have been done recently.
+Below a list of things that would be nice to address in the future, or which have been done recently.
 - Basic functionality
   - [x] Make a tool to run knock-out events on Lichess via manual pairings.
   - [x] Automate all aspects of the tournament organization.
