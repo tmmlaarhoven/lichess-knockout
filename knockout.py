@@ -349,9 +349,9 @@ class KnockOut:
 
                 # Before Armageddon game, a score of 0.5 less also wins
                 if len(Bracket1[2]) < self._GamesPerMatch:
-                    if Score1 > (self._GamesPerMatch - 1) / 2 - 0.1:
+                    if Score1 > (self._GamesPerMatch) / 2 - 0.1:
                         Player1Won = True
-                    elif Score2 > (self._GamesPerMatch - 1) / 2 - 0.1:
+                    elif Score2 > (self._GamesPerMatch) / 2 - 0.1:
                         Player2Won = True
 
                 # After final Armageddon game, decide tiebreak on black games
@@ -401,7 +401,7 @@ class KnockOut:
         self.tprint("")
         self.tprint("=== LIST OF PARTICIPANTS ===")
         if len(self._Participants) == 0:
-            self.tprint("  (No participants yet.)")
+            self.tprint("   (No participants yet.)")
         else:
             for Seed, (ParticipantName, Participant) in enumerate(self._Participants.items()):
                 self.tprint(f"{(Seed + 1):>2}. {Participant['username']:<20} ({Participant['rating']:>4}) [{ParticipantName}]")
@@ -417,7 +417,7 @@ class KnockOut:
         self.tprint("")
         self.tprint("=== LIST OF MATCHES ===")
         if len(self._Pairings) == 0:
-            self.tprint("  (No matches yet.)")
+            self.tprint("   (No matches yet.)")
         else:
              for i in range(len(self._Pairings[-1]) // 2):
                 MatchScores = ",".join([f"{x}-{1-x}" for x in self._Pairings[-1][2*i][2]])
@@ -763,15 +763,16 @@ class KnockOut:
                      va = "center",
                      color = MatchUserNameColor[j])
 
-            # Put total score
-            plt.text(XBase + self._Xn - 0.8,
-                     YBase + self._Yh - self._Yh / 4 - j * self._Yh / 2,
-                     MatchUserScoreStr[j],
-                     fontsize = 16,
-                     fontweight = self._Bracket_DisplayScores[MatchUserWon[j]]["Weight"],
-                     ha = "center",
-                     va = "center",
-                     color = self._Bracket_DisplayScores[MatchUserWon[j]]["Color"])
+            # Put total score, unless BYE
+            if ("bye" not in [MatchUsers[k]['username'].lower() for k in range(2)]):
+                plt.text(XBase + self._Xn - 0.8,
+                        YBase + self._Yh - self._Yh / 4 - j * self._Yh / 2,
+                        MatchUserScoreStr[j],
+                        fontsize = 16,
+                        fontweight = self._Bracket_DisplayScores[MatchUserWon[j]]["Weight"],
+                        ha = "center",
+                        va = "center",
+                        color = self._Bracket_DisplayScores[MatchUserWon[j]]["Color"])
 
             # Put game results
             for g in range(len(MatchUserScores[j])):

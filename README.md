@@ -160,14 +160,14 @@ Below a list of things that would be nice to add in the future, or which have be
   - [x] Make starting the tournament early (when `MaxParticipants` is reached) optional.
   - [x] Terminate matches early if the winner is already decided (for >=2 games per match).
   - [x] Give early winners a 1-bye, and visualize in bracket.
-  - [ ] Use even number of games and (in case of tie) randomly decide colors for final Armageddon game.
+  - [x] Use even number of games and (in case of tie) randomly decide colors for final Armageddon game.
   - [ ] Make it possible to continue running a pre-created event (say open registration a week early).
   - [ ] Allow player seeding as input for manual bracket setup.
   - [ ] Allow specifying which users are allowed to join the tournament.
   - [ ] Test the functionality with a larger number of participants.
 - Advanced functionality
   - [ ] Make it possible to host a knock-out tournament where e.g. the top 8 qualify as winners(?)
-  - [ ] Implement different tiebreak options that people may want to use(?)
+  - [ ] Implement additional tiebreak options that people may want to use(?)
   - [ ] Make double-elimination brackets an option(?)
   - [ ] Make it possible to have later matches (SF, F) consist of more games(?)
 - Cloud hosting
@@ -203,5 +203,5 @@ Below a list of things that would be nice to add in the future, or which have be
   - [x] Fix issue of players withdrawing and the script crashing.
   - [x] Fix issue of script not sending pairings in time for round 1.
   - [x] Fix issue of not closing figures properly, and having many figures open.
-  - [ ] Fix issue of endpoint `/schedule-next-round` with fixed wait times between rounds.
+  - [x] Fix issue of endpoint `/schedule-next-round` with fixed wait times between rounds.
   - [ ] Fix issue of figure size changing when trophies are added, and rightmost game box being odd-sized.
