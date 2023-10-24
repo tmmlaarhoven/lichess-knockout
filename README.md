@@ -1,5 +1,6 @@
 # Lichess Knock-Out Tournament Tool
 
+[![Build/Deploy Pages](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/pages/pages-build-deployment)
 [![Hourly Bullet](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-bullet.yml/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-bullet.yml)
 [![Hourly HyperBullet](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-hyperbullet.yml/badge.svg)](https://github.com/tmmlaarhoven/lichess-knockout/actions/workflows/scheduler-hyperbullet.yml)
 
